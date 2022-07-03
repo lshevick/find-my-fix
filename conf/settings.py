@@ -144,6 +144,10 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# React stuff
+REACT_APP_DIR = os.path.join(BASE_DIR, 'frontend/static')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'frontend/static/build/static'),)
+
 SITE_ID = 1
 
  # AUTH settings
@@ -151,3 +155,8 @@ AUTH_USER_MODEL = 'accounts.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+
+#  Pillow stuff
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
