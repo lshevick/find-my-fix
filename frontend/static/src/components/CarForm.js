@@ -25,7 +25,7 @@ const CarForm = (year, make, model, type) => {
     const options = {
       method: "GET",
       headers: {
-        "X-RapidAPI-Key": "d6c14947a1msh9b6d57b1655b815p1ee12bjsned335cc92e12",
+        "X-RapidAPI-Key": "",
         "X-RapidAPI-Host": "car-data.p.rapidapi.com",
       },
     };
@@ -44,7 +44,7 @@ const CarForm = (year, make, model, type) => {
     const options = {
       method: "GET",
       headers: {
-        "X-RapidAPI-Key": "d6c14947a1msh9b6d57b1655b815p1ee12bjsned335cc92e12",
+        "X-RapidAPI-Key": "",
         "X-RapidAPI-Host": "car-data.p.rapidapi.com",
       },
     };
@@ -93,7 +93,7 @@ const CarForm = (year, make, model, type) => {
   return (
     <>
       <div className="flex items-center justify-center p-2 my-auto mx-auto bg-stone-300 w-full min-h-screen">
-        <form onSubmit={handleSubmit} className="flex items-center">
+        <form onSubmit={handleSubmit} className="flex flex-col bg-stone-200 p-2 rounded items-center">
           <div className="flex flex-col">
             <label htmlFor="year">Year</label>
             <select

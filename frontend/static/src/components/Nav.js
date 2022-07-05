@@ -45,7 +45,7 @@ const Nav = ({ isAuth, setIsAuth }) => {
   return (
     <>
       <div className="flex p-2 justify-between items-center bg-stone-400">
-        <div>Logo</div>
+        <div className="font-bold text-lg text-red-900">Find <span className="text-stone-200">My</span> Fix</div>
         <div>
         {isAuth ? authView : guestView}
         </div>
