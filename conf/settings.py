@@ -55,6 +55,9 @@ INSTALLED_APPS = [
 
     # local
     'accounts.apps.AccountsConfig',
+    'api.apps.ApiConfig',
+    'cars.apps.CarsConfig',
+    'shops.apps.ShopsConfig',
 ]
 
 MIDDLEWARE = [

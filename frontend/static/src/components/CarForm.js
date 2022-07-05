@@ -22,10 +22,11 @@ const CarForm = (year, make, model, type) => {
     setState((p) => ({ ...p, [name]: value }));
   };
   const queryCarMakes = async () => {
+    console.log(process.env.REACT_APP_CAR_API_KEY);
     const options = {
       method: "GET",
       headers: {
-        "X-RapidAPI-Key": "",
+        "X-RapidAPI-Key": process.env.REACT_APP_CAR_API_KEY,
         "X-RapidAPI-Host": "car-data.p.rapidapi.com",
       },
     };
@@ -44,7 +45,7 @@ const CarForm = (year, make, model, type) => {
     const options = {
       method: "GET",
       headers: {
-        "X-RapidAPI-Key": "",
+        "X-RapidAPI-Key": process.env.REACT_APP_CAR_API_KEY,
         "X-RapidAPI-Host": "car-data.p.rapidapi.com",
       },
     };
@@ -93,7 +94,10 @@ const CarForm = (year, make, model, type) => {
   return (
     <>
       <div className="flex items-center justify-center p-2 my-auto mx-auto bg-stone-300 w-full min-h-screen">
-        <form onSubmit={handleSubmit} className="flex flex-col bg-stone-200 p-2 rounded items-center">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col bg-stone-200 p-2 rounded items-center"
+        >
           <div className="flex flex-col">
             <label htmlFor="year">Year</label>
             <select
