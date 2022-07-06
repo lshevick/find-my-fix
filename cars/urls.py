@@ -6,6 +6,5 @@ app_name = 'cars'
 
 urlpatterns = [
     path('', CarListAPIView.as_view()),
-    # path('makes/', get_makes),
-    
+
 ]

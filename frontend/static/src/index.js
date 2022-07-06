@@ -8,6 +8,7 @@ import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import CarForm from "./components/CarForm";
 import ShopList from "./components/ShopList";
+import ShopDetail from "./components/ShopDetail";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -19,6 +20,7 @@ root.render(
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegisterForm />} />
           <Route path="shops" element={<ShopList />} />
+          <Route path='shops/:shopId' element={<ShopDetail/>} />
         </Route>
         <Route
           path="*"

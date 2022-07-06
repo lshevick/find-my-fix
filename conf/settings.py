@@ -58,7 +58,19 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'cars.apps.CarsConfig',
     'shops.apps.ShopsConfig',
+    'reviews.apps.ReviewsConfig',
 ]
+
+# PERMISSIONS
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

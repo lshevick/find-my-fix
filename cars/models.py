@@ -8,4 +8,7 @@ class Car(models.Model):
     model = models.CharField(max_length=255)
     image = models.ImageField(blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
-    service_list = models.JSONField()
+    service_list = models.JSONField(blank=True)
+
+    def __str__(self):
+        return self.model

@@ -4,6 +4,13 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Nav from "./components/Nav";
 
+
+// need to make a homepage with a lil blurb about the app and how to use it, check wireframes
+// want to put the car/service/location form next to logo in desktop view,
+// and put logo above forms in mobile
+// will probably just use regular javascript and state to select form screens 🤷🏼
+
+
 function App() {
   const [isAuth, setIsAuth] = useState(!!Cookies.get("Authorization"));
 

@@ -1,25 +1,53 @@
 import { useEffect, useState } from "react";
-// import Cookies from "js-cookie";
+import { Combobox } from "@headlessui/react";
+import Cookies from "js-cookie";
 
 function handleError(err) {
   console.warn(err);
 }
 
+// need to add another form here that adds servieces to the car model.
+// will need to also add a component that is like a car profile that lists details
+
 const defaultState = {
   year: "",
   make: "",
   model: "",
+  service_list: [],
 };
+
+const serviceList = [
+  "oil change",
+  "tires",
+  "alignment",
+  "diagnosis",
+  "engine service",
+  "air conditioning",
+  "body work",
+  "paint",
+  "brakes",
+];
 
 const CarForm = (year, make, model, type) => {
   const [state, setState] = useState(defaultState);
   const [makes, setMakes] = useState([]);
-  const [models, setModels] = useState([{id: 1, model: 'Loading...'}]);
+  const [models, setModels] = useState([{ id: 1, model: "Loading..." }]);
+  const [form, setForm] = useState("car");
+  const [query, setQuery] = useState("");
+  const [items, setItems] = useState([]);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
     setState((p) => ({ ...p, [name]: value }));
   };
+
+  const handleService = () => {
+    setState(p => ({...p, service_list: [...items]}))
+    setForm('location')
+    console.log(state);
+    setItems([])
+  };
+
   const queryCarMakes = async () => {
     const options = {
       method: "GET",
@@ -85,66 +113,164 @@ const CarForm = (year, make, model, type) => {
 
   const yearList = years.map((i) => <option key={i}>{i}</option>);
 
-  const handleSubmit = (e) => {
+  const handleCarSubmit = async (e) => {
     e.preventDefault();
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get("csrftoken"),
+      },
+      body: JSON.stringify(state),
+    };
+    const response = await fetch(`/api/v1/cars/`, options).catch(handleError);
+    if (!response.ok) {
+      throw new Error("Network response not ok");
+    }
+    const json = await response.json();
+    console.log(json);
+    setState(defaultState);
   };
+
+  const carForm = (
+    <div className="flex flex-col w-full bg-stone-100 items-center">
+      <div className="flex flex-col">
+        <label htmlFor="year">Year</label>
+        <select
+          className="m-1 p-1"
+          name="year"
+          id="year"
+          value={state.year}
+          onChange={handleInput}
+          form="car-form"
+        >
+          <option value=""> Choose A Year</option>
+          {yearList}
+        </select>
+      </div>
+      <div className="flex flex-col">
+        <label htmlFor="make">Make</label>
+        <select
+          className="m-2 p-1"
+          name="make"
+          id="make"
+          value={state.make}
+          onChange={handleInput}
+          form="car-form"
+        >
+          <option value="">Choose A Make</option>
+          {makesList}
+        </select>
+      </div>
+      <div className="flex flex-col">
+        <label htmlFor="model">Model</label>
+        <select
+          className="m-2 p-1"
+          name="model"
+          id="model"
+          value={state.model}
+          onChange={handleInput}
+          form="car-form"
+          onClick={() => queryCarModels(state.year, state.make)}
+        >
+          <option value="">Choose a Model</option>
+          {modelsList}
+        </select>
+      </div>
+      <div className="flex justify-end">
+        <button
+          type="button"
+          className="bg-emerald-600 p-1 rounded-md hover:bg-emerald-700"
+          onClick={() => setForm("service")}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+
+  const filteredServices = 
+  query === '' ? serviceList : serviceList.filter(s => {return s.toLowerCase().includes(query.toLowerCase())})
+
+  const serviceForm = (
+    <div>
+      <h2>Choose Your Service(s):</h2>
+      <Combobox name='service_list' value={items} onChange={setItems} multiple>
+        <Combobox.Input onChange={(e) => setQuery(e.target.value)} />
+        <Combobox.Options>
+          {filteredServices.map((s) => (
+            <Combobox.Option key={s} value={s}>
+              {s}
+            </Combobox.Option>
+          ))}
+        </Combobox.Options>
+      </Combobox>
+      <button type="button" onClick={handleService}>Next</button>
+    </div>
+  );
 
   return (
     <>
       <div className="flex items-center justify-center p-2 my-auto mx-auto bg-stone-300 w-full min-h-screen">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col bg-stone-200 p-2 rounded items-center"
-        >
-          <div className="flex flex-col">
-            <label htmlFor="year">Year</label>
-            <select
-              className="m-1 p-1"
-              name="year"
-              id="year"
-              value={state.year}
-              onChange={handleInput}
-            >
-              <option value=""> Choose A Year</option>
-              {yearList}
-            </select>
+        <div className="flex flex-col items-center p-2 rounded bg-stone-100 min-h-[300px]">
+          <div className="flex justify-center">
+            <ul className="flex w-full mb-5">
+              <li className="bg-stone-100">
+                <button
+                  type="button"
+                  className={
+                    form === "car"
+                      ? `bg-stone-100 p-1 transition-all`
+                      : `bg-stone-500 hover:bg-stone-400 p-1 transition-all grayscale`
+                  }
+                  onClick={() => setForm("car")}
+                >
+                  <span className="px-2 py-1 mx-1 text-white rounded-3xl bg-red-900">
+                    1
+                  </span>
+                  Vehicle
+                </button>
+              </li>
+              <li className="bg-stone-100">
+                <button
+                  type="button"
+                  className={
+                    form === "service"
+                      ? `bg-stone-100 p-1 transition-all`
+                      : `bg-stone-500 hover:bg-stone-400 p-1 transition-all grayscale`
+                  }
+                  onClick={() => setForm("service")}
+                >
+                  <span className="px-2 py-1 mx-1 text-white rounded-3xl bg-red-900">
+                    2
+                  </span>
+                  Services
+                </button>
+              </li>
+              <li className="bg-stone-100">
+                <button
+                  type="button"
+                  className={
+                    form === "location"
+                      ? `bg-stone-100 p-1 transition-all`
+                      : `bg-stone-500 hover:bg-stone-400 p-1 transition-all grayscale`
+                  }
+                  onClick={() => setForm("location")}
+                >
+                  <span className="px-2 py-1 mx-1 text-white rounded-3xl bg-red-900">
+                    3
+                  </span>
+                  Location
+                </button>
+              </li>
+            </ul>
           </div>
-          <div className="flex flex-col">
-            <label htmlFor="make">Make</label>
-            <select
-              className="m-2 p-1"
-              name="make"
-              id="make"
-              value={state.make}
-              onChange={handleInput}
-            >
-              <option value="">Choose A Make</option>
-              {makesList}
-            </select>
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="model">Model</label>
-            <select
-              className="m-2 p-1"
-              name="model"
-              id="model"
-              value={state.model}
-              onChange={handleInput}
-              onClick={() => queryCarModels(state.year, state.make)}
-            >
-              <option value="">Choose a Model</option>
-              {modelsList}
-            </select>
-          </div>
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="bg-emerald-600 p-1 rounded-md hover:bg-emerald-700"
-            >
-              Enter
-            </button>
-          </div>
-        </form>
+          <form id="car-form" onSubmit={handleCarSubmit}>
+            {form === "car" && carForm}
+            {form === "service" && serviceForm}
+            {form === 'location' && <p>work in progress</p>}
+          </form>
+        </div>
       </div>
     </>
   );
