@@ -9,6 +9,7 @@ import RegisterForm from "./components/RegisterForm";
 import CarForm from "./components/CarForm";
 import ShopList from "./components/ShopList";
 import ShopDetail from "./components/ShopDetail";
+import Dashboard from "./components/Dashboard";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -16,7 +17,8 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="" element={<CarForm />} />
+          <Route path="" element={<Dashboard/>}/>
+          <Route path="add-car" element={<CarForm />} />
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegisterForm />} />
           <Route path="shops" element={<ShopList />} />

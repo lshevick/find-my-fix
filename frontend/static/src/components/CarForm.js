@@ -7,7 +7,10 @@ function handleError(err) {
 }
 
 // need to add another form here that adds servieces to the car model.
-// will need to also add a component that is like a car profile that lists details
+// will need to also add a component that is like a car profile that lists details of the car
+// also will need to implement CRUD for cars and services. Users need to be able to removes services
+// they have completed.
+// need to be able to filter shops based on work needed
 
 const defaultState = {
   year: "",
@@ -42,10 +45,10 @@ const CarForm = (year, make, model, type) => {
   };
 
   const handleService = () => {
-    setState(p => ({...p, service_list: [...items]}))
-    setForm('location')
+    setState((p) => ({ ...p, service_list: [...items] }));
+    setForm("location");
     console.log(state);
-    setItems([])
+    setItems([]);
   };
 
   const queryCarMakes = async () => {
@@ -189,24 +192,41 @@ const CarForm = (year, make, model, type) => {
     </div>
   );
 
-  const filteredServices = 
-  query === '' ? serviceList : serviceList.filter(s => {return s.toLowerCase().includes(query.toLowerCase())})
+  const filteredServices =
+    query === ""
+      ? serviceList
+      : serviceList.filter((s) => {
+          return s.toLowerCase().includes(query.toLowerCase());
+        });
 
   const serviceForm = (
-    <div>
-      <h2>Choose Your Service(s):</h2>
-      <Combobox name='service_list' value={items} onChange={setItems} multiple>
-        <Combobox.Input onChange={(e) => setQuery(e.target.value)} />
-        <Combobox.Options>
-          {filteredServices.map((s) => (
-            <Combobox.Option key={s} value={s}>
-              {s}
-            </Combobox.Option>
-          ))}
-        </Combobox.Options>
-      </Combobox>
-      <button type="button" onClick={handleService}>Next</button>
-    </div>
+    <>
+      <div className="flex flex-col justify-between h-full">
+        <h2>Choose Your Service(s):</h2>
+        <Combobox
+          name="service_list"
+          value={items}
+          onChange={setItems}
+          multiple
+        >
+          <Combobox.Input onChange={(e) => setQuery(e.target.value)} />
+          <Combobox.Options>
+            {filteredServices.map((s) => (
+              <Combobox.Option key={s} value={s}>
+                {s}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox>
+      </div>
+      <button
+        type="button"
+        onClick={handleService}
+        className="bg-emerald-600 p-1 px-5 rounded-md hover:bg-emerald-700"
+      >
+        Next
+      </button>
+    </>
   );
 
   return (
@@ -265,10 +285,14 @@ const CarForm = (year, make, model, type) => {
               </li>
             </ul>
           </div>
-          <form id="car-form" onSubmit={handleCarSubmit}>
+          <form
+            id="car-form"
+            onSubmit={handleCarSubmit}
+            className="w-full h-full flex items-end justify-center"
+          >
             {form === "car" && carForm}
             {form === "service" && serviceForm}
-            {form === 'location' && <p>work in progress</p>}
+            {form === "location" && <p>work in progress</p>}
           </form>
         </div>
       </div>
