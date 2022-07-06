@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import CarForm from "./components/CarForm";
+import ShopList from "./components/ShopList";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,6 +18,7 @@ root.render(
           <Route path="" element={<CarForm />} />
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegisterForm />} />
+          <Route path="shops" element={<ShopList />} />
         </Route>
         <Route
           path="*"

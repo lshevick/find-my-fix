@@ -7,3 +7,8 @@ class Shop(models.Model):
     labor_rate = models.CharField(max_length=255)
     services = models.JSONField()
     website = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    phone = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name

@@ -9,20 +9,18 @@ const defaultState = {
   year: "",
   make: "",
   model: "",
-  type: "",
 };
 
 const CarForm = (year, make, model, type) => {
   const [state, setState] = useState(defaultState);
   const [makes, setMakes] = useState([]);
-  const [models, setModels] = useState([]);
+  const [models, setModels] = useState([{id: 1, model: 'Loading...'}]);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
     setState((p) => ({ ...p, [name]: value }));
   };
   const queryCarMakes = async () => {
-    console.log(process.env.REACT_APP_CAR_API_KEY);
     const options = {
       method: "GET",
       headers: {

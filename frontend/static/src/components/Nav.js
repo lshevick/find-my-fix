@@ -21,14 +21,13 @@ const Nav = ({ isAuth, setIsAuth }) => {
         throw new Error('Network response not ok');
         }
         const json = await response.json(); 
-        console.log(json);
         setIsAuth(false);
     }
 
     const authView = (
         <ul className="flex">
-        <li className="mx-2 p-1">Home</li>
-        <li className="mx-2 p-1">Glovebox</li>
+        <li className="mx-2 p-1"><Link to='/'>Home</Link></li>
+        <li className="mx-2 p-1"><Link to='/shops'>Glovebox</Link></li>
         <li className="mx-2 p-1"><button type="button" onClick={logout}>Logout</button></li>
       </ul>
     )
