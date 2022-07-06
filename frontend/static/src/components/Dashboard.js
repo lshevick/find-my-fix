@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from "react-router-dom"
 
 function handleError(err) {
     console.warn(err)
@@ -13,7 +14,6 @@ const Dashboard = () => {
         throw new Error('Network response not ok');
         }
         const json = await response.json(); 
-        console.log(json)
         setGarage(json)
     }
 
@@ -37,10 +37,14 @@ return (
         <ul>
             {garageDisplay}
         </ul>
+        <Link to='/add-car'>Add a Car</Link>
     </div>
     <div>
         <h2>Find My Fix!</h2>
-        
+        <ul>
+            {garage.map(c => (<li key={c.id}><button>{c.model}</button></li>))}
+        </ul>
+
     </div>
 </div>
 </>
