@@ -19,7 +19,7 @@ function App() {
   return (
     <div className="App">
       <Nav isAuth={isAuth} setIsAuth={setIsAuth} />
-      <div className="flex justify-center">
+      <div className="flex justify-center min-h-screen">
       <Outlet context={[isAuth, setIsAuth, navigate]} />
       </div>
     </div>
