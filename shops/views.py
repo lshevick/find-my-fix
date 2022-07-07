@@ -14,3 +14,4 @@ class ShopDetailAPIView(generics.RetrieveAPIView):
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
+

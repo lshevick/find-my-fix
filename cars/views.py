@@ -23,8 +23,12 @@ import os
 #     return Response(data)
 
 class CarListAPIView(generics.ListCreateAPIView):
-    queryset = Car.objects.all()
+    # queryset = Car.objects.all()
     serializer_class = CarSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Car.objects.filter(user=user.id)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
