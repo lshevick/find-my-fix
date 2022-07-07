@@ -33,11 +33,14 @@ const serviceList = [
 
 const CarForm = (year, make, model, type) => {
   const [state, setState] = useState(defaultState);
+  const [image, setImage] = useState(null);
   const [makes, setMakes] = useState([]);
   const [models, setModels] = useState([{ id: 1, model: "Loading..." }]);
   const [form, setForm] = useState("car");
   const [query, setQuery] = useState("");
   const [items, setItems] = useState([]);
+  const [preview, setPreview] = useState("");
+
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -49,6 +52,17 @@ const CarForm = (year, make, model, type) => {
     setForm("location");
     console.log(state);
     setItems([]);
+  };
+
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreview(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   const queryCarMakes = async () => {
@@ -118,13 +132,19 @@ const CarForm = (year, make, model, type) => {
 
   const handleCarSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('year', state.year)
+    formData.append('make', state.make)
+    formData.append('model', state.model)
+    formData.append('image', image)
+    formData.append('service_list', JSON.stringify(state.service_list))
+
     const options = {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         "X-CSRFToken": Cookies.get("csrftoken"),
       },
-      body: JSON.stringify(state),
+      body: formData,
     };
     const response = await fetch(`/api/v1/cars/`, options).catch(handleError);
     if (!response.ok) {
@@ -133,6 +153,8 @@ const CarForm = (year, make, model, type) => {
     const json = await response.json();
     console.log(json);
     setState(defaultState);
+    setImage(null)
+    setItems([]);
   };
 
   const carForm = (
@@ -179,6 +201,10 @@ const CarForm = (year, make, model, type) => {
           <option value="">Choose a Model</option>
           {modelsList}
         </select>
+      </div>
+      <div className="flex flex-col">
+          {image && <img src={preview} alt="car" width="25%" />}
+        <input type="file" name="image" id="image" onChange={handleImage} />
       </div>
       <div className="flex justify-end">
         <button
@@ -240,7 +266,8 @@ const CarForm = (year, make, model, type) => {
     <>
       <div>
         <button
-          type="button"
+          type="submit"
+          form="car-form"
           onClick={getLocation}
           className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
         >
