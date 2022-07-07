@@ -26,7 +26,7 @@ const ShopDetail = () => {
         getShopDetail();
     }, [])
 
-    const serviceList = detail.services && detail.services.map(i => (<li>{i}</li>))
+    const serviceList = detail.services && detail.services.map(i => (<li key={i}>{i}</li>))
 
     const shopInfo = (
         <div key={detail.id}>

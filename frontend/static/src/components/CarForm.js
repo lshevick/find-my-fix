@@ -229,19 +229,40 @@ const CarForm = (year, make, model, type) => {
     </>
   );
 
+  const getLocation = () => {
+    // Sorcery!
+    navigator.geolocation.getCurrentPosition((p) => {
+      console.log(p.coords.latitude, p.coords.longitude);
+    });
+  };
+
+  const locator = (
+    <>
+      <div>
+        <button
+          type="button"
+          onClick={getLocation}
+          className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
+        >
+          Get my location
+        </button>
+      </div>
+    </>
+  );
+
   return (
     <>
       <div className="flex items-center justify-center p-2 my-auto mx-auto bg-stone-300 w-full min-h-screen">
-        <div className="flex flex-col items-center p-2 rounded bg-stone-100 min-h-[300px]">
-          <div className="flex justify-center">
+        <div className="flex flex-col items-center rounded bg-stone-100 min-h-[300px]">
+          <div className="flex justify-center rounded-t-md">
             <ul className="flex w-full mb-5">
-              <li className="bg-stone-100">
+              <li className="bg-stone-100 rounded-t-md">
                 <button
                   type="button"
                   className={
                     form === "car"
-                      ? `bg-stone-100 p-1 transition-all`
-                      : `bg-stone-500 hover:bg-stone-400 p-1 transition-all grayscale`
+                      ? `bg-stone-100 p-2 transition-all rounded-t rounded-r-none`
+                      : `bg-stone-500 hover:bg-stone-400 p-2 transition-all grayscale rounded-t rounded-r-none`
                   }
                   onClick={() => setForm("car")}
                 >
@@ -256,8 +277,8 @@ const CarForm = (year, make, model, type) => {
                   type="button"
                   className={
                     form === "service"
-                      ? `bg-stone-100 p-1 transition-all`
-                      : `bg-stone-500 hover:bg-stone-400 p-1 transition-all grayscale`
+                      ? `bg-stone-100 p-2 transition-all`
+                      : `bg-stone-500 hover:bg-stone-400 p-2 transition-all grayscale`
                   }
                   onClick={() => setForm("service")}
                 >
@@ -267,13 +288,13 @@ const CarForm = (year, make, model, type) => {
                   Services
                 </button>
               </li>
-              <li className="bg-stone-100">
+              <li className="bg-stone-100 rounded-t">
                 <button
                   type="button"
                   className={
                     form === "location"
-                      ? `bg-stone-100 p-1 transition-all`
-                      : `bg-stone-500 hover:bg-stone-400 p-1 transition-all grayscale`
+                      ? `bg-stone-100 p-2 transition-all rounded-t rounded-l-none`
+                      : `bg-stone-500 hover:bg-stone-400 p-2 transition-all grayscale rounded-t rounded-l-none`
                   }
                   onClick={() => setForm("location")}
                 >
@@ -292,7 +313,7 @@ const CarForm = (year, make, model, type) => {
           >
             {form === "car" && carForm}
             {form === "service" && serviceForm}
-            {form === "location" && <p>work in progress</p>}
+            {form === "location" && locator}
           </form>
         </div>
       </div>
