@@ -85,7 +85,7 @@ const Dashboard = () => {
   const addService = async (id) => {
     const data = {
       service_list: [...car.service_list, newItems],
-    }
+    };
     const options = {
       method: "PATCH",
       headers: {
@@ -103,7 +103,7 @@ const Dashboard = () => {
     const json = await response.json();
     console.log(json);
     getCarDetail(id);
-    setNewItems([])
+    setNewItems([]);
   };
 
   const carModal = (
@@ -111,9 +111,11 @@ const Dashboard = () => {
       <div className="fixed inset-0" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="mx-auto max-w-sm rounded bg-white p-10">
-          <div className="w-48 h-48 overflow-hidden">
-            <img src={car.image} alt="car" className="object-cover" />
-          </div>
+          {car.image && (
+            <div className="w-48 h-48 overflow-hidden">
+              <img src={car.image} alt="car" className="object-cover" />
+            </div>
+          )}
           <div className="flex border-b-2 border-stone-600">
             <h2 className="mx-0.5">{car.year}</h2>
             <h2 className="mx-0.5">{car.make}</h2>
@@ -157,9 +159,11 @@ const Dashboard = () => {
       <div className="fixed inset-0" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="mx-auto max-w-sm rounded bg-white p-10">
-          <div className="w-48 h-48 overflow-hidden">
-            <img src={car.image} alt="car" className="object-cover" />
-          </div>
+          {car.image && (
+            <div className="w-48 h-48 overflow-hidden">
+              <img src={car.image} alt="car" className="object-cover" />
+            </div>
+          )}
           <div className="flex border-b-2 border-stone-600">
             <h2 className="mx-0.5">{car.year}</h2>
             <h2 className="mx-0.5">{car.make}</h2>
@@ -195,16 +199,31 @@ const Dashboard = () => {
                 onChange={setNewItems}
                 multiple
               >
-                <Combobox.Input displayValue={(items) => items} onChange={(e) => setQuery(e.target.value)} className='p-1 bg-stone-100 rounded' />
-                <Combobox.Options className='bg-stone-100/90 p-2 rounded absolute right-0 sm:left-0'>
+                <Combobox.Input
+                  displayValue={(items) => items}
+                  onChange={(e) => setQuery(e.target.value)}
+                  className="p-1 bg-stone-100 rounded"
+                />
+                <Combobox.Options className="bg-stone-100/90 p-2 rounded absolute right-0 sm:left-0">
                   {filteredServices.map((s) => (
-                    <Combobox.Option key={s} value={s} className='cursor-pointer hover:bg-stone-300'>
+                    <Combobox.Option
+                      key={s}
+                      value={s}
+                      className="cursor-pointer hover:bg-stone-300"
+                    >
                       {s}
                     </Combobox.Option>
                   ))}
                 </Combobox.Options>
               </Combobox>
-              <button className="bg-emerald-700 px-2 m-1 rounded hover:bg-emerald-600" onClick={() => {addService(car.id); }}>Add</button>
+              <button
+                className="bg-emerald-700 px-2 m-1 rounded hover:bg-emerald-600"
+                onClick={() => {
+                  addService(car.id);
+                }}
+              >
+                Add
+              </button>
             </div>
           </div>
           <div className="w-full flex justify-between">
@@ -221,20 +240,20 @@ const Dashboard = () => {
   );
 
   const garageDisplay = garage.map((c) => (
-    <li key={c.id} className='flex items-center'>
-        <button
-          type="button"
-          onClick={() => {
-            getCarDetail(c.id);
-            setIsOpen(!isOpen);
-          }}
-          className='flex items-center hover:bg-stone-400 py-2'
-        >
-      <img src={c.image} alt="" width='45%' />
-      <div>
+    <li key={c.id} className="flex items-center">
+      <button
+        type="button"
+        onClick={() => {
+          getCarDetail(c.id);
+          setIsOpen(!isOpen);
+        }}
+        className="flex items-center hover:bg-stone-400 py-2"
+      >
+        <img src={c.image} alt="" width="45%" />
+        <div>
           <h2 className="px-10 font-semibold">{c.model}</h2>
-      </div>
-        </button>
+        </div>
+      </button>
     </li>
   ));
 

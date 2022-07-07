@@ -142,7 +142,7 @@ const CarForm = (year, make, model, type) => {
     formData.append('year', state.year)
     formData.append('make', state.make)
     formData.append('model', state.model)
-    formData.append('image', image)
+    image && formData.append('image', image)
     formData.append('service_list', JSON.stringify(state.service_list))
 
     const options = {
@@ -235,7 +235,7 @@ const CarForm = (year, make, model, type) => {
           onChange={setItems}
           multiple
         >
-          <Combobox.Input onChange={(e) => setQuery(e.target.value)} />
+          <Combobox.Input displayValue={(items) => items} onChange={(e) => setQuery(e.target.value)} />
           <Combobox.Options>
             {filteredServices.map((s) => (
               <Combobox.Option key={s} value={s}>

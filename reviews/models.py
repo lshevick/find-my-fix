@@ -10,6 +10,7 @@ class Review(models.Model):
     body = models.TextField(max_length=255)
     service = models.JSONField()
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    rating = models.FloatField(default=1)
 
     def __str__(self):
         return self.body[:20]

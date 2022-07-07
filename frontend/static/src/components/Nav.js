@@ -20,7 +20,6 @@ const Nav = ({ isAuth, setIsAuth }) => {
         if(!response.ok) {
         throw new Error('Network response not ok');
         }
-        const json = await response.json(); 
         setIsAuth(false);
     }
 
