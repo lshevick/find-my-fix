@@ -1,4 +1,3 @@
-from tkinter.font import names
 from django.urls import path, include
 
 app_name = 'api_v1'
