@@ -40,7 +40,13 @@ const CarForm = (year, make, model, type) => {
   const [query, setQuery] = useState("");
   const [items, setItems] = useState([]);
   const [preview, setPreview] = useState("");
-
+  
+  const filteredServices =
+    query === ""
+      ? serviceList
+      : serviceList.filter((s) => {
+          return s.toLowerCase().includes(query.toLowerCase());
+        });
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -112,7 +118,7 @@ const CarForm = (year, make, model, type) => {
       {m}
     </option>
   ));
-
+  
   const modelsList = models.map((m) => (
     <option key={m.id} value={m.model}>
       {m.model}
@@ -218,12 +224,6 @@ const CarForm = (year, make, model, type) => {
     </div>
   );
 
-  const filteredServices =
-    query === ""
-      ? serviceList
-      : serviceList.filter((s) => {
-          return s.toLowerCase().includes(query.toLowerCase());
-        });
 
   const serviceForm = (
     <>
