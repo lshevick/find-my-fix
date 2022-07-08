@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Combobox } from "@headlessui/react";
 import Cookies from "js-cookie";
+import { useOutletContext } from "react-router-dom";
 
 function handleError(err) {
   console.warn(err);
@@ -31,7 +32,19 @@ const serviceList = [
   "brakes",
 ];
 
-const CarForm = (year, make, model, type) => {
+const defaultServices = {
+    "oil change": false,
+    "tires": false,
+    "alignment": false,
+    "diagnosis": false,
+    "engine service": false,
+    "air conditioning": false,
+    "body work": false,
+    "paint": false,
+    "brakes": false,
+}
+
+const CarForm = () => {
   const [state, setState] = useState(defaultState);
   const [image, setImage] = useState(null);
   const [makes, setMakes] = useState([]);
@@ -40,7 +53,9 @@ const CarForm = (year, make, model, type) => {
   const [query, setQuery] = useState("");
   const [items, setItems] = useState([]);
   const [preview, setPreview] = useState("");
-  
+  const [services, setServices] = useState(defaultServices)
+  const [isAuth, setIsAuth, navigate, location, setLocation] = useOutletContext();
+
   const filteredServices =
     query === ""
       ? serviceList
@@ -118,7 +133,7 @@ const CarForm = (year, make, model, type) => {
       {m}
     </option>
   ));
-  
+
   const modelsList = models.map((m) => (
     <option key={m.id} value={m.model}>
       {m.model}
@@ -139,11 +154,11 @@ const CarForm = (year, make, model, type) => {
   const handleCarSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('year', state.year)
-    formData.append('make', state.make)
-    formData.append('model', state.model)
-    image && formData.append('image', image)
-    formData.append('service_list', JSON.stringify(state.service_list))
+    formData.append("year", state.year);
+    formData.append("make", state.make);
+    formData.append("model", state.model);
+    image && formData.append("image", image);
+    formData.append("service_list", JSON.stringify(state.service_list));
 
     const options = {
       method: "POST",
@@ -159,77 +174,83 @@ const CarForm = (year, make, model, type) => {
     const json = await response.json();
     console.log(json);
     setState(defaultState);
-    setImage(null)
+    setServices(defaultServices);
+    setImage(null);
     setItems([]);
   };
 
   const carForm = (
-    <div className="flex flex-col w-full bg-stone-100 items-center">
-      <div className="flex flex-col">
-        <label htmlFor="year">Year</label>
-        <select
-          className="m-1 p-1"
-          name="year"
-          id="year"
-          value={state.year}
-          onChange={handleInput}
-          form="car-form"
-        >
-          <option value=""> Choose A Year</option>
-          {yearList}
-        </select>
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="make">Make</label>
-        <select
-          className="m-2 p-1"
-          name="make"
-          id="make"
-          value={state.make}
-          onChange={handleInput}
-          form="car-form"
-        >
-          <option value="">Choose A Make</option>
-          {makesList}
-        </select>
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="model">Model</label>
-        <select
-          className="m-2 p-1"
-          name="model"
-          id="model"
-          value={state.model}
-          onChange={handleInput}
-          form="car-form"
-          onClick={() => queryCarModels(state.year, state.make)}
-        >
-          <option value="">Choose a Model</option>
-          {modelsList}
-        </select>
-      </div>
-      <div className="flex flex-col">
+    <>
+      <div className="flex flex-col items-center">
+        <div className="flex flex-col">
+          <label htmlFor="year">Year</label>
+          <select
+            className="m-1 p-1"
+            name="year"
+            id="year"
+            value={state.year}
+            onChange={handleInput}
+            form="car-form"
+          >
+            <option value=""> Choose A Year</option>
+            {yearList}
+          </select>
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="make">Make</label>
+          <select
+            className="m-2 p-1"
+            name="make"
+            id="make"
+            value={state.make}
+            onChange={handleInput}
+            form="car-form"
+          >
+            <option value="">Choose A Make</option>
+            {makesList}
+          </select>
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="model">Model</label>
+          <select
+            className="m-2 p-1"
+            name="model"
+            id="model"
+            value={state.model}
+            onChange={handleInput}
+            form="car-form"
+            onClick={() => queryCarModels(state.year, state.make)}
+          >
+            <option value="">Choose a Model</option>
+            {modelsList}
+          </select>
+        </div>
+        <div className="flex flex-col w-5/6">
           {image && <img src={preview} alt="car" width="25%" />}
-        <input type="file" name="image" id="image" onChange={handleImage} />
+          <input type="file" name="image" id="image" onChange={handleImage} />
+        </div>
+        <div className="flex justify-end">
+          <button
+            type="button"
+            className="p-1 m-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
+            onClick={() => setForm("service")}
+          >
+            Next
+          </button>
+        </div>
       </div>
-      <div className="flex justify-end">
-        <button
-          type="button"
-          className="bg-emerald-600 p-1 rounded-md hover:bg-emerald-700"
-          onClick={() => setForm("service")}
-        >
-          Next
-        </button>
-      </div>
-    </div>
+    </>
   );
 
+  const handleToggle = e => {
+    setServices(p => ({...p, [e.target.name]: !p[e.target.name]}))
+  }
 
   const serviceForm = (
     <>
       <div className="flex flex-col justify-between h-full">
         <h2>Choose Your Service(s):</h2>
-        <Combobox
+        {/* <Combobox
           name="service_list"
           value={items}
           onChange={setItems}
@@ -243,12 +264,27 @@ const CarForm = (year, make, model, type) => {
               </Combobox.Option>
             ))}
           </Combobox.Options>
-        </Combobox>
+        </Combobox> */}
+        <ul className="flex flex-col items-start divide-y divide-stone-300">
+          {Object.keys(services).map((s) => (
+            <li key={s}>
+              <input
+                type="checkbox"
+                name={s}
+                id={s}
+                value={s}
+                checked={services[s]}
+                onChange={handleToggle}
+              />
+              <label htmlFor={s}>{s}</label>
+            </li>
+          ))}
+        </ul>
       </div>
       <button
         type="button"
-        onClick={handleService}
-        className="bg-emerald-600 p-1 px-5 rounded-md hover:bg-emerald-700"
+        onClick={() => {setItems(Object.keys(services).filter(s => services[s] !== false)); handleService()}}
+        className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
       >
         Next
       </button>
@@ -279,10 +315,10 @@ const CarForm = (year, make, model, type) => {
 
   return (
     <>
-      <div className="flex items-center justify-center p-2 my-auto mx-auto bg-stone-300 w-full min-h-screen">
-        <div className="flex flex-col items-center rounded bg-stone-100 min-h-[300px]">
-          <div className="flex justify-center rounded-t-md">
-            <ul className="flex w-full mb-5">
+      <div className="flex items-center justify-center p-3 my-auto mx-auto bg-stone-300 w-full min-h-screen">
+        <div className="flex flex-col items-center rounded bg-stone-100 min-h-[350px]">
+          <div className="flex justify-center items-center rounded-t-md w-fit">
+            <ul className="flex justify-center w-full mb-5">
               <li className="bg-stone-100 rounded-t-md">
                 <button
                   type="button"
@@ -336,7 +372,7 @@ const CarForm = (year, make, model, type) => {
           <form
             id="car-form"
             onSubmit={handleCarSubmit}
-            className="w-full h-full flex items-end justify-center"
+            className="h-full flex items-end justify-center"
           >
             {form === "car" && carForm}
             {form === "service" && serviceForm}

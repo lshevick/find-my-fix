@@ -11,9 +11,12 @@ function handleError(err) {
 // can pull up relevant shops based off of the sesrvices needed on their car.
 // could also look into just having a search page for users both auth and unauth where they
 // can bring up any or all shops and filter that way.... 🤷🏼
+// need to come to this component and have a search button/or something to search for shops when user is unauth
+// they can filter these results by location, reviews based on a service
 
 const ShopList = () => {
   const [shops, setShops] = useState([]);
+  // const [filter, setFilter] = useState('all');
 
   const getShops = async () => {
     const response = await fetch(`/api/v1/shops/`).catch(handleError);
@@ -47,8 +50,8 @@ const ShopList = () => {
   ));
   return (
     <>
-      <div className="flex w-full justify-center">
-        <ul className="w-full bg-stone-200">{shopList}</ul>
+      <div className="flex w-full justify-center bg-stone-200">
+        <ul className="md:w-1/2">{shopList}</ul>
       </div>
     </>
   );

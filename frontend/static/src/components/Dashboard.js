@@ -109,11 +109,11 @@ const Dashboard = () => {
   const carModal = (
     <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
       <div className="fixed inset-0" aria-hidden="true" />
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto max-w-sm rounded bg-white p-10">
+      <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
+        <Dialog.Panel className="mx-5 max-w-lg rounded bg-white p-10 flex flex-col items-center jsutify-center w-5/6">
           {car.image && (
-            <div className="w-48 h-48 overflow-hidden">
-              <img src={car.image} alt="car" className="object-cover" />
+            <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
+              <img src={car.image} alt="car" className="object-cover" width='100%' height='auto' />
             </div>
           )}
           <div className="flex border-b-2 border-stone-600">
@@ -159,9 +159,9 @@ const Dashboard = () => {
       <div className="fixed inset-0" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="mx-auto max-w-sm rounded bg-white p-10">
-          {car.image && (
-            <div className="w-48 h-48 overflow-hidden">
-              <img src={car.image} alt="car" className="object-cover" />
+        {car.image && (
+            <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
+              <img src={car.image} alt="car" className="object-cover" width='100%' height='auto' />
             </div>
           )}
           <div className="flex border-b-2 border-stone-600">
@@ -249,7 +249,9 @@ const Dashboard = () => {
         }}
         className="flex items-center hover:bg-stone-400 py-2"
       >
-        <img src={c.image} alt="" width="45%" />
+        <div className="overflow-hidden max-w-52 max-h-52 relative flex items-center justify-center">
+        <img src={c.image} alt="car" className="object-cover" width='100%' height='100%' />
+        </div>
         <div>
           <h2 className="px-10 font-semibold">{c.model}</h2>
         </div>
@@ -267,7 +269,7 @@ const Dashboard = () => {
       >
         <div className="bg-stone-200 flex flex-col mx-auto p-3 my-5 sm:w-5/6 md:w-2/3 lg:w-1/2">
           <h2 className="border-b-2 border-stone-500">My Garage</h2>
-          <ul className="divide-y-2 divide-stone-600">{garageDisplay}</ul>
+          <ul className="divide-y-2 divide-stone-600 lg:grid lg:grid-flow-col lg:grid-rows-2 lg:divide-y-0">{garageDisplay}</ul>
           <Link to="/add-car" className="text-emerald-500 hover:underline">
             Add a Car
           </Link>

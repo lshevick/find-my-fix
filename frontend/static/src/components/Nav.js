@@ -25,8 +25,8 @@ const Nav = ({ isAuth, setIsAuth }) => {
 
     const authView = (
         <ul className="flex">
-        <li className="mx-2 p-1"><Link to='/'>Home</Link></li>
-        <li className="mx-2 p-1"><Link to='/shops'>Glovebox</Link></li>
+        <li className="mx-2 p-1"><Link to='/'>Dashboard</Link></li>
+        <li className="mx-2 p-1"><Link to='/shops'>Search</Link></li>
         <li className="mx-2 p-1"><button type="button" onClick={logout}>Logout</button></li>
       </ul>
     )
@@ -43,7 +43,9 @@ const Nav = ({ isAuth, setIsAuth }) => {
   return (
     <>
       <div className="flex p-2 justify-between items-center bg-stone-400">
+        <Link to='/'>
         <div className="font-bold text-lg text-red-900">Find <span className="text-stone-200">My</span> Fix</div>
+        </Link>
         <div>
         {isAuth ? authView : guestView}
         </div>

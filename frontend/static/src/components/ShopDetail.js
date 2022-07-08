@@ -74,6 +74,12 @@ const ShopDetail = () => {
       <div className="flex flex-col bg-neutral-50 my-2 p-2">
         <p className="underline font-medium">Reviews</p>
         <ul className="flex flex-col items-center">{reviewList}</ul>
+        
+      </div>
+      <div>
+        <form >
+            
+        </form>
       </div>
     </div>
   );
