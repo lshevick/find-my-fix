@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 
 function handleError(err) {
   console.warn(err);
@@ -8,7 +8,7 @@ function handleError(err) {
 
 // this is here to show all shops in the database, will probably not get used in prod.
 // need to implement some sort of checkbox/selection menu or search w/ filtering so users
-// can pull up relevant shops based off of the sesrvices needed on their car.
+// can pull up relevant shops based off of the services needed on their car.
 // could also look into just having a search page for users both auth and unauth where they
 // can bring up any or all shops and filter that way.... 🤷🏼
 // need to come to this component and have a search button/or something to search for shops when user is unauth
@@ -16,6 +16,7 @@ function handleError(err) {
 
 const ShopList = () => {
   const [shops, setShops] = useState([]);
+  const [isAuth, setIsAuth, navigate, location, setLocation] = useOutletContext();
   // const [filter, setFilter] = useState('all');
 
   const getShops = async () => {
@@ -27,9 +28,23 @@ const ShopList = () => {
     setShops(json);
   };
 
+  const getDistanceShops = async () => {
+    const response = await fetch(`/api/v1/shops/?P<${encodeURI(location.join(','))}>/`).catch(handleError);
+    if(!response.ok) {
+    throw new Error('Network response not ok');
+    }
+    const json = await response.json(); 
+    console.log(json)
+  }
+
   useEffect(() => {
     getShops();
   }, []);
+
+  const filterShopsByDistance = () => {
+    getDistanceShops();
+    
+  }
 
   const shopList = shops.map((i) => (
     <li
@@ -50,7 +65,9 @@ const ShopList = () => {
   ));
   return (
     <>
-      <div className="flex w-full justify-center bg-stone-200">
+      <div className="flex flex-col w-full  items-center bg-stone-200">
+        <h1 className="font-bold text-3xl">Find My Fix</h1>
+        <button type="button" className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all" onClick={filterShopsByDistance}>Search</button>
         <ul className="md:w-1/2">{shopList}</ul>
       </div>
     </>

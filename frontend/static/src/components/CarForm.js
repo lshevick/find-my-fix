@@ -54,6 +54,7 @@ const CarForm = () => {
   const [items, setItems] = useState([]);
   const [preview, setPreview] = useState("");
   const [services, setServices] = useState(defaultServices)
+  const [loading, setLoading] = useState(false);
   const [isAuth, setIsAuth, navigate, location, setLocation] = useOutletContext();
 
   const filteredServices =
@@ -292,15 +293,17 @@ const CarForm = () => {
   );
 
   const getLocation = () => {
-    // Sorcery!
+    setLoading(true)
     navigator.geolocation.getCurrentPosition((p) => {
       console.log(p.coords.latitude, p.coords.longitude);
+      setLocation([p.coords.latitude, p.coords.longitude]);
+      setLoading(false)
     });
   };
 
   const locator = (
     <>
-      <div>
+      <div className="flex flex-col">
         <button
           type="submit"
           form="car-form"
@@ -309,6 +312,9 @@ const CarForm = () => {
         >
           Get my location
         </button>
+        {loading && (location === [] ? `Got it!` : `Loading...`)}
+        <p>or enter a zip code:</p>
+        <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
       </div>
     </>
   );
