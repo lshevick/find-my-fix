@@ -6,8 +6,8 @@ from .views import ShopListAPIView, ShopDetailAPIView, ShopReviewListAPIView, sh
 app_name='shops'
 
 urlpatterns = [
-    # path('', ShopListAPIView.as_view()),
+    path('', ShopListAPIView.as_view()),
     path('<int:pk>/', ShopDetailAPIView.as_view()),
     path('<int:shop>/reviews/', ShopReviewListAPIView.as_view()),
-    path('', shop_distances),
+    # path('', shop_distances),
 ]

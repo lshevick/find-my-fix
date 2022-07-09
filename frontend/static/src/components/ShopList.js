@@ -16,7 +16,7 @@ function handleError(err) {
 
 const ShopList = () => {
   const [shops, setShops] = useState([]);
-  const [isAuth, setIsAuth, navigate, location, setLocation] = useOutletContext();
+  // const [isAuth, setIsAuth, navigate, location, setLocation] = useOutletContext();
   // const [filter, setFilter] = useState('all');
 
   const getShops = async () => {
@@ -28,23 +28,23 @@ const ShopList = () => {
     setShops(json);
   };
 
-  const getDistanceShops = async () => {
-    const response = await fetch(`/api/v1/shops/?P<${encodeURI(location.join(','))}>/`).catch(handleError);
-    if(!response.ok) {
-    throw new Error('Network response not ok');
-    }
-    const json = await response.json(); 
-    console.log(json)
-  }
+  // const getDistanceShops = async () => {
+  //   const response = await fetch(`/api/v1/shops/?P<${encodeURI(location.join(','))}>/`).catch(handleError);
+  //   if(!response.ok) {
+  //   throw new Error('Network response not ok');
+  //   }
+  //   const json = await response.json(); 
+  //   console.log(json)
+  // }
 
   useEffect(() => {
     getShops();
   }, []);
 
-  const filterShopsByDistance = () => {
-    getDistanceShops();
+  // const filterShopsByDistance = () => {
+  //   getDistanceShops();
     
-  }
+  // }
 
   const shopList = shops.map((i) => (
     <li
@@ -67,7 +67,7 @@ const ShopList = () => {
     <>
       <div className="flex flex-col w-full  items-center bg-stone-200">
         <h1 className="font-bold text-3xl">Find My Fix</h1>
-        <button type="button" className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all" onClick={filterShopsByDistance}>Search</button>
+        <button type="button" className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all">Search</button>
         <ul className="md:w-1/2">{shopList}</ul>
       </div>
     </>
