@@ -249,11 +249,11 @@ const Dashboard = () => {
         }}
         className="flex items-center hover:bg-stone-400 py-2"
       >
-        <div className="overflow-hidden max-w-52 max-h-52 relative flex items-center justify-center">
+        <div className="overflow-hidden w-1/2 max-h-52 relative flex items-center justify-center">
         <img src={c.image} alt="car" className="object-cover" width='100%' height='100%' />
         </div>
-        <div>
-          <h2 className="px-10 font-semibold">{c.model}</h2>
+        <div className="px-20 w-1/2">
+          <h2 className="w-full font-semibold">{c.model}</h2>
         </div>
       </button>
     </li>
@@ -273,16 +273,6 @@ const Dashboard = () => {
           <Link to="/add-car" className="text-emerald-500 hover:underline">
             Add a Car
           </Link>
-        </div>
-        <div className="bg-stone-200 flex flex-col mx-auto p-3 my-5">
-          <h2 className="border-b-2 border-stone-500">Find My Fix!</h2>
-          <ul>
-            {garage.map((c) => (
-              <li key={c.id}>
-                <button>{c.model}</button>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </>
