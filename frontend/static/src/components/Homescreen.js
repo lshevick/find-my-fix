@@ -4,7 +4,7 @@ import { BiArrowToBottom } from "react-icons/bi";
 const Homescreen = () => {
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen w-full">
+      <div className="flex flex-col items-center justify-center min-h-screen w-full bg-stone-100">
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] w-full bg-stone-100">
           <div>
             <h1 className="font-extrabold text-7xl text-red-900">
