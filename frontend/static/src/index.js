@@ -10,6 +10,7 @@ import CarForm from "./components/CarForm";
 import ShopList from "./components/ShopList";
 import ShopDetail from "./components/ShopDetail";
 import Dashboard from "./components/Dashboard";
+import Homescreen from "./components/Homescreen";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,12 +18,13 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="" element={<Dashboard/>}/>
+          <Route path="" element={<Homescreen />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="add-car" element={<CarForm />} />
           <Route path="login" element={<LoginForm />} />
           <Route path="register" element={<RegisterForm />} />
           <Route path="shops" element={<ShopList />} />
-          <Route path='shops/:shopId' element={<ShopDetail/>} />
+          <Route path="shops/:shopId" element={<ShopDetail />} />
         </Route>
         <Route
           path="*"

@@ -25,14 +25,14 @@ const Nav = ({ isAuth, setIsAuth }) => {
 
     const authView = (
         <ul className="flex">
-        <li className="mx-2 p-1"><Link to='/'>Dashboard</Link></li>
+        <li className="mx-2 p-1"><Link to='/dashboard'>Dashboard</Link></li>
         <li className="mx-2 p-1"><Link to='/shops'>Search</Link></li>
         <li className="mx-2 p-1"><button type="button" onClick={logout}>Logout</button></li>
       </ul>
     )
 
     const guestView = (
-        <ul className="flex">
+        <ul className="flex"> 
             <li>
                 <Link to='/login' className="hover:text-stone-800 hover:underline text-stone-600">Login</Link>
             </li>
