@@ -77,5 +77,9 @@ def shop_distances(request):
     origin = request.GET.get('location')
     shops = Shop.objects.all()
     sorted_shops = sort_shops_by_distance(shops, origin)
-    logger.info(ShopSerializer(sorted_shops).data)
+    for shop in sorted_shops:
+        print(shop.name)
+    # import pdb 
+    # pdb.set_trace()
+    # logger.info(ShopSerializer(sorted_shops).data)
     return Response(ShopSerializer(sorted_shops).data)

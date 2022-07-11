@@ -80,26 +80,33 @@ const ShopDetail = () => {
   ));
 
   const shopInfo = (
-    <div key={detail.id} className="grid grid-cols-1 bg-stone-100 h-full">
+    <div key={detail.id} className="grid grid-cols-1 md:grid-cols-2 bg-stone-100 h-full p-3 min-h-screen w-full lg:w-5/6">
       <div className="col-start-1">
-        <h1 className="font-semibold text-red-900">{detail.name}</h1>
+        <h1 className="text-red-900 text-4xl font-semibold">{detail.name}</h1>
         <div className="flex flex-col items-center justify-center">
-          <p>{detail.phone}</p>
-          <p>{detail.address}</p>
+          <p className="font-bold">{detail.phone}</p>
+          <p className="font-bold">{detail.address}</p>
+          <a href={`${detail.website}`} target='blank' className='font-bold underline text-blue-600 hover:text-blue-700 visited:text-violet-700'>{detail.website}</a>
         </div>
       </div>
       <div className="flex flex-col items-start mx-auto">
-        <h2 className="underline font-medium">Services</h2>
-        <ul className="flex flex-col items-start list-disc">
+        <h2 className="underline font-medium text-lg">Services</h2>
+        <ul className="flex flex-col items-start list-disc text-lg">
           {shopServiceList}
         </ul>
+      </div>
+      <div className="w-full">
+        <h2>This shop services:</h2>
+        <ul className="grid grid-flow-col-dense grid-rows-3 sm:grid-rows-2 md:grid-rows-1">
+            {detail.makes.map(m => <li key={m} className='capitalize m-1 p-1 bg-white rounded-md'>{m}</li>)}
+        </ul>
+      </div>
+      <div>
+        <ReviewForm detail={detail} setDataChanged={setDataChanged} />
       </div>
       <div className="flex flex-col bg-neutral-50 my-2 p-2">
         <p className="underline font-medium">Reviews</p>
         <ul className="flex flex-col items-center">{reviewList}</ul>
-      </div>
-      <div>
-        <ReviewForm detail={detail} setDataChanged={setDataChanged} />
       </div>
     </div>
   );

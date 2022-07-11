@@ -53,7 +53,7 @@ const ReviewForm = ({ detail, setDataChanged }) => {
   return (
     <>
       <form onSubmit={handleReviewSubmit}>
-        <label htmlFor="body">Write A Review</label>
+        <label htmlFor="body" className="text-lg border-b-2 border-stone-800">Write A Review</label>
         <div className="flex flex-col items-center">
           <Combobox
             name="service_list"
@@ -65,6 +65,7 @@ const ReviewForm = ({ detail, setDataChanged }) => {
               displayValue={(items) => items}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search for a service..."
+              className='p-1 rounded-md'
             />
             <Combobox.Options className="bg-stone-400 w-1/2 border-2 border-stone-600 rounded">
               {filteredServices &&
@@ -81,7 +82,7 @@ const ReviewForm = ({ detail, setDataChanged }) => {
           </Combobox>
         </div>
         <input
-          className="my-3"
+          className="m-3 p-1 rounded-md"
           type="text"
           name="body"
           id="body"
