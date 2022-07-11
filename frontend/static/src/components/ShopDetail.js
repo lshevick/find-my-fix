@@ -12,6 +12,7 @@ function handleError(err) {
 
 const ShopDetail = () => {
   const [detail, setDetail] = useState([]);
+  const [items, setItems] = useState([])
   const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState("");
   const params = useParams();
@@ -62,12 +63,12 @@ const ShopDetail = () => {
         <span>{r.rating} stars</span>
       </div>
       <div>
-        <ul>
+        <ul className="flex">
           {r.service &&
             r.service.map((s) => (
               <li
                 key={s}
-                className="font-light text-md p-1 bg-stone-100 rounded"
+                className="font-light text-md capitalize mr-1 p-1 bg-stone-100 rounded"
               >
                 {s}
               </li>
@@ -114,7 +115,12 @@ const ShopDetail = () => {
         </ul>
       </div>
       <div>
-        <ReviewForm detail={detail} setDataChanged={setDataChanged} />
+        <ul>
+            {items && items.map(i => <li key={i}>{i}</li>)}
+        </ul>
+      </div>
+      <div>
+        <ReviewForm detail={detail} setDataChanged={setDataChanged} items={items} setItems={setItems} />
       </div>
       <div className="flex flex-col bg-neutral-50 my-2 p-2">
         <p className="underline font-medium">Reviews</p>

@@ -58,7 +58,7 @@ def sort_shops_by_distance(shops, origin):
 
 class ShopDetailAPIView(generics.RetrieveAPIView):
     queryset = Shop.objects.all()
-    serializer_class = ShopSerializer
+    serializer_class = NoDistanceSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
 

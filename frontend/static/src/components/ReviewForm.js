@@ -6,9 +6,9 @@ function handleError(err) {
     console.warn(err);
   }
 
-const ReviewForm = ({ detail, setDataChanged }) => {
+const ReviewForm = ({ detail, setDataChanged, items, setItems }) => {
   const [body, setBody] = useState("");
-  const [items, setItems] = useState([])
+//   const [items, setItems] = useState([])
   const [query, setQuery] = useState("");
 
 
@@ -46,6 +46,7 @@ const ReviewForm = ({ detail, setDataChanged }) => {
     const json = await response.json();
     console.log(json);
     setItems([]);
+    setBody('');
     setQuery('');
     setDataChanged(true);
   };
