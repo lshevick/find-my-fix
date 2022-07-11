@@ -15,7 +15,7 @@ function handleError(err) {
 // they can filter these results by location, reviews based on a service
 
 const ShopList = () => {
-  const [shops, setShops] = useState([]);
+  const [shops, setShops] = useState(undefined);
   const [open, setOpen] = useState(false)
   const [isAuth, setIsAuth, navigate, location, setLocation] = useOutletContext();
   const [loading, setLoading] = useState(false)
@@ -31,7 +31,7 @@ const ShopList = () => {
   // };
 
   const getDistanceShops = async () => {
-    const response = await fetch(`/api/v1/shops/?location_string=${location && location.join(',')}`).catch(handleError);
+    const response = await fetch(`/api/v1/shops/?location_string=${location.join(',')}`).catch(handleError);
     if(!response.ok) {
     throw new Error('Network response not ok');
     }
@@ -40,11 +40,7 @@ const ShopList = () => {
     setShops(json)
   }
 
-  useEffect(() => {
-    getDistanceShops();
-  }, []);
-
-  const shopList = shops.map((i) => (
+  const shopList = shops && shops.map((i) => (
     <li
       key={i.id}
       className="mx-auto my-3 p-2 rounded shadow-md w-2/3 bg-stone-400"
@@ -91,21 +87,22 @@ const ShopList = () => {
   return (
     <>
       <div className="flex flex-col w-full  items-center bg-stone-200 relative">
-        <h1 className="font-bold text-3xl">Find My Fix</h1>
-        <button
+        <h1 className="font-bold text-xl mt-5">Enter your location to find shops</h1>
+{!location && <button
           type="button"
           className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
           onClick={getLocation}
         >
-          Search
-        </button>
-        <button
+          Get My Location
+        </button>}
+        {location && <button type="button" className="px-1 rounded text-emerald-700 border-emerald-700 border-2 hover:bg-emerald-700 hover:text-white transition-all mt-3" onClick={getDistanceShops}>Find My Fix!</button>}
+{location && <button
           type="button"
           className="px-1 m-3 rounded border-2 border-stone-600 hover:bg-stone-500 hover:text-white transition-all"
           onClick={() => setOpen(!open)}
         >
           Filter
-        </button>
+        </button>}
         <div className={`bg-stone-400/50 border-2 border-black rounded absolute top-28 ${open ? `` : `hidden`}`}>
           <ul>
             <li>
@@ -120,7 +117,7 @@ const ShopList = () => {
             </li>
           </ul>
         </div>
-        <ul className="md:w-1/2 mt-10">{shopList}</ul>
+        <ul className="mt-10 md:grid md:grid-cols-2 lg:grid-cols-3">{shopList}</ul>
       </div>
     </>
   );

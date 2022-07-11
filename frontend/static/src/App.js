@@ -12,7 +12,7 @@ import Nav from "./components/Nav";
 
 function App() {
   const [isAuth, setIsAuth] = useState(!!Cookies.get("Authorization"));
-  const [location, setLocation] = useState([]);
+  const [location, setLocation] = useState(undefined);
 
   const navigate = useNavigate();
 
