@@ -10,3 +10,8 @@ class ShopSerializer(serializers.ModelSerializer):
 
     def get_distance(self, obj):
             return obj.distance
+
+class NoDistanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shop
+        fields = '__all__'
