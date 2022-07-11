@@ -17,8 +17,8 @@ from reviews.serializers import ReviewSerializer
 
 logger = logging.getLogger("django")
 
-origin = urllib.parse.quote('34.9139306,-82.4231325')
-shops = Shop.objects.all()
+# origin = urllib.parse.quote('34.9139306,-82.4231325')
+# shops = Shop.objects.all()
 
 
 def sort_shops_by_distance(shops, origin):
@@ -59,7 +59,6 @@ def sort_shops_by_distance(shops, origin):
 class ShopDetailAPIView(generics.RetrieveAPIView):
     queryset = Shop.objects.all()
     serializer_class = NoDistanceSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class ShopReviewListAPIView(generics.ListCreateAPIView):
@@ -90,3 +89,6 @@ def shop_distances(request):
 # def shop_by_reviews(request):
 #     shops = Shop.objects.filter(review__shop='shop_name')
 #     return Response(ShopSerializer(shops).data)
+
+
+#check out related name adding to model for reviews

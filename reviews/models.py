@@ -9,7 +9,7 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     body = models.TextField(max_length=255)
     service = models.JSONField()
-    shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, related_name='reviews')
     rating = models.FloatField(default=1)
 
     def __str__(self):

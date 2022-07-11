@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import Cookies from "js-cookie";
+import { FaLocationArrow } from "react-icons/fa";
+import { ImSpinner8 } from "react-icons/im";
 
 function handleError(err) {
   console.warn(err);
@@ -33,7 +35,9 @@ const ShopList = () => {
 
   const getDistanceShops = async () => {
     const response = await fetch(
-      `/api/v1/shops/?location_string=${Array.isArray(location) ? location.join(",") : location}`
+      `/api/v1/shops/?location_string=${
+        Array.isArray(location) ? location.join(",") : location
+      }`
     ).catch(handleError);
     if (!response.ok) {
       throw new Error("Network response not ok");
@@ -42,6 +46,10 @@ const ShopList = () => {
     console.log(json);
     setShops(json);
   };
+
+  useEffect(() => {
+    location && getDistanceShops();
+  }, []);
 
   const shopList =
     shops &&
@@ -95,22 +103,25 @@ const ShopList = () => {
         <h1 className="font-bold text-xl mt-5">
           Enter your location to find shops
         </h1>
-        {!location && (
-          <button
-            type="button"
-            className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
-            onClick={getLocation}
-          >
-            Get My Location
-          </button>
-        )}
-        <input
-          className="mt-3 p-1 rounded"
-          type="text"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          placeholder="Enter ZIP code..."
-        />
+        <div className="flex items-end">
+          <input
+            className={`mt-3 p-1 shadow-sm ${!location && `rounded-l-md`}`}
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Enter ZIP code..."
+          />
+
+          {!location && (
+            <button
+              type="button"
+              className="p-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-r-md shadow-md hover:shadow-lg transition-all"
+              onClick={getLocation}
+            >
+              {loading ? <ImSpinner8 className="animate-spin"/> : <FaLocationArrow />}
+            </button>
+          )}
+        </div>
         {location && (
           <button
             type="button"
@@ -130,7 +141,7 @@ const ShopList = () => {
           </button>
         )}
         <div
-          className={`bg-stone-400/50 border-2 border-black rounded absolute top-28 ${
+          className={`bg-stone-100/60 p-2 border-2 border-black rounded absolute top-44 ${
             open ? `` : `hidden`
           }`}
         >
@@ -138,7 +149,7 @@ const ShopList = () => {
             <li>
               <button
                 type="button"
-                className="underline m-1"
+                className="underline m-1 hover:bg-stone-400 hover:rounded p-1"
                 onClick={getDistanceShops}
               >
                 by Distance
@@ -147,7 +158,7 @@ const ShopList = () => {
             <li>
               <button
                 type="button"
-                className="underline m-1"
+                className="underline hover:bg-stone-400 hover:rounded p-1"
                 onClick={getShopsByReviews}
               >
                 by Reviews

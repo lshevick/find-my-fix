@@ -20,6 +20,7 @@ const Nav = ({ isAuth, setIsAuth }) => {
         if(!response.ok) {
         throw new Error('Network response not ok');
         }
+        Cookies.remove('Authorization')
         setIsAuth(false);
     }
 
@@ -32,8 +33,11 @@ const Nav = ({ isAuth, setIsAuth }) => {
     )
 
     const guestView = (
-        <ul className="flex"> 
+        <ul className="flex items-center"> 
+        <li className="mx-2 p-1"><Link to='/shops'>Search</Link></li>
+
             <li>
+              
                 <Link to='/login' className="hover:text-stone-800 hover:underline text-stone-600">Login</Link>
             </li>
         </ul>
