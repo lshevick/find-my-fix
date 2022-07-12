@@ -203,7 +203,7 @@ const Dashboard = () => {
     >
       <div className="fixed inset-0" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto max-w-sm rounded bg-white p-10">
+        <Dialog.Panel className="mx-5 max-w-lg rounded bg-white p-10 flex flex-col items-center jsutify-center w-5/6">
           <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
             <img
               src={
@@ -326,7 +326,7 @@ const Dashboard = () => {
     <>
       {isEditing ? editCarModal : carModal}
       <div
-        className={`flex flex-col bg-stone-100 items-center shadow justify-center w-full min-h-screen ${
+        className={`flex flex-col bg-stone-100 items-center shadows justify-center w-full min-h-screen ${
           isOpen && `blur`
         }`}
       >

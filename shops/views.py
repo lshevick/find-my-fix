@@ -96,6 +96,8 @@ def shop_distances(request):
 @api_view(['GET'])
 def shop_by_reviews(request):
     # this function view should filter by the reviews on all shops for the service the user has selected to filter by
+    # this may need to be done in the front end where we can easily access all of the corresponding services
+    # and vehicles the user owns
     # 
 
     shops = Shop.objects.filter()

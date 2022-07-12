@@ -32,17 +32,17 @@ const serviceList = [
   "brakes",
 ];
 
-const defaultServices = {
-    "oil change": false,
-    "tires": false,
-    "alignment": false,
-    "diagnosis": false,
-    "engine service": false,
-    "air conditioning": false,
-    "body work": false,
-    "paint": false,
-    "brakes": false,
-}
+// const defaultServices = {
+//   "oil change": false,
+//   tires: false,
+//   alignment: false,
+//   diagnosis: false,
+//   "engine service": false,
+//   "air conditioning": false,
+//   "body work": false,
+//   paint: false,
+//   brakes: false,
+// };
 
 const CarForm = () => {
   const [state, setState] = useState(defaultState);
@@ -53,9 +53,10 @@ const CarForm = () => {
   const [query, setQuery] = useState("");
   const [items, setItems] = useState([]);
   const [preview, setPreview] = useState("");
-  const [services, setServices] = useState(defaultServices)
+  // const [services, setServices] = useState(defaultServices);
   const [loading, setLoading] = useState(false);
-  const [isAuth, setIsAuth, navigate, location, setLocation] = useOutletContext();
+  const [isAuth, setIsAuth, navigate, location, setLocation] =
+    useOutletContext();
 
   const filteredServices =
     query === ""
@@ -70,6 +71,7 @@ const CarForm = () => {
   };
 
   const handleService = () => {
+    console.log(items, 'these are the selected services')
     setState((p) => ({ ...p, service_list: [...items] }));
     setForm("location");
     console.log(state);
@@ -173,9 +175,9 @@ const CarForm = () => {
       throw new Error("Network response not ok");
     }
     const json = await response.json();
-    console.log(json);
+    console.log(json, 'submitted car!');
     setState(defaultState);
-    setServices(defaultServices);
+    // setServices(defaultServices);
     setImage(null);
     setItems([]);
   };
@@ -228,7 +230,13 @@ const CarForm = () => {
         </div>
         <div className="flex flex-col items-center w-5/6 inset-0">
           {image && <img src={preview} alt="car" width="100%" />}
-          <input type="file" name="image" id="image" onChange={handleImage} className='w-full' />
+          <input
+            type="file"
+            name="image"
+            id="image"
+            onChange={handleImage}
+            className="w-full"
+          />
         </div>
         <div className="flex justify-end">
           <button
@@ -243,36 +251,41 @@ const CarForm = () => {
     </>
   );
 
-  const handleToggle = e => {
-    setServices(p => ({...p, [e.target.name]: !p[e.target.name]}))
-  }
+  // const handleToggle = (e) => {
+  //   setServices((p) => ({ ...p, [e.target.name]: !p[e.target.name] }));
+  // };
 
   const serviceForm = (
     <>
+    <div className="flex flex-col items-center">
+    <div className="flex items-end">
       <div className="flex flex-col justify-between h-full">
         <h2>Choose Your Service(s):</h2>
         {/* <ul className="flex flex-col items-start divide-y divide-stone-300">
           {Object.keys(services).map((s) => (
             <li key={s}>
-              <input
-                type="checkbox"
-                name={s}
-                id={s}
-                value={s}
-                checked={services[s]}
-                onChange={handleToggle}
-              />
-              <label htmlFor={s}>{s}</label>
+            <input
+            type="checkbox"
+            name={s}
+            id={s}
+            value={s}
+            checked={services[s]}
+            onChange={handleToggle}
+            />
+            <label htmlFor={s}>{s}</label>
             </li>
-          ))}
-        </ul> */}
+            ))}
+          </ul> */}
         <Combobox
           name="service_list"
           value={items}
           onChange={setItems}
           multiple
-        >
-          <Combobox.Input displayValue={(items) => items} onChange={(e) => setQuery(e.target.value)} />
+          >
+          <Combobox.Input
+            displayValue={(items) => items}
+            onChange={(e) => setQuery(e.target.value)}
+            />
           <Combobox.Options>
             {filteredServices.map((s) => (
               <Combobox.Option key={s} value={s}>
@@ -283,21 +296,34 @@ const CarForm = () => {
         </Combobox>
       </div>
       <button
-        type="button"
-        onClick={() => {setItems(Object.keys(services).filter(s => services[s] !== false)); handleService()}}
+        type="submit"
+        form="car-form"
+        onClick={handleService}
         className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
-      >
+        >
+        Add Car
+      </button>
+      </div>
+
+      <button
+        type="button"
+        onClick={() => {
+          // setItems(Object.keys(services).filter((s) => services[s] !== false));
+        }}
+        className="p-1 my-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
+        >
         Next
       </button>
+        </div>
     </>
   );
 
   const getLocation = () => {
-    setLoading(true)
+    setLoading(true);
     navigator.geolocation.getCurrentPosition((p) => {
       console.log(p.coords.latitude, p.coords.longitude);
       setLocation([p.coords.latitude, p.coords.longitude]);
-      setLoading(false)
+      setLoading(false);
     });
   };
 
@@ -305,8 +331,7 @@ const CarForm = () => {
     <>
       <div className="flex flex-col">
         <button
-          type="submit"
-          form="car-form"
+          type="button"
           onClick={getLocation}
           className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
         >
@@ -314,10 +339,14 @@ const CarForm = () => {
         </button>
         {loading && (location === [] ? `Got it!` : `Loading...`)}
         <p>or enter a zip code:</p>
-        <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
+        <input
+          type="text"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        />
       </div>
       <div>
-      <Link to ='/shops'>Search for shops</Link>
+        <Link to="/shops">Search for shops</Link>
       </div>
     </>
   );
