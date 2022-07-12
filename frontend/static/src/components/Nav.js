@@ -28,7 +28,7 @@ const Nav = ({ isAuth, setIsAuth }) => {
         <ul className="flex">
         <li className="mx-2 p-1"><Link to='/dashboard'>Dashboard</Link></li>
         <li className="mx-2 p-1"><Link to='/shops'>Search</Link></li>
-        <li className="mx-2 p-1"><button type="button" onClick={logout}>Logout</button></li>
+        <li className="mx-2 p-1"><button type="button" onClick={logout}><Link to='/'>Logout</Link></button></li>
       </ul>
     )
 

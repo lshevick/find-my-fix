@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Combobox } from "@headlessui/react";
 import Cookies from "js-cookie";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, Link } from "react-router-dom";
 
 function handleError(err) {
   console.warn(err);
@@ -182,7 +182,7 @@ const CarForm = () => {
 
   const carForm = (
     <>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center w-min">
         <div className="flex flex-col">
           <label htmlFor="year">Year</label>
           <select
@@ -226,9 +226,9 @@ const CarForm = () => {
             {modelsList}
           </select>
         </div>
-        <div className="flex flex-col w-5/6">
-          {image && <img src={preview} alt="car" width="25%" />}
-          <input type="file" name="image" id="image" onChange={handleImage} />
+        <div className="flex flex-col items-center w-5/6 inset-0">
+          {image && <img src={preview} alt="car" width="100%" />}
+          <input type="file" name="image" id="image" onChange={handleImage} className='w-full' />
         </div>
         <div className="flex justify-end">
           <button
@@ -315,6 +315,9 @@ const CarForm = () => {
         {loading && (location === [] ? `Got it!` : `Loading...`)}
         <p>or enter a zip code:</p>
         <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
+      </div>
+      <div>
+      <Link to ='/shops'>Search for shops</Link>
       </div>
     </>
   );
