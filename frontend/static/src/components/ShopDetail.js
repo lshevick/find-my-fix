@@ -1,3 +1,4 @@
+import { Rating } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -51,16 +52,16 @@ const ShopDetail = () => {
   }, [dataChanged]);
 
   const shopServiceList =
-    detail.services && detail.services.map((i) => <li key={i}>{i}</li>);
+    detail.services && detail.services.map((i) => <li key={i} className='capitalize'>{i}</li>);
 
   const reviewList = reviews.map((r) => (
     <li
       key={r.id}
-      className="bg-stone-300 p-2 my-1 flex flex-col items-start w-full"
+      className="rounded shadow-md border-2 border-neutral-50 p-2 my-1 flex flex-col items-start w-full"
     >
       <div>
         <span className="mr-2 font-bold">{r.username}</span>
-        <span>{r.rating} stars</span>
+        <Rating name='read-only' value={r.rating} precision={0.5} readOnly />
       </div>
       <div>
         <ul className="flex">
@@ -68,7 +69,7 @@ const ShopDetail = () => {
             r.service.map((s) => (
               <li
                 key={s}
-                className="font-light text-md capitalize mr-1 p-1 bg-stone-100 rounded"
+                className="font-light text-md capitalize mr-1 p-1 bg-stone-200 shadow-sm rounded"
               >
                 {s}
               </li>
@@ -98,32 +99,32 @@ const ShopDetail = () => {
           </a>
         </div>
       </div>
-      <div className="flex flex-col items-start mx-auto">
+      <div className="flex flex-col sm:col-start-1 items-start justify-start ml-2 bg-red-300">
         <h2 className="underline font-medium text-lg">Services</h2>
         <ul className="flex flex-col items-start list-disc text-lg">
           {shopServiceList}
         </ul>
       </div>
-      <div className="w-full">
-        <h2>This shop services:</h2>
+      <div className="w-full sm:col-start-1">
+        <h2>This shop works on:</h2>
         <ul className="grid grid-flow-col-dense grid-rows-3 sm:grid-rows-2 md:grid-rows-1">
           {detail.makes && detail.makes.map((m) => (
-            <li key={m} className="capitalize m-1 p-1 bg-white rounded-md">
+            <li key={m} className="capitalize m-1 p-1 bg-white rounded-md w-5/6 mx-auto">
               {m}
             </li>
           ))}
         </ul>
       </div>
+      <div className="sm:col-start-2">
       <div>
         <ul>
             {items && items.map(i => <li key={i}>{i}</li>)}
         </ul>
       </div>
-      <div>
         <ReviewForm detail={detail} setDataChanged={setDataChanged} items={items} setItems={setItems} />
       </div>
-      <div className="flex flex-col bg-neutral-50 my-2 p-2">
-        <p className="underline font-medium">Reviews</p>
+      <div className="flex flex-col sm:col-start-2 bg-neutral-50 rounded border-2 m-2 p-2">
+        <p className="font-medium text-2xl">Reviews</p>
         <ul className="flex flex-col items-center">{reviewList}</ul>
       </div>
     </div>

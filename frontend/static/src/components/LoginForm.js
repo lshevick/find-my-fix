@@ -80,7 +80,7 @@ const LoginForm = () => {
             onChange={handleInput}
             placeholder="Password"
             />
-          <button type="button" className='absolute right-2 bottom-4' onClick={() => setVisible(!visible)}>{!visible ? <FaEyeSlash className="text-stone-400"/> : <FaEye className="text-stone-400"/>}</button>
+          <button type="button" className='absolute right-2 bottom-4' onClick={() => setVisible(!visible)}>{visible ? <FaEyeSlash className="text-stone-400"/> : <FaEye className="text-stone-400"/>}</button>
           </div>
           <button
             type="submit"

@@ -20,11 +20,10 @@ logger = logging.getLogger("django")
 # origin = urllib.parse.quote('34.9139306,-82.4231325')
 # shops = Shop.objects.all()
 
+def get_addresses(shop):
+    return shop.address
 
 def sort_shops_by_distance(shops, origin):
-    def get_addresses(shop):
-        return shop.address
-
     address_list = list(map(get_addresses, shops))
     address_pipe = ('|').join(address_list)
     encoded_addresses = urllib.parse.quote(address_pipe)
@@ -66,7 +65,7 @@ class ShopReviewListAPIView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         shop = self.kwargs['shop']
-        return Review.objects.filter(shop=shop)
+        return Review.objects.filter(shop=shop).order_by('-created_at')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -74,21 +73,35 @@ class ShopReviewListAPIView(generics.ListCreateAPIView):
 
 @api_view(['GET'])
 def shop_distances(request):
-    # control flow based on lat and lon values in the url
-    # check if location_string exists in kwargs
     shops = Shop.objects.all()
+    # makes = []
+    # for car in request.user.cars.all():
+    #     makes.append(car.make)
+    # # logger.info(makes)
+    # shop_makes = []
+    # for shop in shops:
+    #     logger.info(shop.makes)
+    # logger.info(shops)
+
+    # shops = Shop.objects.filter(makes__icontains=makes)
     origin = request.query_params.get('location_string')
 
+    # control flow based on lat and lon values in the url
     if origin is not None:
         sorted_shops = sort_shops_by_distance(shops, origin)
         return Response(ShopSerializer(sorted_shops, many=True).data)
     return Response(NoDistanceSerializer(shops, many=True).data)
 
 
-# @api_view(['GET'])
-# def shop_by_reviews(request):
-#     shops = Shop.objects.filter(review__shop='shop_name')
-#     return Response(ShopSerializer(shops).data)
+@api_view(['GET'])
+def shop_by_reviews(request):
+    # this function view should filter by the reviews on all shops for the service the user has selected to filter by
+    # 
+
+    shops = Shop.objects.filter()
+    
+    
+    
+    return Response(ShopSerializer(shops).data)
 
 
-#check out related name adding to model for reviews

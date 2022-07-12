@@ -7,7 +7,7 @@ class Car(models.Model):
     make = models.CharField(max_length=255)
     model = models.CharField(max_length=255)
     image = models.ImageField(null=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, related_name='cars')
     service_list = models.JSONField(blank=True)
 
     def __str__(self):

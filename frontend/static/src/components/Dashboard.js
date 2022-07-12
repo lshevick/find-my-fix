@@ -17,6 +17,9 @@ const serviceList = [
   "body work",
   "paint",
   "brakes",
+  "custom exhaust",
+  "exhasut repair",
+  "supsension",
 ];
 
 const Dashboard = () => {
@@ -111,9 +114,19 @@ const Dashboard = () => {
       <div className="fixed inset-0" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
         <Dialog.Panel className="mx-5 max-w-lg rounded bg-white p-10 flex flex-col items-center jsutify-center w-5/6">
-            <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
-              <img src={car.image ? car.image : 'https://kaleidousercontent.com/removebg/designs/b6f1aec1-de72-4e0e-9921-6ab407475be2/thumbnail_image/car-photo-optimizer-thumbnail.png'} alt="car" className="object-cover" width='100%' height='auto' />
-            </div>
+          <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
+            <img
+              src={
+                car.image
+                  ? car.image
+                  : "https://kaleidousercontent.com/removebg/designs/b6f1aec1-de72-4e0e-9921-6ab407475be2/thumbnail_image/car-photo-optimizer-thumbnail.png"
+              }
+              alt="car"
+              className="object-cover"
+              width="100%"
+              height="auto"
+            />
+          </div>
           <div className="flex border-b-2 border-stone-600">
             <h2 className="mx-0.5">{car.year}</h2>
             <h2 className="mx-0.5">{car.make}</h2>
@@ -134,39 +147,39 @@ const Dashboard = () => {
             </ul>
           </div>
           <div className="relative">
-              <p>Add a service</p>
-              <Combobox
-                name="service_list"
-                value={newItems}
-                onChange={setNewItems}
-                multiple
-              >
-                <Combobox.Input
-                  displayValue={(items) => items}
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="p-1 bg-stone-100 rounded"
-                />
-                <Combobox.Options className="bg-stone-100/90 p-2 rounded absolute right-0 sm:left-0">
-                  {filteredServices.map((s) => (
-                    <Combobox.Option
-                      key={s}
-                      value={s}
-                      className="cursor-pointer hover:bg-stone-300"
-                    >
-                      {s}
-                    </Combobox.Option>
-                  ))}
-                </Combobox.Options>
-              </Combobox>
-              <button
-                className="bg-emerald-700 px-2 m-1 rounded hover:bg-emerald-600"
-                onClick={() => {
-                  addService(car.id);
-                }}
-              >
-                Add
-              </button>
-            </div>
+            <p>Add a service</p>
+            <Combobox
+              name="service_list"
+              value={newItems}
+              onChange={setNewItems}
+              multiple
+            >
+              <Combobox.Input
+                displayValue={(items) => items}
+                onChange={(e) => setQuery(e.target.value)}
+                className="p-1 bg-stone-100 rounded"
+              />
+              <Combobox.Options className="bg-stone-100/90 p-2 rounded absolute right-0 sm:left-0">
+                {filteredServices.map((s) => (
+                  <Combobox.Option
+                    key={s}
+                    value={s}
+                    className="cursor-pointer hover:bg-stone-300"
+                  >
+                    {s}
+                  </Combobox.Option>
+                ))}
+              </Combobox.Options>
+            </Combobox>
+            <button
+              className="bg-emerald-700 px-2 m-1 rounded hover:bg-emerald-600"
+              onClick={() => {
+                addService(car.id);
+              }}
+            >
+              Add
+            </button>
+          </div>
           <div className="w-full flex justify-between">
             <button type="button" onClick={() => setIsOpen(false)}>
               Close
@@ -191,9 +204,19 @@ const Dashboard = () => {
       <div className="fixed inset-0" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="mx-auto max-w-sm rounded bg-white p-10">
-            <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
-              <img src={car.image ? car.image : 'https://kaleidousercontent.com/removebg/designs/b6f1aec1-de72-4e0e-9921-6ab407475be2/thumbnail_image/car-photo-optimizer-thumbnail.png'} alt="car" className="object-cover" width='100%' height='auto' />
-            </div>
+          <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
+            <img
+              src={
+                car.image
+                  ? car.image
+                  : "https://kaleidousercontent.com/removebg/designs/b6f1aec1-de72-4e0e-9921-6ab407475be2/thumbnail_image/car-photo-optimizer-thumbnail.png"
+              }
+              alt="car"
+              className="object-cover"
+              width="100%"
+              height="auto"
+            />
+          </div>
           <div className="flex border-b-2 border-stone-600">
             <h2 className="mx-0.5">{car.year}</h2>
             <h2 className="mx-0.5">{car.make}</h2>
@@ -280,7 +303,17 @@ const Dashboard = () => {
         className="flex items-center hover:bg-stone-400 py-2"
       >
         <div className="overflow-hidden w-1/2 max-h-52 relative flex items-center justify-center">
-        <img src={c.image ? c.image : 'https://kaleidousercontent.com/removebg/designs/b6f1aec1-de72-4e0e-9921-6ab407475be2/thumbnail_image/car-photo-optimizer-thumbnail.png'} alt="car" className="object-cover" width='100%' height='100%' />
+          <img
+            src={
+              c.image
+                ? c.image
+                : "https://kaleidousercontent.com/removebg/designs/b6f1aec1-de72-4e0e-9921-6ab407475be2/thumbnail_image/car-photo-optimizer-thumbnail.png"
+            }
+            alt="car"
+            className="object-cover"
+            width="100%"
+            height="100%"
+          />
         </div>
         <div className="px-20 w-1/2">
           <h2 className="w-full font-semibold">{c.model}</h2>
@@ -293,13 +326,17 @@ const Dashboard = () => {
     <>
       {isEditing ? editCarModal : carModal}
       <div
-        className={`flex flex-col bg-stone-300 items-center justify-center w-full min-h-screen ${
+        className={`flex flex-col bg-stone-100 items-center shadow justify-center w-full min-h-screen ${
           isOpen && `blur`
         }`}
       >
-        <div className="bg-stone-200 flex flex-col mx-auto p-3 my-5 sm:w-5/6 md:w-2/3 lg:w-1/2">
-          <h2 className="border-b-2 border-stone-500">My Garage</h2>
-          <ul className="divide-y-2 divide-stone-600 lg:grid lg:grid-flow-col lg:grid-rows-2 lg:divide-y-0">{garageDisplay}</ul>
+        <div className="bg-stone-200 rounded flex flex-col pb-3 mx-auto my-5 sm:w-5/6 md:w-2/3 lg:w-1/2">
+          <div className="w-full bg-stone-400 rounded-t py-2">
+          <h2 className="text-3xl font-medium">My Garage</h2>
+          </div>
+          <ul className="divide-y-2 divide-stone-600 px-3 pt-1 lg:grid lg:grid-flow-col lg:grid-rows-2 lg:divide-y-0">
+            {garageDisplay}
+          </ul>
           <Link to="/add-car" className="text-emerald-500 hover:underline">
             Add a Car
           </Link>

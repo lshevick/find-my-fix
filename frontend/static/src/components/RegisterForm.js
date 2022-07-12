@@ -91,7 +91,7 @@ const RegisterForm = () => {
               className="absolute right-2 bottom-4"
               onClick={() => setVisible(!visible)}
             >
-              {!visible ? (
+              {visible ? (
                 <FaEyeSlash className="text-stone-400" />
               ) : (
                 <FaEye className="text-stone-400" />

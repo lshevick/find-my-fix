@@ -182,7 +182,7 @@ const CarForm = () => {
 
   const carForm = (
     <>
-      <div className="flex flex-col items-center w-min">
+      <div className="flex flex-col items-center w-full">
         <div className="flex flex-col">
           <label htmlFor="year">Year</label>
           <select
@@ -251,22 +251,7 @@ const CarForm = () => {
     <>
       <div className="flex flex-col justify-between h-full">
         <h2>Choose Your Service(s):</h2>
-        {/* <Combobox
-          name="service_list"
-          value={items}
-          onChange={setItems}
-          multiple
-        >
-          <Combobox.Input displayValue={(items) => items} onChange={(e) => setQuery(e.target.value)} />
-          <Combobox.Options>
-            {filteredServices.map((s) => (
-              <Combobox.Option key={s} value={s}>
-                {s}
-              </Combobox.Option>
-            ))}
-          </Combobox.Options>
-        </Combobox> */}
-        <ul className="flex flex-col items-start divide-y divide-stone-300">
+        {/* <ul className="flex flex-col items-start divide-y divide-stone-300">
           {Object.keys(services).map((s) => (
             <li key={s}>
               <input
@@ -280,7 +265,22 @@ const CarForm = () => {
               <label htmlFor={s}>{s}</label>
             </li>
           ))}
-        </ul>
+        </ul> */}
+        <Combobox
+          name="service_list"
+          value={items}
+          onChange={setItems}
+          multiple
+        >
+          <Combobox.Input displayValue={(items) => items} onChange={(e) => setQuery(e.target.value)} />
+          <Combobox.Options>
+            {filteredServices.map((s) => (
+              <Combobox.Option key={s} value={s}>
+                {s}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+        </Combobox>
       </div>
       <button
         type="button"
@@ -324,17 +324,17 @@ const CarForm = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center p-3 my-auto mx-auto bg-stone-300 w-full min-h-screen">
-        <div className="flex flex-col items-center rounded bg-stone-100 min-h-[350px]">
-          <div className="flex justify-center items-center rounded-t-md w-fit">
+      <div className="flex items-center justify-center p-3 bg-stone-300 w-full min-h-screen">
+        <div className="flex flex-col items-center rounded bg-stone-100 w-full sm:w-1/2 md:w-1/3 min-h-[calc(100vh-10rem)] sm:min-h-[350px]">
+          <div className="flex justify-center items-center rounded-t-md w-full">
             <ul className="flex justify-center w-full mb-5">
-              <li className="bg-stone-100 rounded-t-md">
+              <li className="bg-stone-100 w-full rounded-t-md">
                 <button
                   type="button"
                   className={
                     form === "car"
-                      ? `bg-stone-100 p-2 transition-all rounded-t rounded-r-none`
-                      : `bg-stone-500 hover:bg-stone-400 p-2 transition-all grayscale rounded-t rounded-r-none`
+                      ? `bg-stone-100 p-2 transition-all w-full rounded-t rounded-r-none`
+                      : `bg-stone-500 hover:bg-stone-400 p-2 transition-all w-full grayscale rounded-t rounded-r-none`
                   }
                   onClick={() => setForm("car")}
                 >
@@ -344,13 +344,13 @@ const CarForm = () => {
                   Vehicle
                 </button>
               </li>
-              <li className="bg-stone-100">
+              <li className="bg-stone-100 w-full">
                 <button
                   type="button"
                   className={
                     form === "service"
-                      ? `bg-stone-100 p-2 transition-all`
-                      : `bg-stone-500 hover:bg-stone-400 p-2 transition-all grayscale`
+                      ? `bg-stone-100 p-2 transition-all w-full overflow-x-hidden`
+                      : `bg-stone-500 hover:bg-stone-400 p-2 transition-all w-full grayscale`
                   }
                   onClick={() => setForm("service")}
                 >
@@ -360,13 +360,13 @@ const CarForm = () => {
                   Services
                 </button>
               </li>
-              <li className="bg-stone-100 rounded-t">
+              <li className="bg-stone-100 w-full rounded-t">
                 <button
                   type="button"
                   className={
                     form === "location"
-                      ? `bg-stone-100 p-2 transition-all rounded-t rounded-l-none`
-                      : `bg-stone-500 hover:bg-stone-400 p-2 transition-all grayscale rounded-t rounded-l-none`
+                      ? `bg-stone-100 p-2 transition-all w-full rounded-t rounded-l-none`
+                      : `bg-stone-500 hover:bg-stone-400 p-2 transition-all w-full grayscale rounded-t rounded-l-none`
                   }
                   onClick={() => setForm("location")}
                 >

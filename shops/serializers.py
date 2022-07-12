@@ -22,4 +22,4 @@ class NoDistanceSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Shop
-        fields = '__all__'
+        fields = '__all__' 
