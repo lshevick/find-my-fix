@@ -17,13 +17,12 @@ function handleError(err) {
 
 const ShopList = () => {
   const [shops, setShops] = useState(undefined);
-  const [open, setOpen] = useState(false);
   const [isAuth, setIsAuth, navigate, location, setLocation] =
     useOutletContext();
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState("distance");
-  const [queryCar, setQueryCar] = useState(null);
   const [garage, setGarage] = useState([]);
+  const [queryCar, setQueryCar] = useState(undefined);
 
   const getCars = async () => {
     const response = await fetch(`/api/v1/cars/`).catch(handleError);
@@ -64,7 +63,7 @@ const ShopList = () => {
       </div>
       <ul className="text-sm font-light flex flex-wrap">
         {i.services.map((i) => (
-          <li key={i} className="bg-stone-300 shadow-sm m-1 px-1 rounded">
+          <li key={i} className={`bg-stone-300 shadow-sm m-1 px-1 rounded ${queryCar && queryCar.service_list.includes(i) ? 'font-bold bg-teal-400' : '' }`}>
             {i}
           </li>
         ))}
@@ -131,28 +130,55 @@ const ShopList = () => {
         <h1 className="font-bold text-xl mt-5">
           Enter your location to find shops
         </h1>
-        <div className="flex items-end">
-          <input
-            className={`mt-3 p-1 shadow-sm ${!location && `rounded-l-md`}`}
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Enter ZIP code..."
-          />
+        <div className="flex flex-col items-center">
+          <div className="flex items-end">
+            <input
+              className={`mt-3 p-1 shadow-sm ${!location && `rounded-l-md`}`}
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Enter ZIP code..."
+            />
 
-          {!location && (
-            <button
-              type="button"
-              className="p-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-r-md shadow-md hover:shadow-lg transition-all"
-              onClick={getLocation}
-            >
-              {loading ? (
-                <ImSpinner8 className="animate-spin" />
-              ) : (
-                <FaLocationArrow />
-              )}
-            </button>
-          )}
+            {!location && (
+              <button
+                type="button"
+                className="p-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-r-md shadow-md hover:shadow-lg transition-all"
+                onClick={getLocation}
+              >
+                {loading ? (
+                  <ImSpinner8 className="animate-spin" />
+                ) : (
+                  <FaLocationArrow />
+                )}
+              </button>
+            )}
+          </div>
+          <div className={`relative mt-3 border-t-2 border-stone-500 ${location ? 'px-16' : 'px-48'}`}>
+            {location && (
+              <>
+                <p className="font-bold text-xl mt-3">Choose your car (optional)</p>
+                <Listbox value={queryCar} onChange={setQueryCar}>
+                  {location && (
+                    <Listbox.Button className="px-1 text-xl m-2 border-2 border-stone-500 rounded">
+                      {queryCar ? queryCar.make : 'Car' }
+                    </Listbox.Button>
+                  )}
+                  <Listbox.Options className="absolute z-10 top-10 bg-white/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
+                    {garage.map((car) => (
+                      <Listbox.Option
+                        key={car.id}
+                        value={car}
+                        className="p-1 cursor-pointer hover:underline"
+                      >
+                        {car.make} {car.model}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </Listbox>
+              </>
+            )}
+          </div>
         </div>
         <div className="flex items-center mt-3">
           {location && (
@@ -206,26 +232,6 @@ const ShopList = () => {
                 </Popover.Button>
               )}
             </Popover>
-            <div className="relative">
-              <Listbox value={queryCar} onChange={setQueryCar}>
-                {location && (
-                  <Listbox.Button className="px-1 text-xl m-2 border-2 border-stone-500 rounded">
-                    Car
-                  </Listbox.Button>
-                )}
-                <Listbox.Options className="absolute z-10 top-10 bg-white/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
-                  {garage.map((car) => (
-                    <Listbox.Option
-                      key={car.id}
-                      value={car}
-                      className="p-1 cursor-pointer hover:underline"
-                    >
-                      {car.make} {car.model}
-                    </Listbox.Option>
-                  ))}
-                </Listbox.Options>
-              </Listbox>
-            </div>
           </div>
         </div>
         <ul className="mt-10 md:grid md:grid-cols-2 lg:grid-cols-3">

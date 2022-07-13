@@ -112,7 +112,7 @@ def shop_by_services(request):
     car_queries = Q(year__icontains=specific_year) & Q(make__icontains=specific_make) & Q(model__icontains=specific_model) 
     cars = request.user.cars.filter(car_queries)
 
-    query = Q()
+    service_query = Q()
     services = []
     for car in cars:
         for service in car.service_list:
@@ -120,10 +120,9 @@ def shop_by_services(request):
 
     for service in services:
         s = ''.join(service)
-        query |= Q(services__icontains=s)
+        service_query |= Q(services__icontains=s)
 
-    logger.info(query)
-    shops = Shop.objects.filter(query)
+    shops = Shop.objects.filter(service_query & (Q(makes__icontains=specific_make) | Q(makes__icontains='any')))
     origin = request.query_params.get('location_string')
 
     if origin is not None:
