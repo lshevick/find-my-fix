@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Dialog, Combobox, Popover } from "@headlessui/react";
+import { Link, useOutletContext } from "react-router-dom";
+import { Dialog, Combobox } from "@headlessui/react";
 import Cookies from "js-cookie";
+import ServicePicker from "./ServicePicker";
 
 function handleError(err) {
   console.warn(err);
@@ -18,18 +19,18 @@ const serviceList = [
   "paint",
   "brakes",
   "custom exhaust",
-  "exhasut repair",
-  "supsension",
+  "exhaust repair",
+  "suspension",
 ];
 
 const Dashboard = () => {
-  const [garage, setGarage] = useState([]);
   const [car, setCar] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [query, setQuery] = useState("");
-  const [newItems, setNewItems] = useState([]);
+  const [items, setItems] = useState([]);
+  const [isAuth, setIsAuth, navigate, location, setLocation, garage, setGarage] = useOutletContext();
 
   const filteredServices =
     query === ""
@@ -88,7 +89,7 @@ const Dashboard = () => {
 
   const addService = async (id) => {
     const data = {
-      service_list: [...car.service_list, newItems],
+      service_list: [...car.service_list, items],
     };
     const options = {
       method: "PATCH",
@@ -107,7 +108,7 @@ const Dashboard = () => {
     const json = await response.json();
     console.log(json);
     getCarDetail(id);
-    setNewItems([]);
+    setItems([]);
   };
 
   const deleteCar = async (id) => {
@@ -174,30 +175,7 @@ const Dashboard = () => {
             </ul>
           </div>
           <div className="relative">
-            <p>Add a service</p>
-            <Combobox
-              name="service_list"
-              value={newItems}
-              onChange={setNewItems}
-              multiple
-            >
-              <Combobox.Input
-                displayValue={(items) => items}
-                onChange={(e) => setQuery(e.target.value)}
-                className="p-1 bg-stone-100 rounded"
-              />
-              <Combobox.Options className="bg-stone-100/90 p-2 rounded absolute right-0 sm:left-0">
-                {filteredServices.map((s) => (
-                  <Combobox.Option
-                    key={s}
-                    value={s}
-                    className="cursor-pointer hover:bg-stone-300"
-                  >
-                    {s}
-                  </Combobox.Option>
-                ))}
-              </Combobox.Options>
-            </Combobox>
+        <ServicePicker items={items} setItems={setItems} serviceList={serviceList} query={query} setQuery={setQuery} />
             <button
               className="bg-emerald-700 px-2 m-1 rounded text-white hover:bg-emerald-600"
               onClick={() => {
@@ -317,8 +295,8 @@ const Dashboard = () => {
               <p>Add a service</p>
               <Combobox
                 name="service_list"
-                value={newItems}
-                onChange={setNewItems}
+                value={items}
+                onChange={setItems}
                 multiple
               >
                 <Combobox.Input
@@ -385,7 +363,7 @@ const Dashboard = () => {
           />
         </div>
         <div className="px-20 w-1/2">
-          <h2 className="w-full font-semibold">{c.model}</h2>
+          <h2 className="w-full font-semibold">{c.make} {c.model}</h2>
         </div>
       </button>
     </li>

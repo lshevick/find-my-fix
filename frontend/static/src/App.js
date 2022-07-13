@@ -13,6 +13,8 @@ import Nav from "./components/Nav";
 function App() {
   const [isAuth, setIsAuth] = useState(!!Cookies.get("Authorization"));
   const [location, setLocation] = useState(undefined);
+  const [garage, setGarage] = useState([]);
+
 
   const navigate = useNavigate();
 
@@ -20,7 +22,7 @@ function App() {
     <div className="App">
       <Nav isAuth={isAuth} setIsAuth={setIsAuth} />
       <div className="flex justify-center min-h-screen">
-      <Outlet context={[isAuth, setIsAuth, navigate, location, setLocation]} />
+      <Outlet context={[isAuth, setIsAuth, navigate, location, setLocation, garage, setGarage]} />
       </div>
     </div>
   );

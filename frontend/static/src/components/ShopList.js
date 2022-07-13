@@ -18,10 +18,39 @@ function handleError(err) {
 const ShopList = () => {
   const [shops, setShops] = useState(undefined);
   const [open, setOpen] = useState(false);
-  const [isAuth, setIsAuth, navigate, location, setLocation] =
-    useOutletContext();
+  const [
+    isAuth,
+    setIsAuth,
+    navigate,
+    location,
+    setLocation,
+    garage,
+    setGarage,
+  ] = useOutletContext();
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState("distance");
+  const [queryYear, setQueryYear] = useState(undefined);
+  const [queryMake, setQueryMake] = useState(undefined);
+  const [queryModel, setQueryModel] = useState(undefined);
+
+
+  const userGarage =
+    garage &&
+    garage.map((car) => (
+      <li key={car.id}>
+        <button type="button" className="flex flex-col p-1 hover:font-medium" onClick={() => {
+          setQueryYear(car.year);
+          setQueryMake(car.make);
+          setQueryModel(car.model);
+        }}>
+          <p>{car.year}</p>
+          <div className="flex">
+          <p className="mr-2">{car.make}</p>
+          <p className="mr-2">{car.model}</p>
+          </div>
+        </button>
+      </li>
+    ));
 
   const shopListTemplate = (i) => (
     <li
@@ -57,11 +86,19 @@ const ShopList = () => {
     </li>
   );
 
-  const reviewFilteredShops =
-    shops &&
-    [...shops]
-      .sort((a, b) => b.reviews.length - a.reviews.length)
-      .map((i) => shopListTemplate(i));
+  const getServiceShops = async () => {
+    const response = await fetch(
+      `/api/v1/shops/services/?location_string=${
+        Array.isArray(location) ? location.join(",") : location
+      }${queryYear ? `&specific_year=${queryYear}&specific_make=${queryMake}&specific_model=${queryModel}` : ``}`
+    ).catch(handleError);
+    if (!response.ok) {
+      throw new Error("Network response not ok");
+    }
+    const json = await response.json();
+    console.log(json);
+    setShops(json);
+  };
 
   const getDistanceShops = async () => {
     const response = await fetch(
@@ -81,19 +118,13 @@ const ShopList = () => {
     location && getDistanceShops();
   }, []);
 
-  const shopList = shops && shops.map((i) => shopListTemplate(i));
+  const reviewFilteredShops =
+    shops &&
+    [...shops]
+      .sort((a, b) => b.reviews.length - a.reviews.length)
+      .map((i) => shopListTemplate(i));
 
-  // const getShopsByReviews = async () => {
-  //   const response = await fetch(`/api/v1/shops/sorted_reviews/`).catch(
-  //     handleError
-  //   );
-  //   if (!response.ok) {
-  //     throw new Error("Network response not ok");
-  //   }
-  //   const json = await response.json();
-  //   console.log(json);
-  //   setShops(json);
-  // };
+  const shopList = shops && shops.map((i) => shopListTemplate(i));
 
   const getLocation = () => {
     setLoading(true);
@@ -137,41 +168,72 @@ const ShopList = () => {
           {location && (
             <button
               type="button"
-              className="px-1 rounded text-emerald-700 border-emerald-700 border-2 hover:bg-emerald-700 hover:text-white transition-all"
+              className="px-1 text-xl rounded text-emerald-700 border-emerald-700 border-2 hover:bg-emerald-700 hover:text-white transition-all"
               onClick={getDistanceShops}
             >
               Find My Fix!
             </button>
           )}
-          <Popover className="relative">
-            <Popover.Panel className='absolute z-10 top-10 bg-white/80 rounded shadow-sm min-w-max p-1'>
-              <ul>
-                <li>
-                  <button
-                    type="button"
-                    className="underline m-1 hover:bg-stone-400 hover:rounded p-1"
-                    onClick={() => setFilter("distance")}
-                  >
-                    by Distance
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    className="underline hover:bg-stone-400 hover:rounded p-1"
-                    onClick={() => setFilter("reviews")}
-                  >
-                    by Reviews
-                  </button>
-                </li>
-              </ul>
-            </Popover.Panel>
-            {location && <Popover.Button className='px-1 m-2 border-2 border-stone-500 rounded'>Filter</Popover.Button>}
-          </Popover>
+          <div className="flex">
+            <Popover className="relative">
+              <Popover.Panel className="absolute z-30 top-10 bg-white/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
+                <ul>
+                  <li>
+                    <button
+                      type="button"
+                      className="hover:underline mt-2"
+                      onClick={() => setFilter("distance")}
+                    >
+                      by Distance
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      type="button"
+                      className="hover:underline mt-2"
+                      onClick={() => setFilter("reviews")}
+                    >
+                      by Reviews
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      type="button"
+                      className="hover:underline mt-2"
+                      onClick={() => {
+                        setFilter("services");
+                        getServiceShops();
+                      }}
+                    >
+                      by Service
+                    </button>
+                  </li>
+                </ul>
+              </Popover.Panel>
+              {location && (
+                <Popover.Button className="px-1 text-xl m-2 border-2 border-stone-500 rounded">
+                  Sort
+                </Popover.Button>
+              )}
+            </Popover>
+            <Popover className="relative">
+              <Popover.Panel className="absolute z-10 top-10 bg-white/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
+                <ul className="divide-y divide-stone-600">
+                  {userGarage}
+                </ul>
+              </Popover.Panel>
+              {location && (
+                <Popover.Button className="px-1 text-xl m-2 border-2 border-stone-500 rounded">
+                  Car
+                </Popover.Button>
+              )}
+            </Popover>
+          </div>
         </div>
         <ul className="mt-10 md:grid md:grid-cols-2 lg:grid-cols-3">
           {filter === "distance" && shopList}
           {filter === "reviews" && reviewFilteredShops}
+          {filter === "services" && shopList}
         </ul>
       </div>
     </>

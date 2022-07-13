@@ -15,7 +15,6 @@ const ShopDetail = () => {
   const [detail, setDetail] = useState([]);
   const [items, setItems] = useState([])
   const [reviews, setReviews] = useState([]);
-  const [rating, setRating] = useState("");
   const params = useParams();
   const [dataChanged, setDataChanged] = useState(false);
 
@@ -121,7 +120,7 @@ const ShopDetail = () => {
             {items && items.map(i => <li key={i}>{i}</li>)}
         </ul>
       </div>
-        <ReviewForm detail={detail} setDataChanged={setDataChanged} items={items} setItems={setItems} />
+        <ReviewForm detail={detail} dataChanged={dataChanged} setDataChanged={setDataChanged} items={items} setItems={setItems} />
       </div>
       <div className="flex flex-col sm:col-start-2 bg-neutral-50 rounded border-2 m-2 p-2">
         <p className="font-medium text-2xl">Reviews</p>

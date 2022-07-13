@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Combobox } from "@headlessui/react";
 import Cookies from "js-cookie";
 import { useOutletContext, Link } from "react-router-dom";
+import ServicePicker from "./ServicePicker";
 
 function handleError(err) {
   console.warn(err);
@@ -30,19 +31,10 @@ const serviceList = [
   "body work",
   "paint",
   "brakes",
+  "suspension",
+  "exhaust repair",
+  "custom exhaust",
 ];
-
-// const defaultServices = {
-//   "oil change": false,
-//   tires: false,
-//   alignment: false,
-//   diagnosis: false,
-//   "engine service": false,
-//   "air conditioning": false,
-//   "body work": false,
-//   paint: false,
-//   brakes: false,
-// };
 
 const CarForm = () => {
   const [state, setState] = useState(defaultState);
@@ -53,17 +45,9 @@ const CarForm = () => {
   const [query, setQuery] = useState("");
   const [items, setItems] = useState([]);
   const [preview, setPreview] = useState("");
-  // const [services, setServices] = useState(defaultServices);
   const [loading, setLoading] = useState(false);
-  const [isAuth, setIsAuth, navigate, location, setLocation] =
+  const [isAuth, setIsAuth, navigate, location, setLocation, garage, setGarage] =
     useOutletContext();
-
-  const filteredServices =
-    query === ""
-      ? serviceList
-      : serviceList.filter((s) => {
-          return s.toLowerCase().includes(query.toLowerCase());
-        });
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -260,39 +244,7 @@ const CarForm = () => {
     <div className="flex items-end">
       <div className="flex flex-col justify-between h-full">
         <h2>Choose Your Service(s):</h2>
-        {/* <ul className="flex flex-col items-start divide-y divide-stone-300">
-          {Object.keys(services).map((s) => (
-            <li key={s}>
-            <input
-            type="checkbox"
-            name={s}
-            id={s}
-            value={s}
-            checked={services[s]}
-            onChange={handleToggle}
-            />
-            <label htmlFor={s}>{s}</label>
-            </li>
-            ))}
-          </ul> */}
-        <Combobox
-          name="service_list"
-          value={items}
-          onChange={setItems}
-          multiple
-          >
-          <Combobox.Input
-            displayValue={(items) => items}
-            onChange={(e) => setQuery(e.target.value)}
-            />
-          <Combobox.Options>
-            {filteredServices.map((s) => (
-              <Combobox.Option key={s} value={s}>
-                {s}
-              </Combobox.Option>
-            ))}
-          </Combobox.Options>
-        </Combobox>
+        <ServicePicker items={items} setItems={setItems} serviceList={serviceList} query={query} setQuery={setQuery} />
       </div>
       <button
         type="submit"
@@ -341,9 +293,9 @@ const CarForm = () => {
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
+      <div className="mt-3">
+        <Link to="/shops" className="p-1 bg-[#3c6e71] text-white rounded hover:shadow-md transition-all">Search for shops</Link>
       </div>
-      <div>
-        <Link to="/shops">Search for shops</Link>
       </div>
     </>
   );

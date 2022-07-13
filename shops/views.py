@@ -1,3 +1,4 @@
+import re
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import api_view
@@ -21,8 +22,10 @@ logger = logging.getLogger("django")
 # origin = urllib.parse.quote('34.9139306,-82.4231325')
 # shops = Shop.objects.all()
 
+
 def get_addresses(shop):
     return shop.address
+
 
 def sort_shops_by_distance(shops, origin):
     address_list = list(map(get_addresses, shops))
@@ -33,13 +36,13 @@ def sort_shops_by_distance(shops, origin):
 
     response = requests.get(url)
     res = json.loads(response.text)
-    el = res['rows'][0]['elements']
+    elements = res['rows'][0]['elements']
 
     new_list = []
 
-    for (index, e) in enumerate(el):
+    for (index, element) in enumerate(elements):
         try:
-            shops[index].distance = e['distance']['value'] / 1609.34
+            shops[index].distance = element['distance']['value'] / 1609.34
             new_list.append(shops[index])
         except:
             pass
@@ -74,19 +77,20 @@ class ShopReviewListAPIView(generics.ListCreateAPIView):
 
 @api_view(['GET'])
 def shop_distances(request):
+    shops = Shop.objects.all()
+
     query = Q(makes__icontains='any')
     cars = request.user.cars.all()
     makes = []
     for car in cars:
         if car.make not in makes:
             makes.append(car.make)
-    
+
     for make in makes:
         query |= Q(makes__icontains=make)
 
     shops = Shop.objects.filter(query)
     origin = request.query_params.get('location_string')
-    # shops = Shop.objects.all()
 
     # control flow based on lat and lon values in the url
     if origin is not None:
@@ -96,16 +100,35 @@ def shop_distances(request):
 
 
 @api_view(['GET'])
-def shop_by_reviews(request):
+def shop_by_services(request):
     # this function view should filter by the reviews on all shops for the service the user has selected to filter by
     # this may need to be done in the front end where we can easily access all of the corresponding services
     # and vehicles the user owns
+    # should use query params to pass a service value through the api request and use that to filter shops by?
     #
+    specific_year = request.query_params.get('specific_year')
+    specific_make = request.query_params.get('specific_make')
+    specific_model = request.query_params.get('specific_model')
+    car_queries = Q(year__icontains=specific_year) & Q(make__icontains=specific_make) & Q(model__icontains=specific_model) 
+    cars = request.user.cars.filter(car_queries)
 
-    shops = Shop.objects.filter()
-    
-    
-    
-    return Response(ShopSerializer(shops).data)
+    query = Q()
+    services = []
+    for car in cars:
+        for service in car.service_list:
+                services.append(service)
+
+    for service in services:
+        s = ''.join(service)
+        query |= Q(services__icontains=s)
+
+    logger.info(query)
+    shops = Shop.objects.filter(query)
+    origin = request.query_params.get('location_string')
+
+    if origin is not None:
+        sorted_shops = sort_shops_by_distance(shops, origin)
+        return Response(ShopSerializer(sorted_shops, many=True).data)
+    return Response(NoDistanceSerializer(shops, many=True).data)
 
 
