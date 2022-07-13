@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Dialog, Combobox } from "@headlessui/react";
+import { Dialog, Combobox, Popover } from "@headlessui/react";
 import Cookies from "js-cookie";
 
 function handleError(err) {
@@ -26,6 +26,7 @@ const Dashboard = () => {
   const [garage, setGarage] = useState([]);
   const [car, setCar] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [deleteIsOpen, setDeleteIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [query, setQuery] = useState("");
   const [newItems, setNewItems] = useState([]);
@@ -111,19 +112,29 @@ const Dashboard = () => {
 
   const deleteCar = async (id) => {
     const options = {
-    method: 'DELETE',
-    headers: {
-    'Content-Type': 'application/json',
-    'X-CSRFToken': Cookies.get('csrftoken'),
-    },
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get("csrftoken"),
+      },
+    };
+    const response = await fetch(`/api/v1/cars/${id}/`, options).catch(
+      handleError
+    );
+    if (!response.ok) {
+      throw new Error("Network response not ok");
     }
-    const response = await fetch(`/api/v1/cars/${id}/`, options).catch(handleError);
-    if(!response.ok) {
-    throw new Error('Network response not ok');
-    }
-    const json = await response.json(); 
-    console.log(json)
-  }
+  };
+
+  const handleDelete = (id) => {
+    deleteCar(id);
+    // settimeout is here to make sure these functions fire in order. Had an issue with the getCars() not working
+    setTimeout(() => {
+      setDeleteIsOpen(false);
+      setIsOpen(false);
+      getCars();
+    }, 100);
+  };
 
   const carModal = (
     <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
@@ -239,7 +250,46 @@ const Dashboard = () => {
             <h2 className="mx-0.5">{car.model}</h2>
           </div>
           <div>
-            <button type="button" className="font-bold text-red-700 hover:text-red-600" onClick={deleteCar}>Delete Car</button>
+            <button
+              type="button"
+              className="font-bold text-red-700 hover:text-red-600"
+              onClick={() => setDeleteIsOpen(true)}
+            >
+              Delete Car
+            </button>
+            <Dialog
+              className="relative"
+              open={deleteIsOpen}
+              onClose={() => setDeleteIsOpen(false)}
+            >
+              <div className="fixed inset-0 bg-black/30">
+                <div className="fixed inset-0 flex items-center justify-center p-4">
+                  <Dialog.Panel className="absolute bg-white w-max rounded p-5">
+                    <div className="flex flex-col items-center">
+                      <p>Delete Car?</p>
+                      <div className="flex p-2">
+                        <button
+                          type="button"
+                          className=" mx-2 font-bold text-red-700 hover:text-red-600"
+                          onClick={() => {
+                            handleDelete(car.id);
+                          }}
+                        >
+                          Delete
+                        </button>
+                        <button
+                          type="button"
+                          className=" mx-2 font-bold text-stone-700 hover:text-stone-500"
+                          onClick={() => setDeleteIsOpen(false)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </Dialog.Panel>
+                </div>
+              </div>
+            </Dialog>
           </div>
           <div className="m-3">
             <h2 className="font-semibold underline">Services</h2>
@@ -351,7 +401,7 @@ const Dashboard = () => {
       >
         <div className="bg-stone-200 rounded flex flex-col pb-3 mx-auto my-5 sm:w-5/6 md:w-2/3 lg:w-1/2">
           <div className="w-full bg-stone-400 rounded-t py-2">
-          <h2 className="text-3xl font-medium">My Garage</h2>
+            <h2 className="text-3xl font-medium">My Garage</h2>
           </div>
           <ul className="divide-y-2 divide-stone-600 px-3 pt-1 lg:grid lg:grid-flow-col lg:grid-rows-2 lg:divide-y-0">
             {garageDisplay}

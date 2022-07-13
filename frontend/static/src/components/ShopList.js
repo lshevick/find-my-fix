@@ -26,11 +26,11 @@ const ShopList = () => {
   const shopListTemplate = (i) => (
     <li
       key={i.id}
-      className="mx-auto my-3 p-2 rounded shadow-md w-5/6 bg-[#1d3557]"
+      className="mx-auto my-3 p-2 rounded shadow-md w-5/6 bg-stone-300"
     >
       <div className="flex items-start">
         <Link to={`/shops/${i.id}`}>
-          <h2 className="text-xl font-sans font-medium text-[#a8dadc] hover:scale-105 hover:text-red-900 transition-all">
+          <h2 className="text-xl font-sans font-medium text-black hover:scale-105 hover:text-red-900 transition-all">
             {i.name}
           </h2>
         </Link>
