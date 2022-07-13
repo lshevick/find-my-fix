@@ -73,7 +73,6 @@ const CarForm = () => {
   const handleService = () => {
     console.log(items, 'these are the selected services')
     setState((p) => ({ ...p, service_list: [...items] }));
-    setForm("location");
     console.log(state);
     setItems([]);
   };
@@ -301,15 +300,13 @@ const CarForm = () => {
         onClick={handleService}
         className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
         >
-        Add Car
+        Add services
       </button>
       </div>
 
       <button
         type="button"
-        onClick={() => {
-          // setItems(Object.keys(services).filter((s) => services[s] !== false));
-        }}
+        onClick={() => setForm('location')}
         className="p-1 my-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
         >
         Next

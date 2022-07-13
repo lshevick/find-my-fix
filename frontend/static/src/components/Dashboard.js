@@ -109,6 +109,22 @@ const Dashboard = () => {
     setNewItems([]);
   };
 
+  const deleteCar = async (id) => {
+    const options = {
+    method: 'DELETE',
+    headers: {
+    'Content-Type': 'application/json',
+    'X-CSRFToken': Cookies.get('csrftoken'),
+    },
+    }
+    const response = await fetch(`/api/v1/cars/${id}/`, options).catch(handleError);
+    if(!response.ok) {
+    throw new Error('Network response not ok');
+    }
+    const json = await response.json(); 
+    console.log(json)
+  }
+
   const carModal = (
     <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
       <div className="fixed inset-0" aria-hidden="true" />
@@ -172,7 +188,7 @@ const Dashboard = () => {
               </Combobox.Options>
             </Combobox>
             <button
-              className="bg-emerald-700 px-2 m-1 rounded hover:bg-emerald-600"
+              className="bg-emerald-700 px-2 m-1 rounded text-white hover:bg-emerald-600"
               onClick={() => {
                 addService(car.id);
               }}
@@ -222,6 +238,9 @@ const Dashboard = () => {
             <h2 className="mx-0.5">{car.make}</h2>
             <h2 className="mx-0.5">{car.model}</h2>
           </div>
+          <div>
+            <button type="button" className="font-bold text-red-700 hover:text-red-600" onClick={deleteCar}>Delete Car</button>
+          </div>
           <div className="m-3">
             <h2 className="font-semibold underline">Services</h2>
             <ul>
@@ -270,7 +289,7 @@ const Dashboard = () => {
                 </Combobox.Options>
               </Combobox>
               <button
-                className="bg-emerald-700 px-2 m-1 rounded hover:bg-emerald-600"
+                className="bg-emerald-700 px-2 m-1 rounded text-white hover:bg-emerald-600"
                 onClick={() => {
                   addService(car.id);
                 }}

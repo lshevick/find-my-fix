@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.forms.models import model_to_dict
+from django.db.models import Q
 
 import logging
 import requests
@@ -73,17 +74,19 @@ class ShopReviewListAPIView(generics.ListCreateAPIView):
 
 @api_view(['GET'])
 def shop_distances(request):
-    shops = Shop.objects.all()
-    # makes = []
-    # for car in request.user.cars.all():
-    #     makes.append(car.make)
-    # # logger.info(makes)
-    # shop_makes = []
-    # for shop in shops:
-    #     logger.info(shop.makes)
-    # logger.info(shops)
+    query = Q()
+    cars = request.user.cars.all()
+    makes = []
+    
+    for car in cars:
+        if car.make not in makes:
+            makes.append(car.make)
+    
+    for make in makes:
+        query |= Q(makes__icontains=make)
 
-    # shops = Shop.objects.filter(makes__icontains=makes)
+    print(query)
+    shops = Shop.objects.filter(query)
     origin = request.query_params.get('location_string')
 
     # control flow based on lat and lon values in the url
@@ -98,7 +101,7 @@ def shop_by_reviews(request):
     # this function view should filter by the reviews on all shops for the service the user has selected to filter by
     # this may need to be done in the front end where we can easily access all of the corresponding services
     # and vehicles the user owns
-    # 
+    #
 
     shops = Shop.objects.filter()
     

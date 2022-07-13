@@ -26,11 +26,11 @@ const ShopList = () => {
   const shopListTemplate = (i) => (
     <li
       key={i.id}
-      className="mx-auto my-3 p-2 rounded shadow-md w-5/6 bg-stone-100"
+      className="mx-auto my-3 p-2 rounded shadow-md w-5/6 bg-[#1d3557]"
     >
       <div className="flex items-start">
         <Link to={`/shops/${i.id}`}>
-          <h2 className="text-xl font-sans font-medium text-slate-900 hover:scale-105 hover:text-red-900 transition-all">
+          <h2 className="text-xl font-sans font-medium text-[#a8dadc] hover:scale-105 hover:text-red-900 transition-all">
             {i.name}
           </h2>
         </Link>
@@ -106,7 +106,7 @@ const ShopList = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full items-center bg-stone-200 relative">
+      <div className="flex flex-col w-full items-center bg-[#f1faee] relative">
         <h1 className="font-bold text-xl mt-5">
           Enter your location to find shops
         </h1>
