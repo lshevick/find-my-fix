@@ -46,7 +46,7 @@ const CarForm = () => {
   const [items, setItems] = useState([]);
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isAuth, setIsAuth, navigate, location, setLocation, garage, setGarage] =
+  const [isAuth, setIsAuth, navigate, location, setLocation] =
     useOutletContext();
 
   const handleInput = (e) => {

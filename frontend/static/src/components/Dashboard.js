@@ -28,9 +28,10 @@ const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [garage, setGarage] = useState([]);
   const [query, setQuery] = useState("");
   const [items, setItems] = useState([]);
-  const [isAuth, setIsAuth, navigate, location, setLocation, garage, setGarage] = useOutletContext();
+  const [isAuth, setIsAuth, navigate, location, setLocation] = useOutletContext();
 
   const filteredServices =
     query === ""

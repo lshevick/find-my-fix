@@ -3,7 +3,7 @@ import { Link, useOutletContext } from "react-router-dom";
 import Cookies from "js-cookie";
 import { FaLocationArrow } from "react-icons/fa";
 import { ImSpinner8 } from "react-icons/im";
-import { Popover } from "@headlessui/react";
+import { Listbox, Popover } from "@headlessui/react";
 
 function handleError(err) {
   console.warn(err);
@@ -18,39 +18,25 @@ function handleError(err) {
 const ShopList = () => {
   const [shops, setShops] = useState(undefined);
   const [open, setOpen] = useState(false);
-  const [
-    isAuth,
-    setIsAuth,
-    navigate,
-    location,
-    setLocation,
-    garage,
-    setGarage,
-  ] = useOutletContext();
+  const [isAuth, setIsAuth, navigate, location, setLocation] =
+    useOutletContext();
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState("distance");
-  const [queryYear, setQueryYear] = useState(undefined);
-  const [queryMake, setQueryMake] = useState(undefined);
-  const [queryModel, setQueryModel] = useState(undefined);
+  const [queryCar, setQueryCar] = useState(null);
+  const [garage, setGarage] = useState([]);
 
+  const getCars = async () => {
+    const response = await fetch(`/api/v1/cars/`).catch(handleError);
+    if (!response.ok) {
+      throw new Error("Network response not ok");
+    }
+    const json = await response.json();
+    setGarage(json);
+  };
 
-  const userGarage =
-    garage &&
-    garage.map((car) => (
-      <li key={car.id}>
-        <button type="button" className="flex flex-col p-1 hover:font-medium" onClick={() => {
-          setQueryYear(car.year);
-          setQueryMake(car.make);
-          setQueryModel(car.model);
-        }}>
-          <p>{car.year}</p>
-          <div className="flex">
-          <p className="mr-2">{car.make}</p>
-          <p className="mr-2">{car.model}</p>
-          </div>
-        </button>
-      </li>
-    ));
+  useEffect(() => {
+    getCars();
+  }, []);
 
   const shopListTemplate = (i) => (
     <li
@@ -90,7 +76,11 @@ const ShopList = () => {
     const response = await fetch(
       `/api/v1/shops/services/?location_string=${
         Array.isArray(location) ? location.join(",") : location
-      }${queryYear ? `&specific_year=${queryYear}&specific_make=${queryMake}&specific_model=${queryModel}` : ``}`
+      }${
+        garage
+          ? `&specific_year=${queryCar.year}&specific_make=${queryCar.make}&specific_model=${queryCar.model}`
+          : ``
+      }`
     ).catch(handleError);
     if (!response.ok) {
       throw new Error("Network response not ok");
@@ -216,18 +206,26 @@ const ShopList = () => {
                 </Popover.Button>
               )}
             </Popover>
-            <Popover className="relative">
-              <Popover.Panel className="absolute z-10 top-10 bg-white/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
-                <ul className="divide-y divide-stone-600">
-                  {userGarage}
-                </ul>
-              </Popover.Panel>
-              {location && (
-                <Popover.Button className="px-1 text-xl m-2 border-2 border-stone-500 rounded">
-                  Car
-                </Popover.Button>
-              )}
-            </Popover>
+            <div className="relative">
+              <Listbox value={queryCar} onChange={setQueryCar}>
+                {location && (
+                  <Listbox.Button className="px-1 text-xl m-2 border-2 border-stone-500 rounded">
+                    Car
+                  </Listbox.Button>
+                )}
+                <Listbox.Options className="absolute z-10 top-10 bg-white/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
+                  {garage.map((car) => (
+                    <Listbox.Option
+                      key={car.id}
+                      value={car}
+                      className="p-1 cursor-pointer hover:underline"
+                    >
+                      {car.make} {car.model}
+                    </Listbox.Option>
+                  ))}
+                </Listbox.Options>
+              </Listbox>
+            </div>
           </div>
         </div>
         <ul className="mt-10 md:grid md:grid-cols-2 lg:grid-cols-3">
