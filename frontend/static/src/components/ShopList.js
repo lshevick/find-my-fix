@@ -68,18 +68,10 @@ const ShopList = () => {
             key={s}
             className={`shadow-sm m-1 px-1 captalize rounded ${
               queryCar && queryCar.service_list.flat().includes(s)
-                ? "font-bold bg-accent-focus"
+                ? "font-bold bg-accent-focus text-accent-content"
                 : "bg-base-300"
             }`}
           >
-            {/* 
-            
-            // here is what I want this service review total function to do:
-            // i need to get the total amount of reviews per service, and just display the service alone if none
-            // I can access the reviews on each shop here by using i.reviews.map(review => review)
-            // i need to check what the service is on the review and add up how many reviews for each service there are
-
-            */}
             {s}
             <span className="pl-1 inline-block font-extrabold">
               {i.reviews &&
@@ -153,7 +145,6 @@ const ShopList = () => {
       .map((i) => shopListTemplate(i));
 
   const specificServiceListFunc = (service) => {
-    console.log(shops[1].name, shops[1].reviews.filter(r => r.service.join('') === service).length)
     const filteredShops =
       shops &&
       [...shops].sort(
@@ -161,6 +152,7 @@ const ShopList = () => {
           b.reviews.filter((r) => r.service.join('') === service).length -
           a.reviews.filter((r) => r.service.join('') === service).length
       );
+
         setSpecificService(filteredShops)
         setFilter('specificService')
   };
@@ -310,7 +302,7 @@ const ShopList = () => {
                         <button
                           type="button"
                           className={`hover:underline mt-2 p-1 rounded ${
-                            filter === "services"
+                            specificService === {s}
                               ? `font-medium bg-accent text-accent-content`
                               : ``
                           }`}

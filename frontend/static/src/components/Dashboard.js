@@ -143,7 +143,7 @@ const Dashboard = () => {
     <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
       <div className="fixed inset-0" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
-        <Dialog.Panel className="mx-5 max-w-lg rounded bg-white p-10 flex flex-col items-center jsutify-center w-5/6">
+        <Dialog.Panel className="mx-5 max-w-lg rounded bg-base-100 p-10 flex flex-col items-center jsutify-center w-5/6">
           <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
             <img
               src={
@@ -158,18 +158,18 @@ const Dashboard = () => {
             />
           </div>
           <div className="flex border-b-2 border-stone-600">
-            <h2 className="mx-0.5">{car.year}</h2>
-            <h2 className="mx-0.5">{car.make}</h2>
-            <h2 className="mx-0.5">{car.model}</h2>
+            <h2 className="mx-0.5 text-3xl">{car.year}</h2>
+            <h2 className="mx-0.5 text-3xl">{car.make}</h2>
+            <h2 className="mx-0.5 text-3xl">{car.model}</h2>
           </div>
           <div className="m-3">
-            <h2 className="font-semibold underline">Services</h2>
+            <h2 className="font-semibold underline text-2xl">Services</h2>
             <ul>
               {car.service_list &&
                 car.service_list.flat().map((i) => (
                   <li
                     key={i}
-                    className="capitalize font-light text-sm list-disc"
+                    className="capitalize font-light text-xl list-disc"
                   >
                     {i}
                   </li>
@@ -216,7 +216,7 @@ const Dashboard = () => {
     >
       <div className="fixed inset-0" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-5 max-w-lg rounded bg-white p-10 flex flex-col items-center jsutify-center w-5/6">
+        <Dialog.Panel className="mx-5 max-w-lg rounded bg-base-100 p-10 flex flex-col items-center jsutify-center w-5/6">
           <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
             <img
               src={
@@ -231,9 +231,9 @@ const Dashboard = () => {
             />
           </div>
           <div className="flex border-b-2 border-stone-600">
-            <h2 className="mx-0.5">{car.year}</h2>
-            <h2 className="mx-0.5">{car.make}</h2>
-            <h2 className="mx-0.5">{car.model}</h2>
+            <h2 className="mx-0.5 text-3xl">{car.year}</h2>
+            <h2 className="mx-0.5 text-3xl">{car.make}</h2>
+            <h2 className="mx-0.5 text-3xl">{car.model}</h2>
           </div>
           <div>
             <button
@@ -250,7 +250,7 @@ const Dashboard = () => {
             >
               <div className="fixed inset-0 bg-black/30">
                 <div className="fixed inset-0 flex items-center justify-center p-4">
-                  <Dialog.Panel className="absolute bg-white w-max rounded p-5">
+                  <Dialog.Panel className="absolute bg-base-100 w-max rounded p-5">
                     <div className="flex flex-col items-center">
                       <p>Delete Car?</p>
                       <div className="flex p-2">
@@ -278,13 +278,13 @@ const Dashboard = () => {
             </Dialog>
           </div>
           <div className="m-3">
-            <h2 className="font-semibold underline">Services</h2>
+            <h2 className="font-semibold underline text-2xl">Services</h2>
             <ul>
               {car.service_list &&
-                car.service_list.map((i) => (
+                car.service_list.flat().map((i) => (
                   <li
                     key={i}
-                    className="capitalize font-light text-sm list-disc"
+                    className="capitalize font-light text-xl list-disc"
                   >
                     <div className="w-full flex justify-between">
                       {i}
@@ -339,7 +339,7 @@ const Dashboard = () => {
           getCarDetail(c.id);
           setIsOpen(!isOpen);
         }}
-        className="flex items-center hover:bg-stone-400 py-2"
+        className="flex items-center hover:bg-base-300 py-2"
       >
         <div className="overflow-hidden w-1/2 max-h-52 relative flex items-center justify-center">
           <img
