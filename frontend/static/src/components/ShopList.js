@@ -63,31 +63,42 @@ const ShopList = () => {
       </div>
       <ul className="text-sm font-light flex flex-wrap">
         {i.services.map((i) => (
-          <li key={i} className={`bg-stone-300 shadow-sm m-1 px-1 rounded ${queryCar && queryCar.service_list.includes(i) ? 'font-bold bg-teal-400' : '' }`}>
+          <li
+            key={i}
+            className={`bg-stone-300 shadow-sm m-1 px-1 rounded ${
+              queryCar && queryCar.service_list.includes(i)
+                ? "font-bold bg-teal-400"
+                : ""
+            }`}
+          >
             {i}
           </li>
         ))}
       </ul>
     </li>
   );
-
+  
   const getServiceShops = async () => {
     const response = await fetch(
       `/api/v1/shops/services/?location_string=${
         Array.isArray(location) ? location.join(",") : location
       }${
         garage
-          ? `&specific_year=${queryCar.year}&specific_make=${queryCar.make}&specific_model=${queryCar.model}`
-          : ``
+        ? `&specific_year=${queryCar.year}&specific_make=${queryCar.make}&specific_model=${queryCar.model}`
+        : ``
       }`
     ).catch(handleError);
     if (!response.ok) {
       throw new Error("Network response not ok");
     }
     const json = await response.json();
-    console.log(json);
     setShops(json);
+    console.log(json[4].services.filter(service => queryCar.service_list.includes(service)))
   };
+
+  useEffect(() => {
+    getServiceShops();
+  }, [queryCar]);
 
   const getDistanceShops = async () => {
     const response = await fetch(
@@ -115,6 +126,15 @@ const ShopList = () => {
 
   const shopList = shops && shops.map((i) => shopListTemplate(i));
 
+  const serviceFilteredShops =
+    shops && queryCar &&
+    [...shops].sort(
+      (a, b) =>
+        b.services.filter(s => queryCar.service_list.includes(s)).length -
+        a.services.filter(s => queryCar.service_list.includes(s)).length
+    ).map((i) => shopListTemplate(i))
+
+
   const getLocation = () => {
     setLoading(true);
     navigator.geolocation.getCurrentPosition((p) => {
@@ -127,8 +147,8 @@ const ShopList = () => {
   return (
     <>
       <div className="flex flex-col w-full items-center bg-[#f1faee] relative">
-        <h1 className="font-bold text-xl mt-5">
-          Enter your location to find shops
+        <h1 className="font-bold text-lg mt-5">
+          Enter Zip code or City, or get current location
         </h1>
         <div className="flex flex-col items-center">
           <div className="flex items-end">
@@ -137,7 +157,7 @@ const ShopList = () => {
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              placeholder="Enter ZIP code..."
+              placeholder="Enter ZIP or City, State..."
             />
 
             {!location && (
@@ -154,14 +174,20 @@ const ShopList = () => {
               </button>
             )}
           </div>
-          <div className={`relative mt-3 border-t-2 border-stone-500 ${location ? 'px-16' : 'px-48'}`}>
+          <div
+            className={`relative mt-3 border-t-2 border-stone-500 ${
+              location ? "px-16" : "px-48"
+            }`}
+          >
             {location && (
               <>
-                <p className="font-bold text-xl mt-3">Choose your car (optional)</p>
+                <p className="font-bold text-xl mt-3">
+                  Choose your car (optional)
+                </p>
                 <Listbox value={queryCar} onChange={setQueryCar}>
                   {location && (
                     <Listbox.Button className="px-1 text-xl m-2 border-2 border-stone-500 rounded">
-                      {queryCar ? queryCar.make : 'Car' }
+                      {queryCar ? queryCar.make : "Car"}
                     </Listbox.Button>
                   )}
                   <Listbox.Options className="absolute z-10 top-10 bg-white/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
@@ -169,9 +195,11 @@ const ShopList = () => {
                       <Listbox.Option
                         key={car.id}
                         value={car}
-                        className="p-1 cursor-pointer hover:underline"
+                        className="p-1 cursor-pointer"
                       >
+                        {/* <button type='button' className="hover:underline"> */}
                         {car.make} {car.model}
+                        {/* </button> */}
                       </Listbox.Option>
                     ))}
                   </Listbox.Options>
@@ -181,7 +209,7 @@ const ShopList = () => {
           </div>
         </div>
         <div className="flex items-center mt-3">
-          {location && (
+          {location && !queryCar && (
             <button
               type="button"
               className="px-1 text-xl rounded text-emerald-700 border-emerald-700 border-2 hover:bg-emerald-700 hover:text-white transition-all"
@@ -218,7 +246,6 @@ const ShopList = () => {
                       className="hover:underline mt-2"
                       onClick={() => {
                         setFilter("services");
-                        getServiceShops();
                       }}
                     >
                       by Service
@@ -237,7 +264,7 @@ const ShopList = () => {
         <ul className="mt-10 md:grid md:grid-cols-2 lg:grid-cols-3">
           {filter === "distance" && shopList}
           {filter === "reviews" && reviewFilteredShops}
-          {filter === "services" && shopList}
+          {filter === "services" && serviceFilteredShops}
         </ul>
       </div>
     </>
