@@ -48,7 +48,7 @@ const ReviewForm = ({ detail, dataChanged, setDataChanged, items, setItems }) =>
 
   return (
     <>
-      <form onSubmit={handleReviewSubmit} className="bg-red-300 rounded flex flex-col items-center">
+      <form onSubmit={handleReviewSubmit} className="bg-base-300 rounded flex flex-col items-center">
         <label htmlFor="body" className="text-2xl">
           Write A Review
         </label>

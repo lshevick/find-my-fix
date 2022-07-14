@@ -34,10 +34,6 @@ const ShopList = () => {
   };
 
   useEffect(() => {
-    queryCar && console.log(queryCar.service_list.flat(), 'CAR SERVICE LIST')
-  }, [queryCar])
-
-  useEffect(() => {
     getCars();
   }, []);
 
@@ -97,7 +93,6 @@ const ShopList = () => {
     }
     const json = await response.json();
     setShops(json);
-    console.log(json[4].services.filter(service => !queryCar.service_list.flat().includes(service)), "SHOP SERVICE LIST")
   };
 
   useEffect(() => {
@@ -114,7 +109,6 @@ const ShopList = () => {
       throw new Error("Network response not ok");
     }
     const json = await response.json();
-    console.log(json);
     setShops(json);
   };
 
@@ -142,7 +136,6 @@ const ShopList = () => {
   const getLocation = () => {
     setLoading(true);
     navigator.geolocation.getCurrentPosition((p) => {
-      console.log(p.coords.latitude, p.coords.longitude);
       setLocation([p.coords.latitude, p.coords.longitude]);
       setLoading(false);
     });
@@ -159,7 +152,7 @@ const ShopList = () => {
             <input
               className={`mt-3 p-1 shadow-sm ${!location && `rounded-l-md`}`}
               type="text"
-              value={location}
+              value={Array.isArray(location) ? 'Successful' : location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="Enter ZIP or City, State..."
             />

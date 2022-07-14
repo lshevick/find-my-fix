@@ -37,13 +37,13 @@ const Nav = ({ isAuth, setIsAuth }) => {
     // find a way to use a 50/50 logo / sliding pill menu for this? maybe hamburger menu with slide out list on mobile?
     <div className="w-[150px] sm:w-full overflow-x-hidden sm:overflow-visible">
     <ul className="flex text-lg overflow-x-scroll sm:overflow-visible">
-      <li className="mx-2 p-1 text-base-content">
+      <li className="mx-2 p-1 text-accent-focus hover:text-accent">
         <Link to="/dashboard">Dashboard</Link>
       </li>
-      <li className="mx-2 p-1 text-base-content">
+      <li className="mx-2 p-1 text-accent-focus hover:text-accent">
         <Link to="/shops">Search</Link>
       </li>
-      <li className="mx-2 p-1 text-base-content">
+      <li className="mx-2 p-1 text-accent-focus hover:text-accent">
         <button type="button" onClick={logout}>
           <Link to="/">Logout</Link>
         </button>
@@ -54,14 +54,14 @@ const Nav = ({ isAuth, setIsAuth }) => {
 
   const guestView = (
     <ul className="flex items-center">
-      <li className="mx-2 p-1 text-base-content">
+      <li className="mx-2 p-1 text-accent-focus hover:text-accent">
         <Link to="/shops">Search</Link>
       </li>
 
       <li>
         <Link
           to="/login"
-          className="hover:text-info hover:underline text-base-content"
+          className="hover:underline text-accent-focus hover:text-accent"
         >
           Login
         </Link>
@@ -71,7 +71,7 @@ const Nav = ({ isAuth, setIsAuth }) => {
 
   return (
     <>
-      <div className="flex p-2 py-6 sm:py-2 justify-between items-center bg-base-300">
+      <div className="flex p-2 py-6 sm:py-2 justify-between items-center bg-slate-700 border-b-4 border-accent-focus shadow-md">
         <div className="flex items-center">
           <Link to="/">
             <div className="font-bold text-lg text-success mr-5">
@@ -80,7 +80,7 @@ const Nav = ({ isAuth, setIsAuth }) => {
           </Link>
           <div>
             <label className="swap swap-rotate">
-              <input type="checkbox" data-set-theme={theme ? 'dark' : 'light'} data-act-class="text-accent" onChange={() => setTheme(!theme)} />
+              <input type="checkbox" data-set-theme={theme ? 'dark' : 'light'} onChange={() => setTheme(!theme)} />
               <svg
                 className="swap-on fill-current w-7 h-7"
                 xmlns="http://www.w3.org/2000/svg"

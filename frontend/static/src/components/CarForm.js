@@ -218,7 +218,7 @@ const CarForm = () => {
             name="image"
             id="image"
             onChange={handleImage}
-            className="w-full"
+            className="w-full file:bg-emerald-600 file:border-2 file:rounded file:text-white file:font-medium hover:file:bg-emerald-700 file:cursor-pointer"
           />
         </div>
         <div className="flex justify-end">

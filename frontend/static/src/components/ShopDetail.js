@@ -62,19 +62,6 @@ const ShopDetail = () => {
         <span className="mr-2 font-bold">{r.username}</span>
         <Rating name='read-only' value={r.rating} precision={0.5} readOnly />
       </div>
-      <div>
-        <ul className="flex">
-          {r.service &&
-            r.service.map((s) => (
-              <li
-                key={s}
-                className="font-light text-md capitalize mr-1 p-1 bg-stone-200 shadow-sm rounded"
-              >
-                {s}
-              </li>
-            ))}
-        </ul>
-      </div>
       <p>{r.body}</p>
     </li>
   ));
@@ -85,20 +72,20 @@ const ShopDetail = () => {
       className="grid grid-cols-1 md:grid-cols-2 bg-stone-100 h-full p-3 min-h-screen w-full lg:w-5/6"
     >
       <div className="col-start-1">
-        <h1 className="text-red-900 text-4xl font-semibold">{detail.name}</h1>
+        <h1 className="text-accent-focus text-4xl font-semibold">{detail.name}</h1>
         <div className="flex flex-col items-center justify-center">
           <p className="font-bold">{detail.phone}</p>
           <p className="font-bold">{detail.address}</p>
           <a
             href={`${detail.website}`}
             target="blank"
-            className="font-bold underline text-blue-600 hover:text-blue-700 visited:text-violet-700"
+            className="font-bold underline link visited:text-violet-700"
           >
             {detail.website}
           </a>
         </div>
       </div>
-      <div className="flex flex-col sm:col-start-1 items-start justify-start ml-2 bg-red-300">
+      <div className="flex flex-col sm:col-start-1 items-start justify-start ml-2">
         <h2 className="underline font-medium text-lg">Services</h2>
         <ul className="flex flex-col items-start list-disc text-lg">
           {shopServiceList}
