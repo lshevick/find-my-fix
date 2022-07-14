@@ -31,7 +31,8 @@ const Dashboard = () => {
   const [garage, setGarage] = useState([]);
   const [query, setQuery] = useState("");
   const [items, setItems] = useState([]);
-  const [isAuth, setIsAuth, navigate, location, setLocation] = useOutletContext();
+  const [isAuth, setIsAuth, navigate, location, setLocation] =
+    useOutletContext();
 
   const filteredServices =
     query === ""
@@ -165,7 +166,7 @@ const Dashboard = () => {
             <h2 className="font-semibold underline">Services</h2>
             <ul>
               {car.service_list &&
-                car.service_list.map((i) => (
+                car.service_list.flat().map((i) => (
                   <li
                     key={i}
                     className="capitalize font-light text-sm list-disc"
@@ -176,7 +177,13 @@ const Dashboard = () => {
             </ul>
           </div>
           <div className="relative">
-        <ServicePicker items={items} setItems={setItems} serviceList={serviceList} query={query} setQuery={setQuery} />
+            <ServicePicker
+              items={items}
+              setItems={setItems}
+              serviceList={serviceList}
+              query={query}
+              setQuery={setQuery}
+            />
             <button
               className="bg-emerald-700 px-2 m-1 rounded text-white hover:bg-emerald-600"
               onClick={() => {
@@ -294,29 +301,13 @@ const Dashboard = () => {
             </ul>
             <div className="relative">
               <p>Add a service</p>
-              <Combobox
-                name="service_list"
-                value={items}
-                onChange={setItems}
-                multiple
-              >
-                <Combobox.Input
-                  displayValue={(items) => items}
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="p-1 bg-stone-100 rounded"
-                />
-                <Combobox.Options className="bg-stone-100/90 p-2 rounded absolute right-0 sm:left-0">
-                  {filteredServices.map((s) => (
-                    <Combobox.Option
-                      key={s}
-                      value={s}
-                      className="cursor-pointer hover:bg-stone-300"
-                    >
-                      {s}
-                    </Combobox.Option>
-                  ))}
-                </Combobox.Options>
-              </Combobox>
+              <ServicePicker
+                items={items}
+                setItems={setItems}
+                serviceList={serviceList}
+                query={query}
+                setQuery={setQuery}
+              />
               <button
                 className="bg-emerald-700 px-2 m-1 rounded text-white hover:bg-emerald-600"
                 onClick={() => {
@@ -364,7 +355,9 @@ const Dashboard = () => {
           />
         </div>
         <div className="px-20 w-1/2">
-          <h2 className="w-full font-semibold">{c.make} {c.model}</h2>
+          <h2 className="w-full font-semibold">
+            {c.make} {c.model}
+          </h2>
         </div>
       </button>
     </li>
@@ -374,18 +367,23 @@ const Dashboard = () => {
     <>
       {isEditing ? editCarModal : carModal}
       <div
-        className={`flex flex-col bg-stone-100 items-center shadows justify-center w-full min-h-screen ${
+        className={`flex flex-col bg-base-100 items-center shadows justify-center w-full min-h-screen ${
           isOpen && `blur`
         }`}
       >
-        <div className="bg-stone-200 rounded flex flex-col pb-3 mx-auto my-5 sm:w-5/6 md:w-2/3 lg:w-1/2">
-          <div className="w-full bg-stone-400 rounded-t py-2">
-            <h2 className="text-3xl font-medium">My Garage</h2>
+        <div className="bg-base-200 rounded flex flex-col pb-3 mx-auto my-5 sm:w-5/6 md:w-2/3 lg:w-1/2">
+          <div className="w-full bg-neutral rounded-t py-2">
+            <h2 className="text-3xl font-medium text-neutral-content">
+              My Garage
+            </h2>
           </div>
-          <ul className="divide-y-2 divide-stone-600 px-3 pt-1 lg:grid lg:grid-flow-col lg:grid-rows-2 lg:divide-y-0">
+          <ul className="divide-y-2 divide-base-content px-3 pt-1 lg:grid lg:grid-flow-col lg:grid-rows-2 lg:divide-y-0">
             {garageDisplay}
           </ul>
-          <Link to="/add-car" className="text-emerald-500 hover:underline">
+          <Link
+            to="/add-car"
+            className="text-accent font-medium text-xl hover:underline hover:text-accent-focus"
+          >
             Add a Car
           </Link>
         </div>

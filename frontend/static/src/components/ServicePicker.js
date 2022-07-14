@@ -23,13 +23,13 @@ return (
                 displayValue={(items) => items}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search for a service..."
-                className="p-1 pr-10 rounded-md shadow-md text-gray-900"
+                className="p-1 pr-10 rounded-md shadow-md text-base-content bg-base-100"
               />
               <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
                 <TbSelector className="h-5 w-5 text-gray-400" />
               </Combobox.Button>
             </div>
-            <Combobox.Options className="bg-stone-200/60 backdrop-blur-sm w-full border-2 border-stone-200/40 absolute top-8 z-20 rounded overflow-y-scroll max-h-[200px]">
+            <Combobox.Options className="bg-neutral-content/40 p-1 backdrop-blur-sm w-full border-2 border-stone-200/40 absolute top-8 z-20 rounded overflow-y-scroll max-h-[200px]">
               {filteredServices && (filteredServices.length === 0 && query !== "" ? (
                 <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                   Nothing Found.
@@ -40,8 +40,8 @@ return (
                     key={s}
                     value={s}
                     className={({ active }) =>
-                      `relative capitalize cursor-default select-none py-2 pr-4 pl-2 ${
-                        active ? "bg-teal-600/70 text-white" : "text-gray-900"
+                      `relative capitalize rounded cursor-default select-none py-2 pr-4 pl-2 ${
+                        active ? "bg-accent-focus text-white" : "text-gray-900"
                       }`
                     }
                   >
@@ -51,7 +51,7 @@ return (
                                 {s}
                             </span>
                             {selected ? (
-                                <span className={`absolute text-xl inset-y-0 right-2 flex items-center pl-3 ${active ? 'text-white' : 'text-teal-800'}`}>
+                                <span className={`absolute text-xl inset-y-0 right-2 flex items-center pl-3 ${active ? 'text-white' : 'text-accent-focus'}`}>
                                     <FiCheck/>
                                 </span>
                             ) : null}

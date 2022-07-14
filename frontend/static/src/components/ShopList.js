@@ -34,17 +34,21 @@ const ShopList = () => {
   };
 
   useEffect(() => {
+    queryCar && console.log(queryCar.service_list.flat(), 'CAR SERVICE LIST')
+  }, [queryCar])
+
+  useEffect(() => {
     getCars();
   }, []);
 
   const shopListTemplate = (i) => (
     <li
       key={i.id}
-      className="mx-auto my-3 p-2 rounded shadow-md w-5/6 bg-[#74a8a9]"
+      className="mx-auto my-3 p-2 rounded shadow-md w-5/6 bg-base-300"
     >
       <div className="flex items-start">
         <Link to={`/shops/${i.id}`}>
-          <h2 className="text-xl font-sans font-medium text-[#1d3557] hover:scale-105 hover:text-red-900 transition-all">
+          <h2 className="text-xl font-sans font-medium text-base-content hover:scale-105 hover:text-success transition-all">
             {i.name}
           </h2>
         </Link>
@@ -65,10 +69,10 @@ const ShopList = () => {
         {i.services.map((i) => (
           <li
             key={i}
-            className={`bg-stone-300 shadow-sm m-1 px-1 rounded ${
-              queryCar && queryCar.service_list.includes(i)
-                ? "font-bold bg-teal-600"
-                : ""
+            className={`shadow-sm m-1 px-1 capitalize rounded ${
+              queryCar && queryCar.service_list.flat().includes(i)
+                ? "font-bold bg-accent-focus"
+                : "bg-base-300"
             }`}
           >
             {i}
@@ -83,7 +87,7 @@ const ShopList = () => {
       `/api/v1/shops/services/?location_string=${
         Array.isArray(location) ? location.join(",") : location
       }${
-        garage
+        garage && queryCar
         ? `&specific_year=${queryCar.year}&specific_make=${queryCar.make}&specific_model=${queryCar.model}`
         : ``
       }`
@@ -93,7 +97,7 @@ const ShopList = () => {
     }
     const json = await response.json();
     setShops(json);
-    console.log(json[4].services.filter(service => queryCar.service_list.includes(service)))
+    console.log(json[4].services.filter(service => !queryCar.service_list.flat().includes(service)), "SHOP SERVICE LIST")
   };
 
   useEffect(() => {
@@ -146,8 +150,8 @@ const ShopList = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full items-center bg-[#f1faee] relative">
-        <h1 className="font-bold text-lg mt-5">
+      <div className="flex flex-col w-full items-center bg-base-100 relative">
+        <h1 className="font-bold text-lg mt-5 text-base-content">
           Enter Zip code or City, or get current location
         </h1>
         <div className="flex flex-col items-center">

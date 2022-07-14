@@ -171,7 +171,7 @@ const CarForm = () => {
         <div className="flex flex-col">
           <label htmlFor="year">Year</label>
           <select
-            className="m-1 p-1"
+            className="m-1 p-1 bg-neutral-content text-neutral border-2 border-neutral-focus rounded"
             name="year"
             id="year"
             value={state.year}
@@ -185,7 +185,7 @@ const CarForm = () => {
         <div className="flex flex-col">
           <label htmlFor="make">Make</label>
           <select
-            className="m-2 p-1"
+            className="m-2 p-1 bg-neutral-content text-neutral border-2 border-neutral-focus rounded"
             name="make"
             id="make"
             value={state.make}
@@ -199,7 +199,7 @@ const CarForm = () => {
         <div className="flex flex-col">
           <label htmlFor="model">Model</label>
           <select
-            className="m-2 p-1"
+            className="m-2 p-1 bg-neutral-content text-neutral border-2 border-neutral-focus rounded"
             name="model"
             id="model"
             value={state.model}
@@ -224,7 +224,7 @@ const CarForm = () => {
         <div className="flex justify-end">
           <button
             type="button"
-            className="p-1 m-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
+            className="m-1 p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
             onClick={() => setForm("service")}
           >
             Next
@@ -302,21 +302,21 @@ const CarForm = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center p-3 bg-stone-300 w-full min-h-screen">
-        <div className="flex flex-col items-center rounded bg-stone-100 w-full sm:w-1/2 md:w-1/3 min-h-[calc(100vh-10rem)] sm:min-h-[350px]">
+      <div className="flex items-center justify-center p-3 bg-base-300 w-full min-h-screen">
+        <div className="flex flex-col items-center rounded bg-base-100 w-full sm:w-1/2 md:w-1/3 min-h-[calc(100vh-10rem)] sm:min-h-[350px]">
           <div className="flex justify-center items-center rounded-t-md w-full">
             <ul className="flex justify-center w-full mb-5">
-              <li className="bg-stone-100 w-full rounded-t-md">
+              <li className="bg-base-100 w-full rounded-t-md">
                 <button
                   type="button"
                   className={
                     form === "car"
-                      ? `bg-stone-100 p-2 transition-all w-full rounded-t rounded-r-none`
-                      : `bg-stone-500 hover:bg-stone-400 p-2 transition-all w-full grayscale rounded-t rounded-r-none`
+                      ? `bg-base-100 p-2 transition-all w-full rounded-t rounded-r-none`
+                      : `bg-neutral hover:bg-stone-400 p-2 transition-all w-full grayscale rounded-t rounded-r-none`
                   }
                   onClick={() => setForm("car")}
                 >
-                  <span className="px-2 py-1 mx-1 text-white rounded-3xl bg-red-900">
+                  <span className="px-2 py-1 mx-1 text-white rounded-3xl bg-accent-focus">
                     1
                   </span>
                   Vehicle
@@ -327,28 +327,28 @@ const CarForm = () => {
                   type="button"
                   className={
                     form === "service"
-                      ? `bg-stone-100 p-2 transition-all w-full overflow-x-hidden`
-                      : `bg-stone-500 hover:bg-stone-400 p-2 transition-all w-full grayscale`
+                      ? `bg-base-100 p-2 transition-all w-full overflow-x-hidden`
+                      : `bg-neutral hover:bg-stone-400 p-2 transition-all w-full grayscale`
                   }
                   onClick={() => setForm("service")}
                 >
-                  <span className="px-2 py-1 mx-1 text-white rounded-3xl bg-red-900">
+                  <span className="px-2 py-1 mx-1 text-white rounded-3xl bg-accent-focus">
                     2
                   </span>
                   Services
                 </button>
               </li>
-              <li className="bg-stone-100 w-full rounded-t">
+              <li className="bg-base-100 w-full rounded-t">
                 <button
                   type="button"
                   className={
                     form === "location"
-                      ? `bg-stone-100 p-2 transition-all w-full rounded-t rounded-l-none`
-                      : `bg-stone-500 hover:bg-stone-400 p-2 transition-all w-full grayscale rounded-t rounded-l-none`
+                      ? `bg-base-100 p-2 transition-all w-full rounded-t rounded-l-none`
+                      : `bg-neutral hover:bg-stone-400 p-2 transition-all w-full grayscale rounded-t rounded-l-none`
                   }
                   onClick={() => setForm("location")}
                 >
-                  <span className="px-2 py-1 mx-1 text-white rounded-3xl bg-red-900">
+                  <span className="px-2 py-1 mx-1 text-base-content rounded-3xl bg-accent-focus">
                     3
                   </span>
                   Location
