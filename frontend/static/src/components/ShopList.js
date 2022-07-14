@@ -40,11 +40,11 @@ const ShopList = () => {
   const shopListTemplate = (i) => (
     <li
       key={i.id}
-      className="mx-auto my-3 p-2 rounded shadow-md w-5/6 bg-stone-300"
+      className="mx-auto my-3 p-2 rounded shadow-md w-5/6 bg-[#74a8a9]"
     >
       <div className="flex items-start">
         <Link to={`/shops/${i.id}`}>
-          <h2 className="text-xl font-sans font-medium text-black hover:scale-105 hover:text-red-900 transition-all">
+          <h2 className="text-xl font-sans font-medium text-[#1d3557] hover:scale-105 hover:text-red-900 transition-all">
             {i.name}
           </h2>
         </Link>
@@ -67,7 +67,7 @@ const ShopList = () => {
             key={i}
             className={`bg-stone-300 shadow-sm m-1 px-1 rounded ${
               queryCar && queryCar.service_list.includes(i)
-                ? "font-bold bg-teal-400"
+                ? "font-bold bg-teal-600"
                 : ""
             }`}
           >

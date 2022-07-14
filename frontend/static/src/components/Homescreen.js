@@ -4,8 +4,8 @@ import { BiArrowToBottom } from "react-icons/bi";
 const Homescreen = () => {
   return (
     <>
-      <div className="w-full bg-[#f1faee]">
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] w-full bg-[#f1faee]">
+      <div className="w-full bg-base-100">
+        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] w-full bg-base-100">
           <div>
             <h1 className="font-extrabold text-7xl text-[#e63946]">
               Find <span className="text-[#a8dadc]">My</span> Fix
