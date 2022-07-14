@@ -23,6 +23,7 @@ const ShopList = () => {
   const [filter, setFilter] = useState("distance");
   const [garage, setGarage] = useState([]);
   const [queryCar, setQueryCar] = useState(undefined);
+  const [specificService, setSpecificService] = useState('');
 
   const getCars = async () => {
     const response = await fetch(`/api/v1/cars/`).catch(handleError);
@@ -44,7 +45,7 @@ const ShopList = () => {
     >
       <div className="flex items-start">
         <Link to={`/shops/${i.id}`}>
-          <h2 className="text-xl font-sans font-medium text-base-content hover:scale-105 hover:text-success transition-all">
+          <h2 className="text-xl font-sans font-medium text-base-content hover:scale-105 hover:text-accent-focus transition-all">
             {i.name}
           </h2>
         </Link>
@@ -62,30 +63,44 @@ const ShopList = () => {
         </p>
       </div>
       <ul className="text-sm font-light flex flex-wrap">
-        {i.services.map((i) => (
+        {i.services.map((s) => (
           <li
-            key={i}
-            className={`shadow-sm m-1 px-1 capitalize rounded ${
-              queryCar && queryCar.service_list.flat().includes(i)
+            key={s}
+            className={`shadow-sm m-1 px-1 captalize rounded ${
+              queryCar && queryCar.service_list.flat().includes(s)
                 ? "font-bold bg-accent-focus"
                 : "bg-base-300"
             }`}
           >
-            {i}
+            {/* 
+            
+            // here is what I want this service review total function to do:
+            // i need to get the total amount of reviews per service, and just display the service alone if none
+            // I can access the reviews on each shop here by using i.reviews.map(review => review)
+            // i need to check what the service is on the review and add up how many reviews for each service there are
+
+            */}
+            {s}
+            <span className="pl-1 inline-block font-extrabold">
+              {i.reviews &&
+              i.reviews.filter((r) => r.service.flat().includes(s)).length === 0
+                ? ""
+                : i.reviews.filter((r) => r.service.flat().includes(s)).length}
+            </span>
           </li>
         ))}
       </ul>
     </li>
   );
-  
+
   const getServiceShops = async () => {
     const response = await fetch(
       `/api/v1/shops/services/?location_string=${
         Array.isArray(location) ? location.join(",") : location
       }${
         garage && queryCar
-        ? `&specific_year=${queryCar.year}&specific_make=${queryCar.make}&specific_model=${queryCar.model}`
-        : ``
+          ? `&specific_year=${queryCar.year}&specific_make=${queryCar.make}&specific_model=${queryCar.model}`
+          : ``
       }`
     ).catch(handleError);
     if (!response.ok) {
@@ -125,13 +140,32 @@ const ShopList = () => {
   const shopList = shops && shops.map((i) => shopListTemplate(i));
 
   const serviceFilteredShops =
-    shops && queryCar &&
-    [...shops].sort(
-      (a, b) =>
-        b.services.filter(s => queryCar.service_list.includes(s)).length -
-        a.services.filter(s => queryCar.service_list.includes(s)).length
-    ).map((i) => shopListTemplate(i))
+    shops &&
+    queryCar &&
+    [...shops]
+      .sort(
+        (a, b) =>
+          b.services.filter((s) => queryCar.service_list.flat().includes(s))
+            .length -
+          a.services.filter((s) => queryCar.service_list.flat().includes(s))
+            .length
+      )
+      .map((i) => shopListTemplate(i));
 
+  const specificServiceListFunc = (service) => {
+    console.log(shops[1].name, shops[1].reviews.filter(r => r.service.join('') === service).length)
+    const filteredShops =
+      shops &&
+      [...shops].sort(
+        (a, b) =>
+          b.reviews.filter((r) => r.service.join('') === service).length -
+          a.reviews.filter((r) => r.service.join('') === service).length
+      );
+        setSpecificService(filteredShops)
+        setFilter('specificService')
+  };
+
+  const specificServiceFilter = specificService && specificService.map(i => shopListTemplate(i))
 
   const getLocation = () => {
     setLoading(true);
@@ -152,7 +186,7 @@ const ShopList = () => {
             <input
               className={`mt-3 p-1 shadow-sm ${!location && `rounded-l-md`}`}
               type="text"
-              value={Array.isArray(location) ? 'Successful' : location}
+              value={Array.isArray(location) ? "Successful" : location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="Enter ZIP or City, State..."
             />
@@ -172,7 +206,7 @@ const ShopList = () => {
             )}
           </div>
           <div
-            className={`relative mt-3 border-t-2 border-stone-500 ${
+            className={`relative flex items-center flex-col mt-3 border-t-2 border-stone-500 ${
               location ? "px-16" : "px-48"
             }`}
           >
@@ -183,20 +217,18 @@ const ShopList = () => {
                 </p>
                 <Listbox value={queryCar} onChange={setQueryCar}>
                   {location && (
-                    <Listbox.Button className="px-1 text-xl m-2 border-2 border-stone-500 rounded">
+                    <Listbox.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
                       {queryCar ? queryCar.make : "Car"}
                     </Listbox.Button>
                   )}
-                  <Listbox.Options className="absolute z-10 top-10 bg-white/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
+                  <Listbox.Options className="absolute top-32 sm:top-20 z-10 bg-stone-300/30 backdrop-blur-sm border-white/30 rounded shadow-sm w-fit p-1">
                     {garage.map((car) => (
                       <Listbox.Option
                         key={car.id}
                         value={car}
                         className="p-1 cursor-pointer"
                       >
-                        {/* <button type='button' className="hover:underline"> */}
                         {car.make} {car.model}
-                        {/* </button> */}
                       </Listbox.Option>
                     ))}
                   </Listbox.Options>
@@ -222,7 +254,11 @@ const ShopList = () => {
                   <li>
                     <button
                       type="button"
-                      className="hover:underline mt-2"
+                      className={`hover:underline mt-2 p-1 rounded ${
+                        filter === "distance"
+                          ? `font-medium bg-accent text-accent-content`
+                          : ``
+                      }`}
                       onClick={() => setFilter("distance")}
                     >
                       by Distance
@@ -231,7 +267,11 @@ const ShopList = () => {
                   <li>
                     <button
                       type="button"
-                      className="hover:underline mt-2"
+                      className={`hover:underline mt-2 p-1 rounded ${
+                        filter === "reviews"
+                          ? `font-medium bg-accent text-accent-content`
+                          : ``
+                      }`}
                       onClick={() => setFilter("reviews")}
                     >
                       by Reviews
@@ -240,7 +280,11 @@ const ShopList = () => {
                   <li>
                     <button
                       type="button"
-                      className="hover:underline mt-2"
+                      className={`hover:underline mt-2 p-1 rounded ${
+                        filter === "services"
+                          ? `font-medium bg-accent text-accent-content`
+                          : ``
+                      }`}
                       onClick={() => {
                         setFilter("services");
                       }}
@@ -251,8 +295,38 @@ const ShopList = () => {
                 </ul>
               </Popover.Panel>
               {location && (
-                <Popover.Button className="px-1 text-xl m-2 border-2 border-stone-500 rounded">
+                <Popover.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
                   Sort
+                </Popover.Button>
+              )}
+            </Popover>
+
+            <Popover className="relative">
+              <Popover.Panel className="absolute z-30 top-10 bg-white/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
+                <ul>
+                  {queryCar &&
+                    queryCar.service_list.flat().map((s) => (
+                      <li key={s}>
+                        <button
+                          type="button"
+                          className={`hover:underline mt-2 p-1 rounded ${
+                            filter === "services"
+                              ? `font-medium bg-accent text-accent-content`
+                              : ``
+                          }`}
+                          onClick={() => {
+                            specificServiceListFunc(s);
+                          }}
+                        >
+                          {s}
+                        </button>
+                      </li>
+                    ))}
+                </ul>
+              </Popover.Panel>
+              {location && (
+                <Popover.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
+                  Pick a service
                 </Popover.Button>
               )}
             </Popover>
@@ -262,6 +336,7 @@ const ShopList = () => {
           {filter === "distance" && shopList}
           {filter === "reviews" && reviewFilteredShops}
           {filter === "services" && serviceFilteredShops}
+          {filter === "specificService" && specificServiceFilter}
         </ul>
       </div>
     </>
