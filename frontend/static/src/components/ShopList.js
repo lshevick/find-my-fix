@@ -197,6 +197,7 @@ const ShopList = () => {
               </button>
             )}
           </div>
+          { isAuth &&
           <div
             className={`relative flex items-center flex-col mt-3 border-t-2 border-stone-500 ${
               location ? "px-16" : "px-48"
@@ -227,7 +228,7 @@ const ShopList = () => {
                 </Listbox>
               </>
             )}
-          </div>
+          </div>}
         </div>
         <div className="flex items-center mt-3">
           {location && !queryCar && (
@@ -316,7 +317,7 @@ const ShopList = () => {
                     ))}
                 </ul>
               </Popover.Panel>
-              {location && (
+              {isAuth && location && (
                 <Popover.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
                   Pick a service
                 </Popover.Button>
@@ -324,6 +325,7 @@ const ShopList = () => {
             </Popover>
           </div>
         </div>
+       {location && <p><Link to='/register' className="link">Sign up</Link> to access more features</p>}
         <ul className="mt-10 md:grid md:grid-cols-2 lg:grid-cols-3">
           {filter === "distance" && shopList}
           {filter === "reviews" && reviewFilteredShops}

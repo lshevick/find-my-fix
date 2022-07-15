@@ -53,9 +53,9 @@ const LoginForm = () => {
   };
   return (
     <>
-      <div className="pt-20 bg-stone-200 h-screen w-full p-5 flex flex-col justify-center items-center">
+      <div className="pt-20 bg-base-100 h-screen w-full p-5 flex flex-col justify-center items-center">
         <form
-          className="p-10 flex flex-col items-end bg-stone-300 rounded-sm"
+          className="p-10 flex flex-col items-end bg-base-300 rounded-sm"
           onSubmit={handleSubmit}
         >
           <div className="w-full">
@@ -84,7 +84,7 @@ const LoginForm = () => {
           </div>
           <button
             type="submit"
-            className="py-1 px-2 bg-green-400 hover:bg-green-500 hover:rounded-md rounded-sm transition-all font-semibold w-1/2"
+            className="py-1 px-2 text-accent-content bg-accent hover:bg-accent-focus hover:rounded-md rounded-sm transition-all font-semibold w-1/2"
           >
             Login
           </button>
