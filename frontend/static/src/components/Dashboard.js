@@ -91,7 +91,7 @@ const Dashboard = () => {
 
   const addService = async (id) => {
     const data = {
-      service_list: [...car.service_list, items],
+      service_list: [...car.service_list, items].flat(),
     };
     const options = {
       method: "PATCH",
@@ -157,10 +157,10 @@ const Dashboard = () => {
               height="auto"
             />
           </div>
-          <div className="flex border-b-2 border-stone-600">
-            <h2 className="mx-0.5 text-3xl">{car.year}</h2>
-            <h2 className="mx-0.5 text-3xl">{car.make}</h2>
-            <h2 className="mx-0.5 text-3xl">{car.model}</h2>
+          <div className="flex border-b-2 border-stone-600 text-3xl flex-wrap justify-center">
+            <h2 className="mx-0.5">{car.year}</h2>
+            <h2 className="mx-0.5">{car.make}</h2>
+            <h2 className="mx-0.5">{car.model}</h2>
           </div>
           <div className="m-3">
             <h2 className="font-semibold underline text-2xl">Services</h2>
@@ -185,7 +185,7 @@ const Dashboard = () => {
               setQuery={setQuery}
             />
             <button
-              className="bg-emerald-700 px-2 m-1 rounded text-white hover:bg-emerald-600"
+              className="bg-emerald-700 px-2 m-1 mt-2 rounded text-white hover:bg-emerald-600"
               onClick={() => {
                 addService(car.id);
               }}
@@ -193,7 +193,7 @@ const Dashboard = () => {
               Add
             </button>
           </div>
-          <div className="w-full flex justify-between">
+          <div className="w-full flex justify-between mt-3">
             <button type="button" onClick={() => setIsOpen(false)}>
               Close
             </button>
@@ -230,10 +230,10 @@ const Dashboard = () => {
               height="auto"
             />
           </div>
-          <div className="flex border-b-2 border-stone-600">
-            <h2 className="mx-0.5 text-3xl">{car.year}</h2>
-            <h2 className="mx-0.5 text-3xl">{car.make}</h2>
-            <h2 className="mx-0.5 text-3xl">{car.model}</h2>
+          <div className="flex border-b-2 border-stone-600 text-3xl flex-wrap justify-center">
+            <h2 className="mx-0.5">{car.year}</h2>
+            <h2 className="mx-0.5">{car.make}</h2>
+            <h2 className="mx-0.5">{car.model}</h2>
           </div>
           <div>
             <button
@@ -251,12 +251,12 @@ const Dashboard = () => {
               <div className="fixed inset-0 bg-black/30">
                 <div className="fixed inset-0 flex items-center justify-center p-4">
                   <Dialog.Panel className="absolute bg-base-100 w-max rounded p-5">
-                    <div className="flex flex-col items-center">
-                      <p>Delete Car?</p>
-                      <div className="flex p-2">
+                    <div className="flex flex-col items-center justify-between">
+                      <p className="text-lg">Delete Car?</p>
+                      <div className="flex m-1 mt-8 justify-between">
                         <button
                           type="button"
-                          className=" mx-2 font-bold text-red-700 hover:text-red-600"
+                          className=" mx-8 font-bold text-lg text-red-700 hover:text-red-600"
                           onClick={() => {
                             handleDelete(car.id);
                           }}
@@ -265,7 +265,7 @@ const Dashboard = () => {
                         </button>
                         <button
                           type="button"
-                          className=" mx-2 font-bold text-stone-700 hover:text-stone-500"
+                          className=" mx-8 font-bold text-lg text-stone-700 hover:text-stone-500"
                           onClick={() => setDeleteIsOpen(false)}
                         >
                           Cancel
@@ -299,7 +299,7 @@ const Dashboard = () => {
                   </li>
                 ))}
             </ul>
-            <div className="relative">
+            <div className="relative mt-3">
               <p>Add a service</p>
               <ServicePicker
                 items={items}
