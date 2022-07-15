@@ -17,12 +17,12 @@ function handleError(err) {
 
 const ShopList = () => {
   const [shops, setShops] = useState(undefined);
-  const [isAuth, setIsAuth, navigate, location, setLocation] =
+  const [isAuth, setIsAuth, navigate, location, setLocation, queryCar, setQueryCar] =
     useOutletContext();
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState("distance");
   const [garage, setGarage] = useState([]);
-  const [queryCar, setQueryCar] = useState(undefined);
+  // const [queryCar, setQueryCar] = useState(undefined);
   const [specificService, setSpecificService] = useState('');
 
   const getCars = async () => {
@@ -206,7 +206,7 @@ const ShopList = () => {
             {location && (
               <>
                 <p className="font-bold text-xl mt-3">
-                  Choose your car (optional)
+                  Choose your car
                 </p>
                 <Listbox value={queryCar} onChange={setQueryCar}>
                   {location && (
@@ -231,7 +231,7 @@ const ShopList = () => {
           </div>}
         </div>
         <div className="flex items-center mt-3">
-          {location && !queryCar && (
+          {!isAuth && location && !queryCar && (
             <button
               type="button"
               className="px-1 text-xl rounded text-emerald-700 border-emerald-700 border-2 hover:bg-emerald-700 hover:text-white transition-all"
@@ -325,7 +325,7 @@ const ShopList = () => {
             </Popover>
           </div>
         </div>
-       {location && <p><Link to='/register' className="link">Sign up</Link> to access more features</p>}
+       {!isAuth && location && <p><Link to='/register' className="link">Sign up</Link> to access more features</p>}
         <ul className="mt-10 md:grid md:grid-cols-2 lg:grid-cols-3">
           {filter === "distance" && shopList}
           {filter === "reviews" && reviewFilteredShops}

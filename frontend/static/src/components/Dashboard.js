@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { createSearchParams, Link, useOutletContext } from "react-router-dom";
 import { Dialog, Combobox } from "@headlessui/react";
 import Cookies from "js-cookie";
 import ServicePicker from "./ServicePicker";
@@ -34,7 +34,7 @@ const Dashboard = () => {
   const [newImage, setNewImage] = useState(null);
   const [preview, setPreview] = useState("");
   const [dataChanged, setDataChanged] = useState(false);
-  const [isAuth, setIsAuth, navigate, location, setLocation] =
+  const [isAuth, setIsAuth, navigate, location, setLocation, queryCar, setQueryCar] =
     useOutletContext();
 
   const filteredServices =
@@ -187,6 +187,14 @@ const Dashboard = () => {
     }, 100);
   };
 
+  const searchNav = () => {
+    navigator.geolocation.getCurrentPosition((p) => {
+      setLocation([p.coords.latitude, p.coords.longitude]);
+      setQueryCar(car)
+      navigate('/shops')
+    });
+  }
+
   const carModal = (
     <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
       <div className="fixed inset-0" aria-hidden="true" />
@@ -245,6 +253,10 @@ const Dashboard = () => {
             <button type="button" onClick={() => setIsOpen(false)}>
               Close
             </button>
+            <div className="tooltip" data-tip="Requires Location">
+            <button type="button" className="btn btn-sm btn-accent capitalize" onClick={searchNav}>Find My Fix!</button>
+            <p className="text-2xs sm:hidden">Requires location</p>
+            </div>
             <button type="button" onClick={() => setIsEditing(!isEditing)}>
               Edit
             </button>
