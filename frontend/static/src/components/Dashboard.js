@@ -31,6 +31,9 @@ const Dashboard = () => {
   const [garage, setGarage] = useState([]);
   const [query, setQuery] = useState("");
   const [items, setItems] = useState([]);
+  const [newImage, setNewImage] = useState(null);
+  const [preview, setPreview] = useState("");
+  const [dataChanged, setDataChanged] = useState(false);
   const [isAuth, setIsAuth, navigate, location, setLocation] =
     useOutletContext();
 
@@ -40,6 +43,18 @@ const Dashboard = () => {
       : serviceList.filter((s) => {
           return s.toLowerCase().includes(query.toLowerCase());
         });
+
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    setNewImage(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreview(reader.result);
+      console.log('updated preview')
+    };
+    reader.readAsDataURL(file);
+  };
 
   const getCars = async () => {
     const response = await fetch(`/api/v1/cars/`).catch(handleError);
@@ -53,6 +68,11 @@ const Dashboard = () => {
   useEffect(() => {
     getCars();
   }, []);
+
+  useEffect(() => {
+    getCars();
+    getCarDetail(car.id);
+  }, [dataChanged]);
 
   const getCarDetail = async (id) => {
     const response = await fetch(`/api/v1/cars/${id}/`).catch(handleError);
@@ -113,6 +133,34 @@ const Dashboard = () => {
     setItems([]);
   };
 
+  const updateImage = async (id) => {
+    const formData = new FormData();
+    formData.append("image", newImage);
+    const options = {
+      method: "PATCH",
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken"),
+      },
+      body: formData,
+    };
+    const response = await fetch(`/api/v1/cars/${id}/`, options).catch(
+      handleError
+    );
+    if (!response.ok) {
+      throw new Error("Network response not ok");
+    }
+    const json = await response.json();
+    console.log(json);
+    setNewImage(null);
+    setPreview(null);
+    setDataChanged(!dataChanged);
+  };
+
+  const uploadImage = (e) => {
+    e.preventDefault();
+    updateImage(car.id)
+  }
+
   const deleteCar = async (id) => {
     const options = {
       method: "DELETE",
@@ -163,7 +211,7 @@ const Dashboard = () => {
             <h2 className="mx-0.5">{car.model}</h2>
           </div>
           <div className="m-3">
-            <h2 className="font-semibold underline text-2xl">Services</h2>
+            <h2 className="font-semibold underline text-2xl">Work Needed</h2>
             <ul>
               {car.service_list &&
                 car.service_list.flat().map((i) => (
@@ -218,18 +266,43 @@ const Dashboard = () => {
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="mx-5 max-w-lg rounded bg-base-100 p-10 flex flex-col items-center jsutify-center w-5/6">
           <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
-            <img
-              src={
-                car.image
-                  ? car.image
-                  : "https://kaleidousercontent.com/removebg/designs/b6f1aec1-de72-4e0e-9921-6ab407475be2/thumbnail_image/car-photo-optimizer-thumbnail.png"
-              }
-              alt="car"
-              className="object-cover"
-              width="100%"
-              height="auto"
-            />
+            {preview ? (
+              <img src={preview} alt="preview" />
+            ) : (
+              <img
+                src={
+                  car.image
+                    ? car.image
+                    : "https://kaleidousercontent.com/removebg/designs/b6f1aec1-de72-4e0e-9921-6ab407475be2/thumbnail_image/car-photo-optimizer-thumbnail.png"
+                }
+                alt="car"
+                className="object-cover z-10 blur-sm"
+                width="100%"
+                height="auto"
+              />
+            )}
+            {!preview && <p className="absolute text-white font-bold text-lg left-[100vw-50%] z-50 hover:text-accent hover:cursor-pointer">
+              Edit Photo
+            </p>}
+            <form id="change-image" onSubmit={uploadImage}>
+              <input
+                type="file"
+                name="newImage"
+                id="newImage"
+                className="absolute z-50 hover:cursor-pointer left-[10%] top-[45%] opacity-0"
+                onChange={handleImage}
+              />
+            </form>
           </div>
+          {newImage && (
+            <button
+              type="submit"
+              form="change-image"
+              className="btn btn-sm capitalize mt-3"
+            >
+              Change Image
+            </button>
+          )}
           <div className="flex border-b-2 border-stone-600 text-3xl flex-wrap justify-center">
             <h2 className="mx-0.5">{car.year}</h2>
             <h2 className="mx-0.5">{car.make}</h2>
@@ -278,7 +351,7 @@ const Dashboard = () => {
             </Dialog>
           </div>
           <div className="m-3">
-            <h2 className="font-semibold underline text-2xl">Services</h2>
+            <h2 className="font-semibold underline text-2xl">Work needed</h2>
             <ul>
               {car.service_list &&
                 car.service_list.flat().map((i) => (
@@ -300,7 +373,7 @@ const Dashboard = () => {
                 ))}
             </ul>
             <div className="relative mt-3">
-              <p>Add a service</p>
+              <p>Add work to be done</p>
               <ServicePicker
                 items={items}
                 setItems={setItems}
