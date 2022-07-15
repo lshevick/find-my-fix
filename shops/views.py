@@ -79,17 +79,18 @@ class ShopReviewListAPIView(generics.ListCreateAPIView):
 def shop_distances(request):
     shops = Shop.objects.all()
 
-    query = Q(makes__icontains='any')
-    cars = request.user.cars.all()
-    makes = []
-    for car in cars:
-        if car.make not in makes:
-            makes.append(car.make)
+    if hasattr(request.user, 'cars'):
+        query = Q(makes__icontains='any')
+        cars = request.user.cars.all()
+        makes = []
+        for car in cars:
+            if car.make not in makes:
+                makes.append(car.make)
 
-    for make in makes:
-        query |= Q(makes__icontains=make)
+        for make in makes:
+            query |= Q(makes__icontains=make)
+        shops = Shop.objects.filter(query)
 
-    shops = Shop.objects.filter(query)
     origin = request.query_params.get('location_string')
 
     # control flow based on lat and lon values in the url
