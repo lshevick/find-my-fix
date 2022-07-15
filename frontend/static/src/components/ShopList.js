@@ -3,7 +3,9 @@ import { Link, useOutletContext } from "react-router-dom";
 import Cookies from "js-cookie";
 import { FaLocationArrow } from "react-icons/fa";
 import { ImSpinner8 } from "react-icons/im";
+import { GoCheck } from "react-icons/go";
 import { Listbox, Popover } from "@headlessui/react";
+import { Rating } from "@mui/material";
 
 function handleError(err) {
   console.warn(err);
@@ -17,13 +19,20 @@ function handleError(err) {
 
 const ShopList = () => {
   const [shops, setShops] = useState(undefined);
-  const [isAuth, setIsAuth, navigate, location, setLocation, queryCar, setQueryCar] =
-    useOutletContext();
+  const [
+    isAuth,
+    setIsAuth,
+    navigate,
+    location,
+    setLocation,
+    queryCar,
+    setQueryCar,
+  ] = useOutletContext();
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState("distance");
   const [garage, setGarage] = useState([]);
   // const [queryCar, setQueryCar] = useState(undefined);
-  const [specificService, setSpecificService] = useState('');
+  const [specificService, setSpecificService] = useState("");
 
   const getCars = async () => {
     const response = await fetch(`/api/v1/cars/`).catch(handleError);
@@ -38,47 +47,90 @@ const ShopList = () => {
     getCars();
   }, []);
 
-  const shopListTemplate = (i) => (
+  shops &&
+    console.log(
+      shops[1].reviews
+        .filter((r) => r.service.join("") === "oil change")
+        .map((i) => i)
+    );
+
+  const shopListTemplate = (shop) => (
     <li
-      key={i.id}
+      key={shop.id}
       className="mx-auto my-3 p-2 rounded shadow-md w-5/6 bg-base-300"
     >
       <div className="flex items-start">
-        <Link to={`/shops/${i.id}`}>
+        <Link to={`/shops/${shop.id}`}>
           <h2 className="text-xl font-sans font-medium text-base-content hover:scale-105 hover:text-accent-focus transition-all">
-            {i.name}
+            {shop.name}
           </h2>
         </Link>
       </div>
       <div className="flex items-start">
         <p>
-          {i.distance &&
-            i.distance.toFixed() +
-              ` mile${Math.floor(i.distance) === 1 ? "" : "s"}`}
+          {shop.distance &&
+            shop.distance.toFixed() +
+              ` mile${Math.floor(shop.distance) === 1 ? "" : "s"}`}
         </p>
       </div>
       <div className="flex items-start">
         <p className="italic font-light text-sm">
-          Total reviews {i.reviews.length}
+          Total reviews {shop.reviews.length}
         </p>
       </div>
       <ul className="text-sm font-light flex flex-wrap">
-        {i.services.map((s) => (
+        {shop.services && shop.services.map((service) => (
           <li
-            key={s}
+            key={service}
             className={`shadow-sm m-1 px-1 captalize rounded ${
-              queryCar && queryCar.service_list.flat().includes(s)
+              queryCar && queryCar.service_list.flat().includes(service)
                 ? "font-bold bg-accent-focus text-accent-content"
                 : "bg-base-300"
             }`}
           >
-            {s}
-            <span className="pl-1 inline-block font-extrabold">
-              {i.reviews &&
-              i.reviews.filter((r) => r.service.flat().includes(s)).length === 0
-                ? ""
-                : i.reviews.filter((r) => r.service.flat().includes(s)).length}
-            </span>
+            <label
+              htmlFor={`info-modal-${shop.id}-${service}`}
+              className="modal-button cursor-pointer"
+            >
+              {service}
+              <span className="pl-1 inline-block font-extrabold">
+                {shop.reviews &&
+                shop.reviews.filter((r) => r.service.flat().includes(service)).length ===
+                  0
+                  ? ""
+                  : shop.reviews.filter((r) => r.service.flat().includes(service))
+                      .length}
+              </span>
+            </label>
+            <input
+              type="checkbox"
+              id={`info-modal-${shop.id}-${service}`}
+              className="modal-toggle"
+            />
+            <label htmlFor={`info-modal-${shop.id}-${service}`} className="modal cursor-pointer">
+              <label htmlFor="" className="modal-box relative">
+                <h3 className="text-xl">{service}</h3>
+                <Rating
+                  name="read-only"
+                  value={
+                    shop.reviews.length
+                  }
+                  precision={1}
+                  readOnly
+                />
+                <p>reviews:</p>
+                <ul>
+                  {shop.reviews && shop.reviews
+                    .filter((r) => r.service.join("") === service)
+                    .map((x) => (
+                      <li key={x.id}>
+                        <p>{x.service}</p>
+                         <Rating name="read-only" value={x.rating} precision={1} readOnly />
+                      </li>
+                    ))}
+                </ul>
+              </label>
+            </label>
           </li>
         ))}
       </ul>
@@ -149,15 +201,16 @@ const ShopList = () => {
       shops &&
       [...shops].sort(
         (a, b) =>
-          b.reviews.filter((r) => r.service.join('') === service).length -
-          a.reviews.filter((r) => r.service.join('') === service).length
+          b.reviews.filter((r) => r.service.join("") === service).length -
+          a.reviews.filter((r) => r.service.join("") === service).length
       );
 
-        setSpecificService(filteredShops)
-        setFilter('specificService')
+    setSpecificService(filteredShops);
+    setFilter("specificService");
   };
 
-  const specificServiceFilter = specificService && specificService.map(i => shopListTemplate(i))
+  const specificServiceFilter =
+    specificService && specificService.map((i) => shopListTemplate(i));
 
   const getLocation = () => {
     setLoading(true);
@@ -176,59 +229,57 @@ const ShopList = () => {
         <div className="flex flex-col items-center">
           <div className="flex items-end">
             <input
-              className={`mt-3 p-1 shadow-sm ${!location && `rounded-l-md`}`}
+              className={`mt-3 p-1 shadow-sm rounded-l-md`}
               type="text"
               value={Array.isArray(location) ? "Successful" : location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="Enter ZIP or City, State..."
             />
-
-            {!location && (
-              <button
-                type="button"
-                className="p-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-r-md shadow-md hover:shadow-lg transition-all"
-                onClick={getLocation}
-              >
-                {loading ? (
-                  <ImSpinner8 className="animate-spin" />
-                ) : (
-                  <FaLocationArrow />
-                )}
-              </button>
-            )}
+            <button
+              type="button"
+              className="p-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-r-md shadow-md hover:shadow-lg transition-all"
+              onClick={getLocation}
+            >
+              {location ? (
+                <GoCheck />
+              ) : loading ? (
+                <ImSpinner8 className="animate-spin" />
+              ) : (
+                <FaLocationArrow />
+              )}
+            </button>
           </div>
-          { isAuth &&
-          <div
-            className={`relative flex items-center flex-col mt-3 border-t-2 border-stone-500 ${
-              location ? "px-16" : "px-48"
-            }`}
-          >
-            {location && (
-              <>
-                <p className="font-bold text-xl mt-3">
-                  Choose your car
-                </p>
-                <Listbox value={queryCar} onChange={setQueryCar}>
-                  {location && (
-                    <Listbox.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
-                      {queryCar ? queryCar.make : "Car"}
-                    </Listbox.Button>
-                  )}
-                  <Listbox.Options className="absolute top-32 sm:top-20 z-10 bg-stone-300/30 backdrop-blur-sm border-white/30 rounded shadow-sm w-fit p-1">
-                    {garage.map((car) => (
-                      <Listbox.Option
-                        key={car.id}
-                        value={car}
-                        className="p-1 cursor-pointer"
-                      >
-                        {car.make} {car.model}
-                      </Listbox.Option>
-                    ))}
-                  </Listbox.Options>
-                </Listbox>
-              </>
-            )}
-          </div>}
+          {isAuth && (
+            <div
+              className={`relative flex items-center flex-col mt-3 border-t-2 border-stone-500 ${
+                location ? "px-16" : "px-48"
+              }`}
+            >
+              {location && (
+                <>
+                  <p className="font-bold text-xl mt-3">Choose your car</p>
+                  <Listbox value={queryCar} onChange={setQueryCar}>
+                    {location && (
+                      <Listbox.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
+                        {queryCar ? queryCar.model : "Car"}
+                      </Listbox.Button>
+                    )}
+                    <Listbox.Options className="absolute top-32 sm:top-20 z-10 bg-stone-300/30 backdrop-blur-sm border-white/30 rounded shadow-sm w-fit p-1">
+                      {garage.map((car) => (
+                        <Listbox.Option
+                          key={car.id}
+                          value={car}
+                          className="p-1 cursor-pointer"
+                        >
+                          {car.make} {car.model}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Listbox>
+                </>
+              )}
+            </div>
+          )}
         </div>
         <div className="flex items-center mt-3">
           {!isAuth && location && !queryCar && (
@@ -303,7 +354,7 @@ const ShopList = () => {
                         <button
                           type="button"
                           className={`hover:underline mt-2 p-1 rounded ${
-                            specificService === {s}
+                            specificService === { s }
                               ? `font-medium bg-accent text-accent-content`
                               : ``
                           }`}
@@ -325,7 +376,14 @@ const ShopList = () => {
             </Popover>
           </div>
         </div>
-       {!isAuth && location && <p><Link to='/register' className="link">Sign up</Link> to access more features</p>}
+        {!isAuth && location && (
+          <p>
+            <Link to="/register" className="link">
+              Sign up
+            </Link>{" "}
+            to access more features
+          </p>
+        )}
         <ul className="mt-10 md:grid md:grid-cols-2 lg:grid-cols-3">
           {filter === "distance" && shopList}
           {filter === "reviews" && reviewFilteredShops}

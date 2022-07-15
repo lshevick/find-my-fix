@@ -54,7 +54,7 @@ const ShopDetail = () => {
   const shopServiceList =
     detail.services &&
     detail.services.map((i) => (
-      <li key={i} className="capitalize py-2">
+      <li key={i} className="capitalize p-2 md:m-2">
         {i}
       </li>
     ));
@@ -90,12 +90,12 @@ const ShopDetail = () => {
       key={detail.id}
       className="grid grid-cols-1 md:grid-cols-2 bg-base-100 h-full p-3 min-h-screen w-full lg:w-5/6"
     >
-      <div className="col-start-1">
+      <div className="col-start-1 md:row-start-2">
         <h1 className="text-accent-focus text-4xl font-semibold">
           {detail.name}
         </h1>
         <div className="flex flex-col items-center justify-center">
-          <a href="phone" className="font-medium link">
+          <a href={`tel:${detail.phone}`} className="font-medium link">
             {detail.phone}
           </a>
           <p className="font-bold text-lg">{detail.address}</p>
@@ -108,13 +108,13 @@ const ShopDetail = () => {
           </a>
         </div>
       </div>
-      <div className="flex flex-col sm:col-start-1 items-start justify-start ml-2 mt-10">
+      <div className="flex flex-col md:col-start-2 items-start justify-start ml-2 mt-10">
         <h2 className="font-medium text-3xl">Services</h2>
-        <ul className="flex flex-col items-start divide-y-2 text-xl">
+        <ul className="grid grid-cols-1 sm:grid-flow-col grid-rows-3 sm:grid-rows-2 md:grid-rows-2 divide-y-2 sm:divide-y-0 text-xl">
           {shopServiceList}
         </ul>
       </div>
-      <div className="w-full mt-10 sm:col-start-1">
+      <div className="w-full mt-10 md:col-start-2">
         <h2>This shop works on:</h2>
         <ul className="grid grid-flow-col-dense grid-rows-3 sm:grid-rows-2 md:grid-rows-1">
           {detail.makes &&
@@ -128,7 +128,7 @@ const ShopDetail = () => {
             ))}
         </ul>
       </div>
-      <div className="sm:col-start-2">
+      <div className="md:col-start-2 md:row-start-3">
         <div>
           <ul>{items && items.map((i) => <li key={i}>{i}</li>)}</ul>
         </div>
@@ -142,7 +142,7 @@ const ShopDetail = () => {
           />
         )}
       </div>
-      <div className="flex flex-col sm:col-start-2 rounded m-2 p-2">
+      <div className="flex flex-col md:col-start-2 md:row-start-4 rounded m-2 p-2">
         <p className="font-medium text-2xl">Reviews</p>
         <ul className="flex flex-col items-center">{reviewList}</ul>
       </div>
