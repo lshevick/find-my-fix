@@ -113,7 +113,7 @@ const ShopList = () => {
                 <Rating
                   name="read-only"
                   value={
-                    shop.reviews.length
+                    shop.average
                   }
                   precision={1}
                   readOnly
@@ -321,7 +321,7 @@ const ShopList = () => {
                       by Reviews
                     </button>
                   </li>
-                  <li>
+                  {isAuth && <li>
                     <button
                       type="button"
                       className={`hover:underline mt-2 p-1 rounded ${
@@ -335,7 +335,7 @@ const ShopList = () => {
                     >
                       by Service
                     </button>
-                  </li>
+                  </li>}
                 </ul>
               </Popover.Panel>
               {location && (
