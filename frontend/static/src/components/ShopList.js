@@ -170,7 +170,7 @@ const ShopList = () => {
   const reviewFilteredShops =
     shops &&
     [...shops]
-      .sort((a, b) => b.reviews.length - a.reviews.length)
+      .sort((a, b) => b.average - a.average)
       .map((i) => shopListTemplate(i));
 
   const shopList = shops && shops.map((i) => shopListTemplate(i));
