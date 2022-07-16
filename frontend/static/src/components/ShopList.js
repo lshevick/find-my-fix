@@ -112,7 +112,7 @@ const ShopList = () => {
                 <div className="overflow-y-scroll sm:overflow-auto max-h-[150px] sm:max-h-fit">
                 <ul className="overflow-y-hidden sm:overflow-auto divide-y">
                   {shop.reviews && shop.reviews
-                    .filter((r) => r.service.join("") === service)
+                    .filter((r) => r.service.includes(service))
                     .map((x) => (
                       <li key={x.id} className='flex py-5 ml-3'>
                         <p className="mr-5 font-medium">{x.username}</p>

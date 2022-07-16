@@ -54,7 +54,7 @@ const ShopDetail = () => {
   const shopServiceList =
     detail.services &&
     detail.services.map((i) => (
-      <li key={i} className="capitalize p-2 md:m-2">
+      <li key={i} className="capitalize font-medium p-2 md:m-2 bg-base-300 rounded">
         {i}
       </li>
     ));
@@ -91,7 +91,7 @@ const ShopDetail = () => {
       className="grid grid-cols-1 md:grid-cols-2 bg-base-100 h-full p-3 min-h-screen w-full lg:w-5/6"
     >
       <div className="col-start-1 md:row-start-2">
-        <h1 className="text-accent-focus text-4xl font-semibold">
+        <h1 className="text-accent-focus text-4xl lg:text-6xl lg:mb-3 lg:font-bold font-semibold">
           {detail.name}
         </h1>
         <div className="flex flex-col items-center justify-center">
@@ -108,7 +108,7 @@ const ShopDetail = () => {
           </a>
         </div>
       </div>
-      <div className="flex flex-col md:col-start-2 items-start justify-start ml-2 mt-10">
+      <div className="flex flex-col md:col-start-1 md:row-start-3 items-center justify-start ml-2 mt-10">
         <h2 className="font-medium text-3xl">Services</h2>
         <ul className="grid grid-cols-1 sm:grid-flow-col grid-rows-3 sm:grid-rows-2 md:grid-rows-2 divide-y-2 sm:divide-y-0 text-xl">
           {shopServiceList}
