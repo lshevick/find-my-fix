@@ -74,9 +74,7 @@ const ShopList = () => {
         </p>
       </div>
       <div className="flex items-start">
-        <p className="italic font-light text-sm">
-          Total reviews {shop.reviews.length}
-        </p>
+           {shop.average === 0 ? <p className="italic text-sm">No reviews</p> : <Rating name="read-only" value={shop.average} precision={1} readOnly/>}
       </div>
       <ul className="text-sm font-light flex flex-wrap">
         {shop.services && shop.services.map((service) => (
@@ -109,26 +107,20 @@ const ShopList = () => {
             />
             <label htmlFor={`info-modal-${shop.id}-${service}`} className="modal cursor-pointer">
               <label htmlFor="" className="modal-box relative">
-                <h3 className="text-xl">{service}</h3>
-                <Rating
-                  name="read-only"
-                  value={
-                    shop.average
-                  }
-                  precision={1}
-                  readOnly
-                />
-                <p>reviews:</p>
-                <ul>
+                <h3 className="text-xl capitalize font-medium">{service}</h3>
+                <p className="text-lg">Reviews:</p>
+                <div className="overflow-y-scroll sm:overflow-auto max-h-[150px] sm:max-h-fit">
+                <ul className="overflow-y-hidden sm:overflow-auto divide-y">
                   {shop.reviews && shop.reviews
                     .filter((r) => r.service.join("") === service)
                     .map((x) => (
-                      <li key={x.id}>
-                        <p>{x.service}</p>
-                         <Rating name="read-only" value={x.rating} precision={1} readOnly />
+                      <li key={x.id} className='flex py-5 ml-3'>
+                        <p className="mr-5 font-medium">{x.username}</p>
+                         <Rating name="read-only" value={x.rating} precision={1} size='small' readOnly />
                       </li>
                     ))}
                 </ul>
+                    </div>
               </label>
             </label>
           </li>

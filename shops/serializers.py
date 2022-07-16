@@ -33,7 +33,7 @@ class ShopSerializer(serializers.ModelSerializer):
             average = int(sum(total) / len(obj.reviews.all()))
             return average
         except:
-            return 1
+            return 0
 
 class NoDistanceSerializer(serializers.ModelSerializer):
     reviews = ReviewSerializer('reviews', many=True)
