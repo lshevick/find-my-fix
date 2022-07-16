@@ -53,15 +53,15 @@ const Nav = ({ isAuth, setIsAuth }) => {
   );
 
   const guestView = (
-    <ul className="flex items-center">
-      <li className="mx-2 p-1 text-accent-focus hover:text-accent">
+    <ul className="flex items-center text-xl">
+      <li className="mx-2 p-1 text-accent hover:text-accent-focus">
         <Link to="/shops">Search</Link>
       </li>
 
       <li>
         <Link
           to="/login"
-          className="hover:underline text-accent-focus hover:text-accent"
+          className="hover:underline text-accent hover:text-accent-focus"
         >
           Login
         </Link>

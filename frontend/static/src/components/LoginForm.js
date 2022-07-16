@@ -62,7 +62,7 @@ const LoginForm = () => {
             <h1 className="font-bold text-2xl">Login</h1>
           </div>
           <input
-            className="my-2 p-1 rounded-sm"
+            className="my-2 p-1 rounded-sm text-black"
             type="text"
             name="username"
             id="username"
@@ -72,7 +72,7 @@ const LoginForm = () => {
           />
           <div className="relative">
           <input
-            className="my-2 p-1 rounded-sm"
+            className="my-2 p-1 rounded-sm text-black"
             type={visible ? `text` : `password`}
             name="password"
             id="password"

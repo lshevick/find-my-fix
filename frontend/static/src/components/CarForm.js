@@ -3,6 +3,9 @@ import { Combobox } from "@headlessui/react";
 import Cookies from "js-cookie";
 import { useOutletContext, Link } from "react-router-dom";
 import ServicePicker from "./ServicePicker";
+import { FaLocationArrow } from "react-icons/fa";
+import { ImSpinner8 } from "react-icons/im";
+import { GoCheck } from "react-icons/go";
 
 function handleError(err) {
   console.warn(err);
@@ -46,8 +49,16 @@ const CarForm = () => {
   const [items, setItems] = useState([]);
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isAuth, setIsAuth, navigate, location, setLocation] =
-    useOutletContext();
+  const [car, setCar] = useState([]);
+  const [
+    isAuth,
+    setIsAuth,
+    navigate,
+    location,
+    setLocation,
+    queryCar,
+    setQueryCar,
+  ] = useOutletContext();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -55,10 +66,45 @@ const CarForm = () => {
   };
 
   const handleService = () => {
-    console.log(items, 'these are the selected services')
+    console.log(items, "these are the selected services");
     setState((p) => ({ ...p, service_list: [...items] }));
     console.log(state);
     setItems([]);
+  };
+
+  const getCarDetail = async (id) => {
+    const response = await fetch(`/api/v1/cars/${id}/`).catch(handleError);
+    if (!response.ok) {
+      throw new Error("Network response not ok");
+    }
+    const json = await response.json();
+    setCar(json);
+  };
+
+  const deleteService = async (item, id) => {
+    const newList = car.service_list.slice();
+    const i = newList.indexOf(item);
+    newList.splice(i, 1);
+    const data = {
+      service_list: newList,
+    };
+    const options = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get("csrftoken"),
+      },
+      body: JSON.stringify(data),
+    };
+    const response = await fetch(`/api/v1/cars/${id}/`, options).catch(
+      handleError
+    );
+    if (!response.ok) {
+      throw new Error("Network response not ok");
+    }
+    const json = await response.json();
+    console.log(json);
+    getCarDetail(id);
   };
 
   const handleImage = (e) => {
@@ -158,7 +204,9 @@ const CarForm = () => {
       throw new Error("Network response not ok");
     }
     const json = await response.json();
-    console.log(json, 'submitted car!');
+    console.log(json, "submitted car!");
+    setQueryCar(json);
+    setCar(json);
     setState(defaultState);
     // setServices(defaultServices);
     setImage(null);
@@ -224,7 +272,7 @@ const CarForm = () => {
         <div className="flex justify-end">
           <button
             type="button"
-            className="m-1 p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
+            className="m-2 p-1 sm:absolute right-2 bottom-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
             onClick={() => setForm("service")}
           >
             Next
@@ -234,36 +282,55 @@ const CarForm = () => {
     </>
   );
 
-  // const handleToggle = (e) => {
-  //   setServices((p) => ({ ...p, [e.target.name]: !p[e.target.name] }));
-  // };
-
   const serviceForm = (
     <>
-    <div className="flex flex-col items-center">
-    <div className="flex items-end">
-      <div className="flex flex-col justify-between h-full">
-        <h2>Choose Your Service(s):</h2>
-        <ServicePicker items={items} setItems={setItems} serviceList={serviceList} query={query} setQuery={setQuery} />
-      </div>
-      <button
-        type="submit"
-        form="car-form"
-        onClick={handleService}
-        className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
-        >
-        Add services
-      </button>
-      </div>
-
-      <button
-        type="button"
-        onClick={() => setForm('location')}
-        className="p-1 my-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
-        >
-        Next
-      </button>
+      <div className="flex flex-col items-center">
+        <div className="flex items-end">
+          <div className="flex flex-col justify-between h-full">
+            <h2>Choose Your Service(s):</h2>
+            <ServicePicker
+              items={items}
+              setItems={setItems}
+              serviceList={serviceList}
+              query={query}
+              setQuery={setQuery}
+            />
+          </div>
+          <button
+            type="submit"
+            form="car-form"
+            onClick={handleService}
+            className="p-1 m-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
+          >
+            Add services
+          </button>
         </div>
+        <ul className="divide-y mt-4">
+          {car.service_list &&
+            car.service_list.flat().map((i) => (
+              <li key={i} className="capitalize text-xl font-light py-3">
+                <div className="w-full flex justify-between">
+                  <p className="truncate pr-4">{i}</p>
+                  <button
+                    type="button"
+                    className="flex items-center px-2 text-white bg-red-700 h-4 rounded hover:bg-red-600"
+                    onClick={() => deleteService(i, car.id)}
+                  >
+                    -
+                  </button>
+                </div>
+              </li>
+            ))}
+        </ul>
+
+        <button
+          type="button"
+          onClick={() => setForm("location")}
+          className="p-1 m-2 sm:absolute right-2 bottom-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
+        >
+          Next
+        </button>
+      </div>
     </>
   );
 
@@ -279,23 +346,36 @@ const CarForm = () => {
   const locator = (
     <>
       <div className="flex flex-col">
-        <button
-          type="button"
-          onClick={getLocation}
-          className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
-        >
-          Get my location
-        </button>
-        {loading && (location === [] ? `Got it!` : `Loading...`)}
-        <p>or enter a zip code:</p>
-        <input
-          type="text"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-        />
-      <div className="mt-3">
-        <Link to="/shops" className="p-1 bg-[#3c6e71] text-white rounded hover:shadow-md transition-all">Search for shops</Link>
-      </div>
+        <div className="flex items-end">
+          <input
+            className={`mt-3 p-1 shadow-sm rounded-l-md`}
+            type="text"
+            value={Array.isArray(location) ? "Successful" : location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Enter ZIP or City, State..."
+          />
+          <button
+            type="button"
+            className="p-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-r-md shadow-md hover:shadow-lg transition-all"
+            onClick={getLocation}
+          >
+            {location ? (
+              <GoCheck />
+            ) : loading ? (
+              <ImSpinner8 className="animate-spin" />
+            ) : (
+              <FaLocationArrow />
+            )}
+          </button>
+        </div>
+        <div className="mt-3">
+          <Link
+            to="/shops"
+            className="p-1 bg-[#3c6e71] text-white rounded hover:shadow-md transition-all"
+          >
+            Search for shops
+          </Link>
+        </div>
       </div>
     </>
   );
@@ -303,7 +383,7 @@ const CarForm = () => {
   return (
     <>
       <div className="flex items-center justify-center p-3 bg-base-300 w-full min-h-screen">
-        <div className="flex flex-col items-center rounded bg-base-100 w-full sm:w-1/2 md:w-1/3 min-h-[calc(100vh-10rem)] sm:min-h-[350px]">
+        <div className="flex flex-col items-center rounded relative bg-base-100 w-full sm:w-1/2 md:min-w-1/3 min-h-[calc(100vh-10rem)] sm:min-h-[350px]">
           <div className="flex justify-center items-center rounded-t-md w-full">
             <ul className="flex justify-center w-full mb-5">
               <li className="bg-base-100 w-full rounded-t-md">
