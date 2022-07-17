@@ -88,7 +88,7 @@ const ShopDetail = () => {
   const shopInfo = (
     <div
       key={detail.id}
-      className="grid grid-cols-1 md:grid-cols-4 bg-base-100 h-full p-3 min-h-screen w-full lg:w-5/6"
+      className="grid md:gap-4 grid-cols-1 md:grid-cols-4 bg-base-100 h-full p-3 min-h-screen w-full lg:w-5/6"
     >
       <div className="md:col-start-2 md:col-span-2 md:row-start-2">
         <h1 className="text-accent-focus text-4xl lg:text-6xl lg:mb-3 lg:font-bold font-semibold">
@@ -108,15 +108,15 @@ const ShopDetail = () => {
           </a>
         </div>
       </div>
-      <div className="flex flex-col md:col-start-1 md:col-span-2 md:row-start-3 items-center justify-start ml-2 mt-10">
+      <div className="flex flex-col md:col-start-1 md:col-span-2 md:row-start-3 md:self-center items-center justify-start">
         <h2 className="font-medium text-3xl">Services</h2>
         <ul className="grid grid-cols-1 sm:grid-flow-col grid-rows-3 sm:grid-rows-2 md:grid-rows-2 text-xl">
           {shopServiceList}
         </ul>
       </div>
-      <div className="w-full mt-10 md:col-start-1 md:row-start-4 md:col-span-2">
+      <div className="w-full mt-10 md:col-start-3 md:row-start-3 md:col-span-2 text-xl">
         <h2>This shop works on:</h2>
-        <ul className="grid grid-flow-col-dense grid-rows-3 sm:grid-rows-2 md:grid-rows-1">
+        <ul className="grid grid-flow-col-dense grid-rows-3 sm:grid-rows-2 md:grid-rows-2">
           {detail.makes &&
             detail.makes.map((m) => (
               <li
@@ -128,7 +128,7 @@ const ShopDetail = () => {
             ))}
         </ul>
       </div>
-      <div className="md:col-start-3 md:col-span-2 md:row-start-3 self-center">
+      <div className="md:col-start-1 md:col-span-2 md:row-start-4 self-start m-2 p-2">
         {/* <div> */}
           {/* <ul>{items && items.map((i) => <li key={i}>{i}</li>)}</ul> */}
         {/* </div> */}
@@ -142,7 +142,7 @@ const ShopDetail = () => {
           />
         )}
       </div>
-      <div className="flex flex-col md:col-start-3 md:col-span-2 md:row-start-4 rounded m-2 p-2">
+      <div className="flex flex-col md:col-start-3 md:col-span-2 md:row-start-4 rounded self-start m-2 p-2">
         <p className="font-medium text-2xl">Reviews</p>
         <ul className="flex flex-col items-center">{reviewList}</ul>
       </div>

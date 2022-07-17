@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { createSearchParams, Link, useOutletContext } from "react-router-dom";
 import { Dialog, Combobox } from "@headlessui/react";
 import Cookies from "js-cookie";
@@ -34,6 +34,7 @@ const Dashboard = () => {
   const [newImage, setNewImage] = useState(null);
   const [preview, setPreview] = useState("");
   const [dataChanged, setDataChanged] = useState(false);
+  const editButton = useRef();
   const [isAuth, setIsAuth, navigate, location, setLocation, queryCar, setQueryCar] =
     useOutletContext();
 
@@ -196,7 +197,7 @@ const Dashboard = () => {
   }
 
   const carModal = (
-    <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+    <Dialog open={isOpen} initialFocus={editButton} onClose={() => setIsOpen(false)}>
       <div className="fixed inset-0" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
         <Dialog.Panel className="mx-5 max-w-lg rounded bg-base-100 p-10 flex flex-col items-center jsutify-center w-5/6">
@@ -208,9 +209,9 @@ const Dashboard = () => {
                   : "https://kaleidousercontent.com/removebg/designs/b6f1aec1-de72-4e0e-9921-6ab407475be2/thumbnail_image/car-photo-optimizer-thumbnail.png"
               }
               alt="car"
-              className="object-cover"
+              className="object-cover object-center"
               width="100%"
-              height="auto"
+              height="100%"
             />
           </div>
           <div className="flex border-b-2 border-stone-600 text-3xl flex-wrap justify-center">
@@ -257,7 +258,7 @@ const Dashboard = () => {
             <button type="button" className="btn btn-sm btn-accent capitalize" onClick={searchNav}>Find My Fix!</button>
             <p className="text-2xs sm:hidden">Requires location</p>
             </div>
-            <button type="button" onClick={() => setIsEditing(!isEditing)}>
+            <button type="button" ref={editButton} onClick={() => setIsEditing(!isEditing)}>
               Edit
             </button>
           </div>

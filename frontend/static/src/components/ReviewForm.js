@@ -50,7 +50,7 @@ const ReviewForm = ({ detail, dataChanged, setDataChanged, items, setItems }) =>
     <>
       <form onSubmit={handleReviewSubmit} className="bg-base-300 rounded flex flex-col items-center">
         <label htmlFor="body" className="text-2xl">
-          Write A Review
+          Review a Service
         </label>
         <div className="w-1/2">
         <ServicePicker
@@ -61,6 +61,15 @@ const ReviewForm = ({ detail, dataChanged, setDataChanged, items, setItems }) =>
           setQuery={setQuery}
           />
           </div>
+        <div className="mt-3">
+          <Rating
+            name="rating"
+            value={rating}
+            onChange={(e, newRating) => {
+              setRating(newRating);
+            }}
+          />
+        </div>
 
         <div className="flex items-center justify-center">
           <input
@@ -80,15 +89,6 @@ const ReviewForm = ({ detail, dataChanged, setDataChanged, items, setItems }) =>
           >
             Send
           </button>
-        </div>
-        <div>
-          <Rating
-            name="rating"
-            value={rating}
-            onChange={(e, newRating) => {
-              setRating(newRating);
-            }}
-          />
         </div>
       </form>
     </>
