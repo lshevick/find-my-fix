@@ -274,15 +274,15 @@ const ShopList = () => {
           )}
         </div>
         <div className="flex items-center mt-3">
-          {!isAuth && location && !queryCar && (
+          {!isAuth && 
             <button
-              type="button"
-              className="px-1 text-xl rounded text-emerald-700 border-emerald-700 border-2 hover:bg-emerald-700 hover:text-white transition-all"
-              onClick={getDistanceShops}
+            type="button"
+            className={`px-1 text-xl rounded text-emerald-700 border-emerald-700 border-2 hover:bg-emerald-700 hover:text-white transition-all ${!isAuth && location && !queryCar ? 'visible' : 'invisible'}`}
+            onClick={getDistanceShops}
             >
               Find My Fix!
             </button>
-          )}
+            }
           <div className="flex">
             <Popover className="relative">
               <Popover.Panel className="absolute z-30 top-10 bg-white/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
@@ -330,11 +330,9 @@ const ShopList = () => {
                   </li>}
                 </ul>
               </Popover.Panel>
-              {location && (
-                <Popover.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
+                <Popover.Button className={` ${location ? 'visible' : 'invisible'} px-2 text-xl m-2 border-2 border-stone-500 rounded`}>
                   Sort
                 </Popover.Button>
-              )}
             </Popover>
 
             <Popover className="relative">
@@ -368,14 +366,12 @@ const ShopList = () => {
             </Popover>
           </div>
         </div>
-        {!isAuth && location && (
-          <p>
+          <p className={`${!isAuth && location ? 'visible' : 'invisible'}`}>
             <Link to="/register" className="link">
               Sign up
             </Link>{" "}
             to access more features
           </p>
-        )}
         <ul className="mt-10 md:grid md:grid-cols-2 lg:grid-cols-3">
           {filter === "distance" && shopList}
           {filter === "reviews" && reviewFilteredShops}
