@@ -260,7 +260,7 @@ const CarForm = () => {
           </select>
         </div>
         <div className="flex flex-col items-center w-5/6 inset-0">
-          {image && <img src={preview} alt="car" width="100%" />}
+          {image && <img className="md:w-48" src={preview} alt="car" width="100%" />}
           <input
             type="file"
             name="image"

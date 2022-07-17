@@ -47,12 +47,6 @@ const ShopList = () => {
     getCars();
   }, []);
 
-  shops &&
-    console.log(
-      shops[1].reviews
-        .filter((r) => r.service.join("") === "oil change")
-        .map((i) => i)
-    );
 
   const shopListTemplate = (shop) => (
     <li
@@ -198,6 +192,7 @@ const ShopList = () => {
       );
 
     setSpecificService(filteredShops);
+    console.log(filteredShops)
     setFilter("specificService");
   };
 
