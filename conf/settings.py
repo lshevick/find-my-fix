@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'cars.apps.CarsConfig',
     'shops.apps.ShopsConfig',
     'reviews.apps.ReviewsConfig',
+    'records.apps.RecordsConfig',
 ]
 
 # PERMISSIONS

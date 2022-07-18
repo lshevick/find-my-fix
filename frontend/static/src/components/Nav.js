@@ -8,8 +8,8 @@ function handleError(err) {
   console.warn(err);
 }
 
-const Nav = ({ isAuth, setIsAuth }) => {
-  const [theme, setTheme] = useState('light');
+const Nav = ({ isAuth, setIsAuth, theme, setTheme }) => {
+  // const [theme, setTheme] = useState('light');
 
   const logout = async () => {
     const options = {

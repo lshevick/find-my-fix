@@ -13,6 +13,7 @@ function App() {
   const [isAuth, setIsAuth] = useState(!!Cookies.get("Authorization"));
   const [location, setLocation] = useState(undefined);
   const [queryCar, setQueryCar] = useState(undefined);
+  const [theme, setTheme] = useState(true);
   const navigate = useNavigate();
 
   // useEffect(() => {
@@ -21,10 +22,10 @@ function App() {
 
   return (
     <div className="App">
-      <Nav isAuth={isAuth} setIsAuth={setIsAuth} />
+      <Nav isAuth={isAuth} setIsAuth={setIsAuth} theme={theme} setTheme={setTheme} />
       <div className="flex justify-center min-h-screen">
         <Outlet
-          context={[isAuth, setIsAuth, navigate, location, setLocation, queryCar, setQueryCar]}
+          context={[isAuth, setIsAuth, navigate, location, setLocation, queryCar, setQueryCar, theme]}
         />
       </div>
     </div>

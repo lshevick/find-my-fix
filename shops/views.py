@@ -79,13 +79,16 @@ class ShopReviewListAPIView(generics.ListCreateAPIView):
 
 @api_view(['GET'])
 def get_location(request):
-    origin = request.query_params.get('location_string')
-    url = f"https://maps.googleapis.com/maps/api/geocode/json?latlng={origin}&key={os.environ['MAP_SECRET_KEY']}"
+    try:
+        origin = request.query_params.get('location_string')
+        url = f"https://maps.googleapis.com/maps/api/geocode/json?latlng={origin}&key={os.environ['MAP_SECRET_KEY']}"
 
-    response = requests.get(url)
-    res = json.loads(response.text)
-    element = res['results'][1]['formatted_address']
-    return Response(element)
+        response = requests.get(url)
+        res = json.loads(response.text)
+        element = res['results'][1]['formatted_address']
+        return Response(element)
+    except:
+        pass
 
 @api_view(['GET'])
 def shop_distances(request):

@@ -6,6 +6,8 @@ from rest_framework.decorators import api_view
 
 from .models import Car
 from .serializers import CarSerializer
+from records.models import Record
+from records.serializers import RecordSerializer
 
 import requests
 import os
@@ -37,4 +39,22 @@ class CarListAPIView(generics.ListCreateAPIView):
 class CarDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
+
+
+class RecordListAPIView(generics.ListCreateAPIView):
+    serializer_class = RecordSerializer
+
+    def get_queryset(self):
+        car = self.kwargs['car']
+        return Record.objects.filter(car=car).order_by('-date') 
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class RecordDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    
+
 
