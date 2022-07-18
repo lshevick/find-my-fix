@@ -20,16 +20,16 @@ const Homescreen = () => {
         </div>
         <div className="flex flex-col items-center md:grid md:grid-cols-4 md:grid-flow-row md:gap-4 justify-center min-h-screen bg-neutral text-neutral-content text-lg mt-12 p-4 px-10">
           <div className="col-start-2 col-span-2 my-48">
-            <h2 className="text-5xl font-medium">
+            <h2 className="text-7xl font-semibold">
               Welcome <br />
               to <br />
-              Find my Fix
+              Find My Fix
             </h2>
-            <p className="my-2 text-xl font-light">
+            <p className="my-2 text-3xl font-light">
               Here's some info on how to use this app:
             </p>
           </div>
-          <div className="col-start-1 col-span-2 card bg-accent-focus text-stone-100 shadow-xl mb-10">
+          <div className="col-start-1 col-span-2 card bg-accent text-stone-100 shadow-xl mb-10">
             <div className="card-body">
               <h3 className="card-title">
                  Create an account
@@ -48,7 +48,7 @@ const Homescreen = () => {
               alt="search screen"
             />
           </div>
-          <div className="col-start-3 row-start-3 col-span-2 card bg-emerald-800 text-stone-100 my-10 shadow-xl">
+          <div className="col-start-1 row-start-3 col-span-2 card bg-accent-focus text-stone-100 my-10 shadow-xl">
             <div className="card-body">
               <h3 className="card-title">
                Add your car
@@ -61,7 +61,7 @@ const Homescreen = () => {
               </p>
             </div>
           </div>
-          <div className="col-start-1 col-span-2 lg:w-5/6 mx-auto">
+          <div className="col-start-3 col-span-2 lg:w-5/6 mx-auto">
             <img
               src={require("../images/garage_img.png")}
               alt="garage"
@@ -91,13 +91,13 @@ const Homescreen = () => {
               </p>
             </div>
           </div>
-          <div className="md:col-start-3 md:col-span-2 md:w-3/4 lg:w-1/2 mx-auto relative">
+          <div className="md:col-start-3 md:col-span-2 lg:w-5/6 mx-auto relative">
             <img
               src={require("../images/filter_section.png")}
               alt="filter section"
             />
           </div>
-          <div className="card shadow-xl bg-accent text-stone-100 my-10 col-start-3 col-span-2">
+          <div className="card shadow-xl bg-emerald-800 text-stone-100 my-10 col-start-1 col-span-2">
             <div className="card-body">
               <h3 className="card-title">
                 Preview Cards
@@ -113,7 +113,7 @@ const Homescreen = () => {
               </p>
             </div>
           </div>
-          <div className="col-start-1 col-span-2 md:row-start-5 md:w-3/4 mx-auto">
+          <div className="col-start-3 col-span-2 md:row-start-5 md:w-5/6 mx-auto">
             <img src={require("../images/shop_card.png")} alt="shop card" />
           </div>
         </div>

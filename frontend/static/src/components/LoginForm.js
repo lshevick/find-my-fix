@@ -26,9 +26,7 @@ const LoginForm = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const loginRequest = async () => {
     const options = {
       method: "POST",
       headers: {
@@ -46,10 +44,17 @@ const LoginForm = () => {
       throw new Error("Network response not ok");
     }
     const json = await response.json();
+    console.log(json);
     Cookies.set("Authorization", `Token ${json.key}`);
     setIsAuth(true);
     console.log(isAuth);
     navigate("/");
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    Cookies.set('username', `${state.username}`);
+    loginRequest();
   };
   return (
     <>

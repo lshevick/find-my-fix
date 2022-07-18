@@ -2,7 +2,7 @@ import { Rating } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useParams, useOutletContext } from "react-router-dom";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 import ReviewForm from "./ReviewForm";
 
 function handleError(err) {
@@ -15,6 +15,10 @@ const ShopDetail = () => {
   const [detail, setDetail] = useState([]);
   const [items, setItems] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [newBody, setNewBody] = useState("");
+  const [newRating, setNewRating] = useState(1);
+  const [newService, setNewService] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
   const params = useParams();
   const [dataChanged, setDataChanged] = useState(false);
   const [isAuth, setIsAuth, navigate, location, setLocation] =
@@ -62,32 +66,79 @@ const ShopDetail = () => {
       </li>
     ));
 
-  const reviewList = reviews.map((r) => (
-    <li
-      key={r.id}
-      className="rounded shadow-md bg-base-300 p-2 my-1 flex flex-col items-start w-full"
-    >
-      <div>
-        <span className="mr-2 font-bold">{r.username}</span>
-        <Rating name="read-only" value={r.rating} precision={1} readOnly />
-      </div>
-      <div>
-        <ul className="flex">
-          {r.service &&
-            r.service.map((s) => (
-              <li
-                key={s}
-                className="font-light text-md capitalize mr-1 p-1 bg-base-200 shadow-sm rounded"
-              >
-                {s}
-              </li>
-            ))}
-        </ul>
-      </div>
-      <p>{r.body}</p>
-      <div></div>
-    </li>
-  ));
+  const reviewDetail = (r) => {
+    return (
+      <li
+        key={r.id}
+        className="rounded relative shadow-md bg-base-300 p-2 my-1 flex flex-col items-start w-full"
+      >
+        <div>
+          <span className="mr-2 font-bold">{r.username}</span>
+          <Rating name="read-only" value={r.rating} precision={1} readOnly />
+        </div>
+        <div>
+          <ul className="flex">
+            {r.service &&
+              r.service.map((s) => (
+                <li
+                  key={s}
+                  className="font-light text-md capitalize mr-1 p-1 bg-base-200 shadow-sm rounded"
+                >
+                  {s}
+                </li>
+              ))}
+          </ul>
+        </div>
+        <p>{r.body}</p>
+        {Cookies.get("username") === r.username && (
+          <div className="absolute top-0 right-0">
+            <button type="button" onClick={() => setIsEditing(!isEditing)}>
+              edit
+            </button>
+          </div>
+        )}
+      </li>
+    );
+  };
+
+  const editReviewDetail = (r) => {
+    return (
+      <li
+        key={r.id}
+        className="rounded relative shadow-md bg-base-300 p-2 my-1 flex flex-col items-start w-full"
+      >
+        <div>
+          <span className="mr-2 font-bold">{r.username}</span>
+          <Rating name="read-only" value={r.rating} precision={1} readOnly />
+        </div>
+        <div>
+          <ul className="flex">
+            {r.service &&
+              r.service.map((s) => (
+                <li
+                  key={s}
+                  className="font-light text-md capitalize mr-1 p-1 bg-base-200 shadow-sm rounded"
+                >
+                  {s}
+                </li>
+              ))}
+          </ul>
+        </div>
+        <p>{r.body}</p>
+        {Cookies.get("username") === r.username && (
+          <div className="absolute top-0 right-0">
+            <button type="button" onClick={() => setIsEditing(!isEditing)}>
+              edit
+            </button>
+          </div>
+        )}
+      </li>
+    );
+  };
+
+  const reviewList = reviews.map((r) =>
+    isEditing ? editReviewDetail(r) : reviewDetail(r)
+  );
 
   const shopInfo = (
     <div

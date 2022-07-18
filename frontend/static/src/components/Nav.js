@@ -26,6 +26,7 @@ const Nav = ({ isAuth, setIsAuth, theme, setTheme }) => {
       throw new Error("Network response not ok");
     }
     Cookies.remove("Authorization");
+    Cookies.remove('username')
     setIsAuth(false);
   };
 
