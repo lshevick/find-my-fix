@@ -269,14 +269,14 @@ const Dashboard = () => {
               height="100%"
             />
           </div>
-          <div className="flex border-b-2 border-stone-600 text-3xl flex-wrap justify-center">
+          <div className="flex border-b-2 border-stone-600 text-xl sm:text-3xl flex-wrap justify-center">
             <h2 className="mx-0.5">{car.year}</h2>
             <h2 className="mx-0.5">{car.make}</h2>
             <h2 className="mx-0.5">{car.model}</h2>
           </div>
           <div className="my-3 w-full flex flex-col items-center">
             <div className="services">
-              <h2 className="font-semibold underline mb-2 text-2xl">
+              <h2 className="font-semibold underline mb-2 text-md md:text-2xl">
                 Work Needed
               </h2>
               <ul>
@@ -284,14 +284,14 @@ const Dashboard = () => {
                   car.service_list.flat().map((i) => (
                     <li
                       key={i}
-                      className="capitalize font-light text-xl list-disc py-2"
+                      className="capitalize font-light text-xl list-disc md:py-2 py-0"
                     >
                       {i}
                     </li>
                   ))}
               </ul>
             </div>
-          <div className="relative">
+          <div className="relative mt-3 sm:mt-1">
             <ServicePicker
               items={items}
               setItems={setItems}

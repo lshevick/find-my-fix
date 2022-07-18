@@ -71,7 +71,7 @@ const Nav = ({ isAuth, setIsAuth, theme, setTheme }) => {
 
   return (
     <>
-      <div className="flex p-2 py-6 sm:py-2 justify-between items-center bg-slate-800 border-b-4 border-accent-focus shadow-md">
+      <div className="flex fixed w-screen z-50 p-2 py-6 sm:py-2 justify-between items-center bg-slate-800 border-b-4 border-accent-focus shadow-md">
         <div className="flex items-center">
           <Link to="/">
             <div className="font-bold text-3xl text-success mr-5">

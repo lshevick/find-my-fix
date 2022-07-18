@@ -6,6 +6,7 @@ import { ImSpinner8 } from "react-icons/im";
 import { GoCheck } from "react-icons/go";
 import { Listbox, Popover } from "@headlessui/react";
 import { Rating } from "@mui/material";
+import { BsCaretDownFill } from "react-icons/bs";
 
 function handleError(err) {
   console.warn(err);
@@ -33,7 +34,7 @@ const ShopList = () => {
   const [garage, setGarage] = useState([]);
   // const [queryCar, setQueryCar] = useState(undefined);
   const [specificService, setSpecificService] = useState("");
-  const [exactLocation, setExactLocation] = useState('');
+  const [exactLocation, setExactLocation] = useState("");
 
   const getCars = async () => {
     const response = await fetch(`/api/v1/cars/`).catch(handleError);
@@ -47,7 +48,6 @@ const ShopList = () => {
   useEffect(() => {
     getCars();
   }, []);
-
 
   const shopListTemplate = (shop) => (
     <li
@@ -69,57 +69,78 @@ const ShopList = () => {
         </p>
       </div>
       <div className="flex items-start">
-           {shop.average === 0 ? <p className="italic text-sm">No reviews</p> : <Rating name="read-only" value={shop.average} precision={1} readOnly/>}
+        {shop.average === 0 ? (
+          <p className="italic text-sm">No reviews</p>
+        ) : (
+          <Rating
+            name="read-only"
+            value={shop.average}
+            precision={1}
+            readOnly
+          />
+        )}
       </div>
       <ul className="text-sm font-light flex flex-wrap">
-        {shop.services && shop.services.map((service) => (
-          <li
-            key={service}
-            className={`shadow-sm m-1 px-1 captalize rounded ${
-              queryCar && queryCar.service_list.flat().includes(service)
-                ? "font-bold bg-accent-focus text-accent-content"
-                : "bg-base-300"
-            }`}
-          >
-            <label
-              htmlFor={`info-modal-${shop.id}-${service}`}
-              className="modal-button cursor-pointer"
+        {shop.services &&
+          shop.services.map((service) => (
+            <li
+              key={service}
+              className={`shadow-sm m-1 px-1 captalize rounded ${
+                queryCar && queryCar.service_list.flat().includes(service)
+                  ? "font-bold bg-accent-focus text-accent-content"
+                  : "bg-base-300"
+              }`}
             >
-              {service}
-              <span className="pl-1 inline-block font-extrabold">
-                {shop.reviews &&
-                shop.reviews.filter((r) => r.service.flat().includes(service)).length ===
-                  0
-                  ? ""
-                  : shop.reviews.filter((r) => r.service.flat().includes(service))
-                      .length}
-              </span>
-            </label>
-            <input
-              type="checkbox"
-              id={`info-modal-${shop.id}-${service}`}
-              className="modal-toggle"
-            />
-            <label htmlFor={`info-modal-${shop.id}-${service}`} className="modal cursor-pointer">
-              <label htmlFor="" className="modal-box relative">
-                <h3 className="text-xl capitalize font-medium">{service}</h3>
-                <p className="text-lg">Reviews:</p>
-                <div className="overflow-y-scroll sm:overflow-auto max-h-[150px] sm:max-h-fit">
-                <ul className="overflow-y-hidden sm:overflow-auto divide-y">
-                  {shop.reviews && shop.reviews
-                    .filter((r) => r.service.includes(service))
-                    .map((x) => (
-                      <li key={x.id} className='flex py-5 ml-3'>
-                        <p className="mr-5 font-medium">{x.username}</p>
-                         <Rating name="read-only" value={x.rating} precision={1} size='small' readOnly />
-                      </li>
-                    ))}
-                </ul>
-                    </div>
+              <label
+                htmlFor={`info-modal-${shop.id}-${service}`}
+                className="modal-button cursor-pointer"
+              >
+                {service}
+                <span className="pl-1 inline-block font-extrabold">
+                  {shop.reviews &&
+                  shop.reviews.filter((r) => r.service.flat().includes(service))
+                    .length === 0
+                    ? ""
+                    : shop.reviews.filter((r) =>
+                        r.service.flat().includes(service)
+                      ).length}
+                </span>
               </label>
-            </label>
-          </li>
-        ))}
+              <input
+                type="checkbox"
+                id={`info-modal-${shop.id}-${service}`}
+                className="modal-toggle"
+              />
+              <label
+                htmlFor={`info-modal-${shop.id}-${service}`}
+                className="modal cursor-pointer"
+              >
+                <label htmlFor="" className="modal-box relative">
+                  <h3 className="text-xl capitalize font-medium">{service}</h3>
+                  <p className="text-lg">Reviews:</p>
+                  <div className="overflow-y-scroll sm:overflow-auto max-h-[150px] sm:max-h-fit">
+                    <ul className="overflow-y-hidden sm:overflow-auto divide-y">
+                      {shop.reviews &&
+                        shop.reviews
+                          .filter((r) => r.service.includes(service))
+                          .map((x) => (
+                            <li key={x.id} className="flex py-5 ml-3">
+                              <p className="mr-5 font-medium">{x.username}</p>
+                              <Rating
+                                name="read-only"
+                                value={x.rating}
+                                precision={1}
+                                size="small"
+                                readOnly
+                              />
+                            </li>
+                          ))}
+                    </ul>
+                  </div>
+                </label>
+              </label>
+            </li>
+          ))}
       </ul>
     </li>
   );
@@ -193,7 +214,7 @@ const ShopList = () => {
       );
 
     setSpecificService(filteredShops);
-    console.log(filteredShops)
+    console.log(filteredShops);
     setFilter("specificService");
   };
 
@@ -208,19 +229,21 @@ const ShopList = () => {
     });
   };
 
-  const getFormattedAddress = async() => {
-    const response = await fetch(`/api/v1/shops/location/?location_string=${location}`).catch(handleError);
-    if(!response.ok) {
-    throw new Error('Network response not ok');
+  const getFormattedAddress = async () => {
+    const response = await fetch(
+      `/api/v1/shops/location/?location_string=${location}`
+    ).catch(handleError);
+    if (!response.ok) {
+      throw new Error("Network response not ok");
     }
-    const json = await response.json(); 
-    console.log(json)
-    setExactLocation(json)
-  }
+    const json = await response.json();
+    console.log(json);
+    setExactLocation(json);
+  };
 
   useEffect(() => {
     Array.isArray(location) && getFormattedAddress();
-  }, [location])
+  }, [location]);
 
   return (
     <>
@@ -263,10 +286,10 @@ const ShopList = () => {
                   <Listbox value={queryCar} onChange={setQueryCar}>
                     {location && (
                       <Listbox.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
-                        {queryCar ? queryCar.model : "Car"}
+                        {({open}) => (<>{queryCar ? queryCar.model : "Car"} <BsCaretDownFill className={`transition-all inline-block ${open ? 'rotate-180' : ``}`}/></>)}
                       </Listbox.Button>
                     )}
-                    <Listbox.Options className="absolute top-32 sm:top-20 z-10 bg-stone-300/30 backdrop-blur-sm border-white/30 rounded shadow-sm w-fit p-1">
+                    <Listbox.Options className="absolute top-20 sm:top-20 z-10 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm w-fit p-1">
                       {garage.map((car) => (
                         <Listbox.Option
                           key={car.id}
@@ -284,18 +307,20 @@ const ShopList = () => {
           )}
         </div>
         <div className="flex items-center mt-3">
-          {!isAuth && 
+          {!isAuth && (
             <button
-            type="button"
-            className={`px-1 text-xl rounded text-emerald-700 border-emerald-700 border-2 hover:bg-emerald-700 hover:text-white transition-all ${!isAuth && location && !queryCar ? 'visible' : 'invisible'}`}
-            onClick={getDistanceShops}
+              type="button"
+              className={`px-1 text-xl rounded text-emerald-700 border-emerald-700 border-2 hover:bg-emerald-700 hover:text-white transition-all ${
+                !isAuth && location && !queryCar ? "visible" : "invisible"
+              }`}
+              onClick={getDistanceShops}
             >
               Find My Fix!
             </button>
-            }
+          )}
           <div className="flex">
             <Popover className="relative">
-              <Popover.Panel className="absolute z-30 top-10 bg-white/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
+              <Popover.Panel className="absolute z-30 top-10 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
                 <ul>
                   <li>
                     <button
@@ -323,30 +348,37 @@ const ShopList = () => {
                       by Reviews
                     </button>
                   </li>
-                  {isAuth && <li>
-                    <button
-                      type="button"
-                      className={`hover:underline mt-2 p-1 rounded ${
-                        filter === "services"
-                          ? `font-medium bg-accent text-accent-content`
-                          : ``
-                      }`}
-                      onClick={() => {
-                        setFilter("services");
-                      }}
-                    >
-                      by Service
-                    </button>
-                  </li>}
+                  {isAuth && (
+                    <li>
+                      <button
+                        type="button"
+                        className={`hover:underline mt-2 p-1 rounded ${
+                          filter === "services"
+                            ? `font-medium bg-accent text-accent-content`
+                            : ``
+                        }`}
+                        onClick={() => {
+                          setFilter("services");
+                        }}
+                      >
+                        by Service
+                      </button>
+                    </li>
+                  )}
                 </ul>
               </Popover.Panel>
-                <Popover.Button className={` ${location ? 'visible' : 'invisible'} px-2 text-xl m-2 border-2 border-stone-500 rounded`}>
-                  Sort
-                </Popover.Button>
+              <Popover.Button
+                className={` ${
+                  location ? "visible" : "invisible"
+                } px-2 text-xl m-2 border-2 border-stone-500 rounded`}
+              >
+                {({open}) => (<>By {filter} <BsCaretDownFill className={`inline-block transition-all ${open ? 'rotate-180' : ''}`} /></>)}
+
+              </Popover.Button>
             </Popover>
 
             <Popover className="relative">
-              <Popover.Panel className="absolute z-30 top-10 bg-white/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
+              <Popover.Panel className="absolute z-30 top-10 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
                 <ul>
                   {queryCar &&
                     queryCar.service_list.flat().map((s) => (
@@ -370,18 +402,18 @@ const ShopList = () => {
               </Popover.Panel>
               {isAuth && location && (
                 <Popover.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
-                  Specify a service
+                 {({open}) => (<>Specify a service<BsCaretDownFill className={`inline-block transition-all ${open ? 'rotate-180' : ''}`} /></>)}
                 </Popover.Button>
               )}
             </Popover>
           </div>
         </div>
-          <p className={`${!isAuth && location ? 'visible' : 'invisible'}`}>
-            <Link to="/register" className="link">
-              Sign up
-            </Link>{" "}
-            to access more features
-          </p>
+        <p className={`${!isAuth && location ? "visible" : "invisible"}`}>
+          <Link to="/register" className="link">
+            Sign up
+          </Link>{" "}
+          to access more features
+        </p>
         <ul className="mt-10 md:grid md:grid-cols-2 lg:grid-cols-3">
           {filter === "distance" && shopList}
           {filter === "reviews" && reviewFilteredShops}
