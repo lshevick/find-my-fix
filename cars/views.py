@@ -1,7 +1,5 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
 
 
 from .models import Car
@@ -9,8 +7,6 @@ from .serializers import CarSerializer
 from records.models import Record
 from records.serializers import RecordSerializer
 
-import requests
-import os
 
 # Create your views here.
 # @api_view(['GET'])

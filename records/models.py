@@ -1,8 +1,6 @@
-from tkinter import CASCADE
 from django.db import models
 from django.conf import settings
 
-from shops.models import Shop
 from cars.models import Car
 # Create your models here.
 
