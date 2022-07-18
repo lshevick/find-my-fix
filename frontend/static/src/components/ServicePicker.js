@@ -51,7 +51,7 @@ return (
                                 {s}
                             </span>
                             {selected ? (
-                                <span className={`absolute text-xl inset-y-0 right-2 flex items-center pl-3 ${active ? 'text-white' : 'text-accent-focus'}`}>
+                                <span className={`absolute text-2xl inset-y-0 right-2 flex items-center pl-3 ${active ? 'text-white' : 'text-accent-focus'}`}>
                                     <FiCheck/>
                                 </span>
                             ) : null}

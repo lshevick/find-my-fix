@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import { createSearchParams, Link, useOutletContext } from "react-router-dom";
-import { Dialog, Combobox } from "@headlessui/react";
+import { Link, useOutletContext } from "react-router-dom";
+import { Dialog } from "@headlessui/react";
 import Cookies from "js-cookie";
 import ServicePicker from "./ServicePicker";
 import { ImSpinner8 } from "react-icons/im";
@@ -224,15 +224,38 @@ const Dashboard = () => {
     });
   };
 
+  const formModal = (
+    <>
+    <Dialog
+      open={formIsOpen}
+      onClose={() => setFormIsOpen(false)}
+      className="relative"
+    >
+      <div className="fixed inset-0 bg-black/50" aria-hidden="true">
+        <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
+          <Dialog.Panel className="max-w-52 z-50 absolute max-w-lg rounded bg-base-100 p-4 md:p-10 flex flex-col items-center justify-center w-5/6">
+            <div className="w-full">
+              <RecordForm currentCar={car}/>
+            </div>
+            <button type="button" onClick={() => setRecordIsOpen(false)}>
+              Close
+            </button>
+          </Dialog.Panel>
+        </div>
+      </div>
+    </Dialog>
+  </>
+  )
+
   const carModal = (
     <Dialog
       open={isOpen}
       initialFocus={editButton}
-      onClose={() => {setIsOpen(false); setIsEditing(false)}}
+      onClose={() => setIsOpen(false)}
     >
       <div className="fixed inset-0" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
-        <Dialog.Panel className="mx-5 max-w-lg rounded bg-base-100 p-5 sm:p-10 flex flex-col items-center justify-center w-5/6">
+        <Dialog.Panel className="mx-5 max-w-lg rounded bg-base-100 p-10 flex flex-col items-center justify-center w-5/6">
           <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
             <img
               src={
@@ -509,7 +532,6 @@ const Dashboard = () => {
       </div>
     );
   };
-  // {car.records && car.records.map(i => recordDetail(i))}
 
   const editRecordDetail = (record) => {
     return (
@@ -610,10 +632,10 @@ const Dashboard = () => {
         <ul className="">
           {car.records &&
             car.records.map((record) => (
-              <li key={record.id} className="hover:bg-accent-focus rounded">
+              <li key={record.id}>
                 <button
                   type="button"
-                  className="w-5/6 md:w-2/3"
+                  className="w-5/6 md:w-2/3 hover:bg-accent-focus rounded"
                   onClick={() => {
                     getRecordDetail(car.id, record.id);
                     setRecordIsOpen(true);
@@ -633,8 +655,8 @@ const Dashboard = () => {
 
   return (
     <>
-      {isEditing ? editCarModal : carModal}
       {recordModal}
+      {isEditing ? editCarModal : carModal}
       <div
         className={`flex flex-col bg-base-100 items-center shadows justify-center w-full min-h-screen ${
           isOpen && `blur`
