@@ -14,6 +14,7 @@ class Record(models.Model):
     date = models.DateField(auto_now_add=True)
     note = models.TextField(max_length=300)
     service = models.JSONField()
+    cost = models.FloatField()
 
     def __str__(self):
         return self.note[:20]

@@ -6,10 +6,11 @@ function handleError(err) {
   console.warn(err);
 }
 
-const RecordForm = ({ currentCar }) => {
+const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
   const [shop, setShop] = useState("");
   const [shops, setShops] = useState([]);
   const [image, setImage] = useState(null);
+  const [cost, setCost] = useState(null);
   const [note, setNote] = useState("");
   const [service, setService] = useState([]);
   const [preview, setPreview] = useState(null);
@@ -45,6 +46,8 @@ const RecordForm = ({ currentCar }) => {
     image && formData.append("image", image);
     formData.append("note", note);
     formData.append("service", JSON.stringify(service));
+    formData.append("cost", cost);
+    formData.append('car', currentCar.id)
 
     const options = {
       method: "POST",
@@ -53,12 +56,18 @@ const RecordForm = ({ currentCar }) => {
       },
       body: formData,
     };
-    const response = await fetch(`//`, options).catch(handleError);
+    const response = await fetch(`/api/v1/cars/${currentCar.id}/records/`, options).catch(handleError);
     if (!response.ok) {
       throw new Error("Network response not ok");
     }
     const json = await response.json();
     console.log(json);
+    setShop('')
+    setImage(null);
+    setNote('');
+    setService([]);
+    setCost(null);
+    setDataChanged(!dataChanged)
   };
 
   const handleSubmit = (e) => {
@@ -71,9 +80,27 @@ const RecordForm = ({ currentCar }) => {
       <h2>
         {currentCar.year} {currentCar.make} {currentCar.model}
       </h2>
+      <label htmlFor="image" className="mt-3 mb-1">
+        Upload a Photo
+      </label>
+      <input
+        type="file"
+        name="image"
+        id="image"
+        onChange={handleImage}
+        className="w-5/6 file:btn file:btn-sm file:btn-accent file:hover:bg-accent-focus mb-3"
+      />
+      {preview && (
+        <img
+          src={preview}
+          alt="preview"
+          width="30%"
+          className="sm:absolute right-0"
+        />
+      )}
       <form
         id="record-form"
-        className="flex flex-col items-center m-3"
+        className="flex flex-col sm:items-start items-center m-3"
         onSubmit={handleSubmit}
       >
         <label htmlFor="shop">Shop</label>
@@ -88,16 +115,6 @@ const RecordForm = ({ currentCar }) => {
           {shops &&
             shops.map((shop) => <option value={shop.name}>{shop.name}</option>)}
         </select>
-        <label htmlFor="image" className="mt-3 mb-1">
-          Upload a Photo
-        </label>
-        <input
-          type="file"
-          name="image"
-          id="image"
-          onChange={(e) => setImage(e.target.value)}
-          className="w-5/6 file:btn file:btn-sm file:btn-accent mb-3"
-        />
         <label htmlFor="services">Service</label>
         <div>
           <ServicePicker
@@ -108,6 +125,20 @@ const RecordForm = ({ currentCar }) => {
             setQuery={setQuery}
           />
         </div>
+        <div className="flex flex-col items-center">
+          <label htmlFor="cost">Cost of Service</label>
+          <div className="flex items-center justify-center">
+            <span>$</span>
+            <input
+              type="number"
+              name="cost"
+              id="cost"
+              value={cost}
+              onChange={(e) => setCost(e.target.value)}
+              className="p-1 rounded w-1/2"
+            />
+          </div>
+        </div>
         <label htmlFor="note">Note</label>
         <textarea
           name="note"
@@ -116,6 +147,7 @@ const RecordForm = ({ currentCar }) => {
           rows="5"
           value={note}
           onChange={(e) => setNote(e.target.value)}
+          className="text-neutral p-1"
         ></textarea>
         <button type="submit" className="btn btn-sm btn-accent mt-3">
           Submit

@@ -234,10 +234,10 @@ const Dashboard = () => {
       <div className="fixed inset-0 bg-black/50" aria-hidden="true">
         <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
           <Dialog.Panel className="max-w-52 z-50 absolute max-w-lg rounded bg-base-100 p-4 md:p-10 flex flex-col items-center justify-center w-5/6">
-            <div className="w-full">
-              <RecordForm currentCar={car}/>
+            <div className="w-full relative">
+              <RecordForm currentCar={car} dataChanged={dataChanged} setDataChanged={setDataChanged}/>
             </div>
-            <button type="button" onClick={() => setRecordIsOpen(false)}>
+            <button type="button" onClick={() => setFormIsOpen(false)}>
               Close
             </button>
           </Dialog.Panel>
@@ -291,16 +291,6 @@ const Dashboard = () => {
                   ))}
               </ul>
             </div>
-            <div className="records border-t-2 py-2 border-base-300 w-full sm:w-1/2 flex justify-center">
-              <button
-                type="button"
-                className="flex items-center bg-accent text-accent-content p-1 rounded"
-                onClick={() => setFormIsOpen(true)}
-              >
-                Create New Record <BiEdit className="ml-2" />
-              </button>
-            </div>
-          </div>
           <div className="relative">
             <ServicePicker
               items={items}
@@ -317,6 +307,16 @@ const Dashboard = () => {
             >
               Add
             </button>
+          </div>
+            <div className="records border-t-2 mt-2 py-2 border-base-300 w-full sm:w-1/2 flex justify-center">
+              <button
+                type="button"
+                className="flex items-center bg-accent text-accent-content p-1 rounded"
+                onClick={() => setFormIsOpen(true)}
+              >
+                Create New Record <BiEdit className="ml-2" />
+              </button>
+            </div>
           </div>
           <div className="w-full flex justify-between mt-3">
             <button type="button" onClick={() => setIsOpen(false)}>
@@ -503,10 +503,10 @@ const Dashboard = () => {
 
   const recordDetail = (record) => {
     return (
-      <div className="card relative">
+      <div className="card w-full relative">
         <div className="absolute top-2 right-2">
           <label
-            className={`btn btn-sm px-2 swap swap-rotate btn-accent text-accent-content`}
+            className={`btn btn-sm px-2 rounded-3xl swap swap-rotate btn-accent text-accent-content`}
             onChange={() => setIsEditing(!isEditing)}
           >
             <input type="checkbox" className="hidden" />
@@ -538,7 +538,7 @@ const Dashboard = () => {
       <div className="card relative">
         <div className="absolute top-2 right-2">
           <label
-            className="btn btn-sm px-2 swap swap-rotate btn-error text-accent-content"
+            className="btn btn-sm px-2 rounded-3xl swap swap-rotate btn-error text-accent-content"
             onChange={() => setIsEditing(!isEditing)}
           >
             <input type="checkbox" className="hidden" />
@@ -574,8 +574,8 @@ const Dashboard = () => {
       >
         <div className="fixed inset-0 bg-black/50" aria-hidden="true">
           <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
-            <Dialog.Panel className="max-w-52 z-50 absolute max-w-lg rounded bg-base-100 p-4 md:p-10 flex flex-col items-center justify-center w-5/6">
-              <div>
+            <Dialog.Panel className="z-50 absolute max-w-lg rounded bg-base-100 p-4 flex flex-col items-center justify-center w-5/6">
+              <div className="w-full">
                 {isEditing ? editRecordDetail(record) : recordDetail(record)}
               </div>
               <button type="button" onClick={() => setRecordIsOpen(false)}>
@@ -657,6 +657,7 @@ const Dashboard = () => {
     <>
       {recordModal}
       {isEditing ? editCarModal : carModal}
+      {formModal}
       <div
         className={`flex flex-col bg-base-100 items-center shadows justify-center w-full min-h-screen ${
           isOpen && `blur`

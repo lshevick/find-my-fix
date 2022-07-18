@@ -85,7 +85,7 @@ def get_location(request):
 
         response = requests.get(url)
         res = json.loads(response.text)
-        element = res['results'][1]['formatted_address']
+        element = res['results'][0]['address_components'][6]['long_name']
         return Response(element)
     except:
         pass

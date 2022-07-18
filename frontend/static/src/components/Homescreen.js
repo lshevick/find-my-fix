@@ -32,7 +32,7 @@ const Homescreen = () => {
           <div className="col-start-1 col-span-2 card bg-accent-focus text-stone-100 shadow-xl mb-10">
             <div className="card-body">
               <h3 className="card-title">
-                <span>1.</span> Create an account
+                 Create an account
               </h3>
               <p>
                 Without an account, you will only be able to see local shops and
@@ -51,7 +51,7 @@ const Homescreen = () => {
           <div className="col-start-3 row-start-3 col-span-2 card bg-emerald-800 text-stone-100 my-10 shadow-xl">
             <div className="card-body">
               <h3 className="card-title">
-                <span>2:</span> Add your car
+               Add your car
               </h3>
               <p>
                 After creating an account, you'll see this dashboard screen.
@@ -72,7 +72,7 @@ const Homescreen = () => {
           <div className="card bg-teal-700 text-stone-100 shadow-xl my-10 col-start-1 col-span-2">
             <div className="card-body">
               <h3 className="card-title">
-                <span>3.</span> Filtering your Searches
+                Filtering your Searches
               </h3>
               <p>
                 These dropdown menus are how you'll be filtering and sorting the
@@ -100,7 +100,7 @@ const Homescreen = () => {
           <div className="card shadow-xl bg-accent text-stone-100 my-10 col-start-3 col-span-2">
             <div className="card-body">
               <h3 className="card-title">
-                <span>4.</span>Preview Cards
+                Preview Cards
               </h3>
               <p>
                 After setting your preferred fitlers, you will be presented with
