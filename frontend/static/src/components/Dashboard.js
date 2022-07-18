@@ -3,6 +3,7 @@ import { createSearchParams, Link, useOutletContext } from "react-router-dom";
 import { Dialog, Combobox } from "@headlessui/react";
 import Cookies from "js-cookie";
 import ServicePicker from "./ServicePicker";
+import { ImSpinner8 } from "react-icons/im";
 
 function handleError(err) {
   console.warn(err);
@@ -35,6 +36,7 @@ const Dashboard = () => {
   const [preview, setPreview] = useState("");
   const [dataChanged, setDataChanged] = useState(false);
   const editButton = useRef();
+  const [loading, setLoading] = useState(false);
   const [isAuth, setIsAuth, navigate, location, setLocation, queryCar, setQueryCar] =
     useOutletContext();
 
@@ -189,8 +191,10 @@ const Dashboard = () => {
   };
 
   const searchNav = () => {
+    setLoading(true);
     navigator.geolocation.getCurrentPosition((p) => {
       setLocation([p.coords.latitude, p.coords.longitude]);
+      setLoading(false)
       setQueryCar(car)
       navigate('/shops')
     });
@@ -255,7 +259,7 @@ const Dashboard = () => {
               Close
             </button>
             <div className="tooltip" data-tip="Requires Location">
-            <button type="button" className="btn btn-sm btn-accent capitalize" onClick={searchNav}>Find My Fix!</button>
+            <button type="button" className="btn btn-sm btn-accent capitalize w-[130px]" onClick={searchNav}>{loading ? <ImSpinner8 className="animate-spin" /> : 'Find My Fix!'}</button>
             <p className="text-2xs sm:hidden">Requires location</p>
             </div>
             <button type="button" ref={editButton} onClick={() => setIsEditing(!isEditing)}>

@@ -158,7 +158,7 @@ const ShopList = () => {
   };
 
   useEffect(() => {
-    location && getDistanceShops();
+    location && getServiceShops();
   }, []);
 
   const reviewFilteredShops =

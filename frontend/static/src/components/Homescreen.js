@@ -66,7 +66,7 @@ const Homescreen = () => {
           </div>
           <div className="card bg-teal-700 shadow-xl my-10 col-start-1 col-span-2">
             <div className="card-body">
-              <h3>Filtering your Searches</h3>
+              <h3 className="card-title">Filtering your Searches</h3>
               <p>
                 These dropdown menus are how you will be filtering and sorting
                 the results. The topmost menu is where you can choose from your
