@@ -33,6 +33,7 @@ const ShopList = () => {
   const [garage, setGarage] = useState([]);
   // const [queryCar, setQueryCar] = useState(undefined);
   const [specificService, setSpecificService] = useState("");
+  const [exactLocation, setExactLocation] = useState('');
 
   const getCars = async () => {
     const response = await fetch(`/api/v1/cars/`).catch(handleError);
@@ -207,6 +208,20 @@ const ShopList = () => {
     });
   };
 
+  const getFormattedAddress = async() => {
+    const response = await fetch(`/api/v1/shops/location/?location_string=${location}`).catch(handleError);
+    if(!response.ok) {
+    throw new Error('Network response not ok');
+    }
+    const json = await response.json(); 
+    console.log(json)
+    setExactLocation(json)
+  }
+
+  useEffect(() => {
+    Array.isArray(location) && getFormattedAddress();
+  }, [location])
+
   return (
     <>
       <div className="flex flex-col w-full items-center bg-base-100 relative">
@@ -218,7 +233,7 @@ const ShopList = () => {
             <input
               className={`mt-3 p-1 shadow-sm rounded-l-md`}
               type="text"
-              value={Array.isArray(location) ? "Successful" : location}
+              value={Array.isArray(location) ? exactLocation : location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="Enter ZIP or City, State..."
             />

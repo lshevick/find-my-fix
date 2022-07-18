@@ -1,9 +1,9 @@
+from ast import Pass
 import re
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.forms.models import model_to_dict
 from django.db.models import Q
 
 import logging
@@ -51,6 +51,8 @@ def sort_shops_by_distance(shops, origin):
     return sorted(new_list, key=lambda i: i.distance)
 
 
+
+
 # Create your views here.
 
 
@@ -66,6 +68,7 @@ class ShopDetailAPIView(generics.RetrieveAPIView):
 
 class ShopReviewListAPIView(generics.ListCreateAPIView):
     serializer_class = ReviewSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         shop = self.kwargs['shop']
@@ -74,6 +77,15 @@ class ShopReviewListAPIView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+@api_view(['GET'])
+def get_location(request):
+    origin = request.query_params.get('location_string')
+    url = f"https://maps.googleapis.com/maps/api/geocode/json?latlng={origin}&key={os.environ['MAP_SECRET_KEY']}"
+
+    response = requests.get(url)
+    res = json.loads(response.text)
+    element = res['results'][1]['formatted_address']
+    return Response(element)
 
 @api_view(['GET'])
 def shop_distances(request):

@@ -54,7 +54,10 @@ const ShopDetail = () => {
   const shopServiceList =
     detail.services &&
     detail.services.map((i) => (
-      <li key={i} className="capitalize font-medium p-2 my-2 md:m-2 bg-base-300 rounded">
+      <li
+        key={i}
+        className="capitalize font-medium p-2 my-2 md:m-2 bg-base-300 rounded"
+      >
         {i}
       </li>
     ));
@@ -82,6 +85,7 @@ const ShopDetail = () => {
         </ul>
       </div>
       <p>{r.body}</p>
+      <div></div>
     </li>
   ));
 
@@ -114,8 +118,8 @@ const ShopDetail = () => {
           {shopServiceList}
         </ul>
       </div>
-      <div className="w-full mt-10 md:col-start-3 md:row-start-3 md:col-span-2 text-xl">
-        <h2>This shop works on:</h2>
+      <div className="w-full mt-10 md:my-auto md:col-start-3 md:row-start-3 md:col-span-2 text-xl items-center">
+        <h2 className="text-2xl font-medium">This shop works on:</h2>
         <ul className="grid grid-flow-col-dense grid-rows-3 sm:grid-rows-2 md:grid-rows-2">
           {detail.makes &&
             detail.makes.map((m) => (
