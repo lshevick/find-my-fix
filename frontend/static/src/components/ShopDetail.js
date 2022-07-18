@@ -129,9 +129,6 @@ const ShopDetail = () => {
         </ul>
       </div>
       <div className="md:col-start-1 md:col-span-2 md:row-start-4 self-start m-2 p-2">
-        {/* <div> */}
-          {/* <ul>{items && items.map((i) => <li key={i}>{i}</li>)}</ul> */}
-        {/* </div> */}
         {isAuth && (
           <ReviewForm
             detail={detail}

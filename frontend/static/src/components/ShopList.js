@@ -355,7 +355,7 @@ const ShopList = () => {
               </Popover.Panel>
               {isAuth && location && (
                 <Popover.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
-                  Pick a service
+                  Specify a service
                 </Popover.Button>
               )}
             </Popover>
