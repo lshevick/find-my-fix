@@ -3,6 +3,7 @@ import { BiEdit } from "react-icons/bi";
 import Cookies from "js-cookie";
 import { Dialog } from "@headlessui/react";
 import format from "date-fns/format";
+import {AiOutlineClose} from 'react-icons/ai';
 
 function handleError(err) {
   console.warn(err);
@@ -118,7 +119,7 @@ const handleSubmit = (e) => {
       </div>
       <div className="card-body">
         <h3 className="card-title">{shop}</h3>
-        <p>{date}</p>
+        <p>{format(new Date(date), 'MM-dd-yyyy')}</p>
         <div>
           <ul className="capitalize">
             {service &&
@@ -146,7 +147,7 @@ const handleSubmit = (e) => {
             onChange={() => setIsEditing(!isEditing)}
           >
             <input type="checkbox" className="hidden" />
-            <BiEdit className="swap-off" />
+            <AiOutlineClose className="swap-off" />
             <p className="swap-on font-extrabold">X</p>
           </label>
         </div>
@@ -181,6 +182,7 @@ const handleSubmit = (e) => {
           ></textarea>
         </div>
         <figure className="relative flex justify-center max-h-[180px] overflow-hidden">
+            <p className="absolute z-30 text-xl text-neutral font-bold">Change Image</p>
           <input
             type="file"
             name="newRecordImage"

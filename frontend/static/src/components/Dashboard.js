@@ -7,6 +7,7 @@ import { ImSpinner8 } from "react-icons/im";
 import { BiEdit } from "react-icons/bi";
 import RecordForm from "./RecordForm";
 import RecordDetail from "./RecordDetail";
+import format from "date-fns/format";
 
 function handleError(err) {
   console.warn(err);
@@ -277,17 +278,19 @@ const Dashboard = () => {
               <h2 className="font-semibold underline mb-2 text-md md:text-2xl">
                 Work Needed
               </h2>
-              <ul>
+              <div className="overflow-y-scroll max-h-[180px]">
+              <ul className="overflow-y-hidden">
                 {car.service_list &&
                   car.service_list.flat().map((i) => (
                     <li
-                      key={i}
-                      className="capitalize font-light text-xl list-disc py-0"
+                    key={i}
+                    className="capitalize font-light text-xl list-disc py-0"
                     >
                       {i}
                     </li>
                   ))}
               </ul>
+                  </div>
             </div>
             <div className="relative mt-3 sm:mt-1">
               <ServicePicker
@@ -591,7 +594,7 @@ const Dashboard = () => {
                   }}
                 >
                   <div className="flex justify-between w-full">
-                    <p>{record.date}</p>
+                    <p>{format(new Date(record.date), 'MM-dd-yyyy')}</p>
                     <p className="capitalize">{record.service}</p>
                   </div>
                 </button>

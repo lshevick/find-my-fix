@@ -156,7 +156,7 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
           rows="5"
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          className="text-neutral p-1 bg-stone-100"
+          className="text-neutral p-1 bg-stone-100 rounded"
           ></textarea>
         <button type="submit" className="btn btn-sm btn-accent mt-3">
           Submit
