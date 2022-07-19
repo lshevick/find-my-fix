@@ -6,6 +6,7 @@ import ServicePicker from "./ServicePicker";
 import { ImSpinner8 } from "react-icons/im";
 import { BiEdit } from "react-icons/bi";
 import RecordForm from "./RecordForm";
+import RecordDetail from "./RecordDetail";
 
 function handleError(err) {
   console.warn(err);
@@ -52,16 +53,6 @@ const Dashboard = () => {
     setQueryCar,
     theme,
   ] = useOutletContext();
-  const [newNote, setNewNote] = useState("");
-  const [newRecordImage, setNewRecordImage] = useState(null);
-  const [recordPreview, setRecordPreview] = useState(null);
-
-  const filteredServices =
-    query === ""
-      ? serviceList
-      : serviceList.filter((s) => {
-          return s.toLowerCase().includes(query.toLowerCase());
-        });
 
   const handleImage = (e) => {
     const file = e.target.files[0];
@@ -70,18 +61,6 @@ const Dashboard = () => {
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreview(reader.result);
-      console.log("updated preview");
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleRecordImage = (e) => {
-    const file = e.target.files[0];
-    setNewRecordImage(file);
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setRecordPreview(reader.result);
       console.log("updated preview");
     };
     reader.readAsDataURL(file);
@@ -520,104 +499,6 @@ const Dashboard = () => {
     </Dialog>
   );
 
-  const recordDetail = (record) => {
-    return (
-      <div className="card w-full relative shadow-md">
-        <div className="absolute top-2 right-2">
-          <label
-            className={`btn btn-sm px-2 rounded-3xl swap swap-rotate btn-accent text-accent-content`}
-            onChange={() => setIsEditing(!isEditing)}
-          >
-            <input type="checkbox" className="hidden" />
-            <BiEdit className="swap-off" />
-            <p className="swap-on">X</p>
-          </label>
-        </div>
-        <div className="card-body">
-          <h3 className="card-title">{record.shop}</h3>
-          <p>{record.date}</p>
-          <div>
-            <ul className="capitalize">
-              {record.service &&
-                record.service.map((service) => (
-                  <li key={service} className="bg-base-300 w-fit p-1 rounded">
-                    {service}
-                  </li>
-                ))}
-            </ul>
-          </div>
-          {record.note}
-        </div>
-        {record.image && (
-          <figure>
-            <img src={record.image} alt="record" />
-          </figure>
-        )}
-      </div>
-    );
-  };
-
-  const editRecordDetail = (record) => {
-    return (
-      <div className="card relative">
-        <div className="absolute top-2 right-2">
-          <label
-            className="btn btn-sm px-2 rounded-3xl swap swap-rotate btn-error text-accent-content"
-            onChange={() => setIsEditing(!isEditing)}
-          >
-            <input type="checkbox" className="hidden" />
-            <BiEdit className="swap-off" />
-            <p className="swap-on font-extrabold">X</p>
-          </label>
-        </div>
-        <div className="card-body">
-          <h3 className="card-title">{record.shop}</h3>
-          <p>{record.date}</p>
-          <div className="flex">
-            <ul className="capitalize">
-              {record.service &&
-                record.service.map((service) => (
-                  <li key={service} className="bg-base-300 w-fit p-1 rounded">
-                    {service}
-                  </li>
-                ))}
-            </ul>
-          </div>
-          <textarea
-            name="newNote"
-            id="newNote"
-            cols="20"
-            rows="5"
-            className="p-1 rounded bg-stone-100 text-black"
-            value={newNote}
-            onChange={(e) => setNewNote(e.target.value)}
-          ></textarea>
-        </div>
-        <figure className="relative flex justify-center max-h-[300px] overflow-hidden">
-          <input
-            type="file"
-            name="newRecordImage"
-            id="newRecordImage"
-            onChange={handleRecordImage}
-            className='absolute z-40 opacity-1 file:cursor-pointer w-1/2'
-          />
-          {record.image ? <img src={record.image} alt="record" className="object-cover blur-sm" /> : <div className="bg-stone-300 py-4 px-1 font-meduim text-lg rounded">Add an Image +</div>}
-        </figure>
-        <div className="flex items-center justify-between p-3">
-        <button type="button" className="mx-1 px-2 font-bold text-lg text-error border-2 rounded border-error hover:bg-error hover:text-error-content">
-                Delete
-              </button>
-          <button
-            type="button"
-            className="text-success font-bold text-lg px-2 rounded border-2 border-success hover:bg-success hover:text-success-content"
-          >
-            Save
-          </button>
-        </div>
-      </div>
-    );
-  };
-
   const recordModal = (
     <>
       <Dialog
@@ -632,7 +513,15 @@ const Dashboard = () => {
           <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
             <Dialog.Panel className="z-50 absolute rounded-2xl max-w-lg bg-base-100 flex flex-col items-center justify-center w-5/6">
               <div className="w-full">
-                {isEditing ? editRecordDetail(record) : recordDetail(record)}
+                <RecordDetail
+                  key={record.id}
+                  {...record}
+                  currentCar={car}
+                  getRecordDetail={getRecordDetail}
+                  setRecordIsOpen={setRecordIsOpen}
+                  dataChanged={dataChanged}
+                  setDataChanged={setDataChanged}
+                />
               </div>
               <button
                 type="button"

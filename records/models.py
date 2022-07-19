@@ -9,7 +9,7 @@ class Record(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='records', blank=True)
     image = models.ImageField(null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
     note = models.TextField(max_length=300)
     service = models.JSONField()
     cost = models.FloatField()

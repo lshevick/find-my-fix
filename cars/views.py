@@ -50,7 +50,6 @@ class RecordListAPIView(generics.ListCreateAPIView):
 class RecordDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly,)
     
 
 

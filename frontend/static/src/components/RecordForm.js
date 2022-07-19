@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import ServicePicker from "./ServicePicker";
+import { setDate } from "date-fns";
 
 function handleError(err) {
   console.warn(err);
@@ -10,6 +11,7 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
   const [shop, setShop] = useState("");
   const [shops, setShops] = useState([]);
   const [image, setImage] = useState(null);
+  const [date, setDate] = useState(null);
   const [cost, setCost] = useState(null);
   const [note, setNote] = useState("");
   const [service, setService] = useState([]);
@@ -48,6 +50,7 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
     formData.append("service", JSON.stringify(service));
     formData.append("cost", cost);
     formData.append('car', currentCar.id)
+    formData.append('date', date);
 
     const options = {
       method: "POST",
@@ -66,6 +69,7 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
     setImage(null);
     setPreview(null);
     setNote('');
+    setDate(null);
     setService([]);
     setCost(0);
     setDataChanged(!dataChanged)
@@ -83,6 +87,11 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
       </h2>
 
       <div className="w-full flex flex-col items-center">
+      <form
+        id="record-form"
+        className="flex flex-col sm:items-start items-center m-3"
+        onSubmit={handleSubmit}
+        >
       <label htmlFor="image" className="mt-3 mb-1">
         Upload a Photo
       </label>
@@ -101,14 +110,11 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
           className="sm:absolute right-0"
           />
           )}
-      <form
-        id="record-form"
-        className="flex flex-col sm:items-start items-center m-3"
-        onSubmit={handleSubmit}
-        >
+          <label htmlFor="date">Date of Service</label>
+          <input type="date" name="date" id="date" value={date} onChange={(e) => setDate(e.target.value)} className='rounded p-1 bg-stone-100' />
         <label htmlFor="shop">Shop</label>
         <select
-          className="p-1 rounded"
+          className="p-1 rounded bg-stone-100"
           name="shop"
           id="shop"
           value={shop}
@@ -131,14 +137,14 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
         <div className="flex flex-col items-center">
           <label htmlFor="cost">Cost of Service</label>
           <div className="flex items-center justify-center">
-            <span>$</span>
+            <span className="px-2">$</span>
             <input
               type="number"
               name="cost"
               id="cost"
               value={cost}
               onChange={(e) => setCost(e.target.value)}
-              className="p-1 rounded w-1/2"
+              className="p-1 rounded w-1/2 bg-stone-100"
               />
           </div>
         </div>
@@ -150,7 +156,7 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
           rows="5"
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          className="text-neutral p-1"
+          className="text-neutral p-1 bg-stone-100"
           ></textarea>
         <button type="submit" className="btn btn-sm btn-accent mt-3">
           Submit
