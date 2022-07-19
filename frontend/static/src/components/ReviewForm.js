@@ -7,7 +7,13 @@ function handleError(err) {
   console.warn(err);
 }
 
-const ReviewForm = ({ detail, dataChanged, setDataChanged, items, setItems }) => {
+const ReviewForm = ({
+  detail,
+  dataChanged,
+  setDataChanged,
+  items,
+  setItems,
+}) => {
   const [body, setBody] = useState("");
   const [rating, setRating] = useState(1);
   const [query, setQuery] = useState("");
@@ -48,19 +54,22 @@ const ReviewForm = ({ detail, dataChanged, setDataChanged, items, setItems }) =>
 
   return (
     <>
-      <form onSubmit={handleReviewSubmit} className="bg-base-300 rounded flex flex-col items-center">
+      <form
+        onSubmit={handleReviewSubmit}
+        className="bg-base-300 rounded flex flex-col items-center"
+      >
         <label htmlFor="body" className="text-3xl">
           Review a Service
         </label>
         <div className="w-1/2">
-        <ServicePicker
-          items={items}
-          setItems={setItems}
-          serviceList={serviceList}
-          query={query}
-          setQuery={setQuery}
+          <ServicePicker
+            items={items}
+            setItems={setItems}
+            serviceList={serviceList}
+            query={query}
+            setQuery={setQuery}
           />
-          </div>
+        </div>
         <div className="mt-3">
           <Rating
             name="rating"
@@ -71,21 +80,21 @@ const ReviewForm = ({ detail, dataChanged, setDataChanged, items, setItems }) =>
           />
         </div>
 
-        <div className="flex items-center justify-center">
-          <input
+        <div className="flex flex-col sm:flex-row items-end justify-center">
+          <textarea
             className="m-3 p-1 rounded-md"
-            type="text"
             name="body"
             id="body"
-            value={body}
-            disabled={items === [] ? true : false}
+            cols="30"
+            rows="5"
             onChange={(e) => setBody(e.target.value)}
+            disabled={items === [] ? true : false}
             autoComplete="off"
             placeholder="Write your review..."
-          />
+          ></textarea>
           <button
             type="submit"
-            className="p-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
+            className="p-1 my-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
           >
             Send
           </button>
