@@ -370,9 +370,9 @@ const ShopList = () => {
               <Popover.Button
                 className={` ${
                   location ? "visible" : "invisible"
-                } px-2 text-xl m-2 border-2 border-stone-500 rounded`}
+                } px-2 text-xl m-2 border-2 border-stone-500 rounded min-w-[180px]`}
               >
-                {({open}) => (<>By {filter} <BsCaretDownFill className={`inline-block transition-all ${open ? 'rotate-180' : ''}`} /></>)}
+                {({open}) => (<>By {filter === 'specificService' ? ' specific service' : filter} <BsCaretDownFill className={`inline-block transition-all ${open ? 'rotate-180' : ''}`} /></>)}
 
               </Popover.Button>
             </Popover>

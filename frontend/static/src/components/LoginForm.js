@@ -58,7 +58,7 @@ const LoginForm = () => {
   };
   return (
     <>
-      <div className="pt-20 bg-base-100 h-screen w-full p-5 flex flex-col justify-center items-center">
+      <div className="bg-base-100 h-screen w-full p-5 flex flex-col  items-center">
         <form
           className="p-10 flex flex-col items-end bg-base-300 rounded-sm"
           onSubmit={handleSubmit}

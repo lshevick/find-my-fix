@@ -6,7 +6,7 @@ from cars.models import Car
 
 class Record(models.Model):
     shop = models.CharField(max_length=255)
-    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='records')
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='records', blank=True)
     image = models.ImageField(null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
     date = models.DateField(auto_now_add=True)

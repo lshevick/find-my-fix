@@ -77,9 +77,11 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
 
   return (
     <>
-      <h2>
+      <h2 className="text-3xl font-bold">
         {currentCar.year} {currentCar.make} {currentCar.model}
       </h2>
+
+      <div className="w-full flex flex-col items-center">
       <label htmlFor="image" className="mt-3 mb-1">
         Upload a Photo
       </label>
@@ -89,20 +91,20 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
         id="image"
         onChange={handleImage}
         className="w-5/6 file:btn file:btn-sm file:btn-accent file:hover:bg-accent-focus mb-3"
-      />
+        />
       {preview && (
-        <img
+          <img
           src={preview}
           alt="preview"
           width="30%"
           className="sm:absolute right-0"
-        />
-      )}
+          />
+          )}
       <form
         id="record-form"
         className="flex flex-col sm:items-start items-center m-3"
         onSubmit={handleSubmit}
-      >
+        >
         <label htmlFor="shop">Shop</label>
         <select
           className="p-1 rounded"
@@ -110,7 +112,7 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
           id="shop"
           value={shop}
           onChange={(e) => setShop(e.target.value)}
-        >
+          >
           <option value="">Choose a Shop</option>
           {shops &&
             shops.map((shop) => <option value={shop.name}>{shop.name}</option>)}
@@ -123,7 +125,7 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
             serviceList={currentCar.service_list.flat()}
             query={query}
             setQuery={setQuery}
-          />
+            />
         </div>
         <div className="flex flex-col items-center">
           <label htmlFor="cost">Cost of Service</label>
@@ -136,7 +138,7 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
               value={cost}
               onChange={(e) => setCost(e.target.value)}
               className="p-1 rounded w-1/2"
-            />
+              />
           </div>
         </div>
         <label htmlFor="note">Note</label>
@@ -148,11 +150,12 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
           value={note}
           onChange={(e) => setNote(e.target.value)}
           className="text-neutral p-1"
-        ></textarea>
+          ></textarea>
         <button type="submit" className="btn btn-sm btn-accent mt-3">
           Submit
         </button>
       </form>
+          </div>
     </>
   );
 };

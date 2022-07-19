@@ -29,35 +29,29 @@ const Homescreen = () => {
               Here's some info on how to use this app:
             </p>
           </div>
-          <div className="col-start-1 col-span-2 card bg-accent text-stone-100 shadow-xl mb-10">
+          <div className="col-start-2 col-span-2 card bg-accent text-stone-100 shadow-xl mb-10">
             <div className="card-body">
               <h3 className="card-title">
-                 Create an account
+                About
               </h3>
               <p>
-                Without an account, you will only be able to see local shops and
-                their reviews.
-                <br /> With an account, you will have more options to filter
-                shops by and also be able to write your own reviews.
+              This app was created to help people find local automotive shops that can cater to their needs. 
               </p>
             </div>
           </div>
-          <div className="col-span-2 md:w-5/6 md:mx-auto">
+          <div className="col-span-4 row-start-3 md:w-5/6 md:mx-auto">
             <img
               src={require("../images/search_screen.png")}
               alt="search screen"
             />
           </div>
-          <div className="col-start-1 row-start-3 col-span-2 card bg-accent-focus text-stone-100 my-10 shadow-xl">
+          <div className="col-start-1 row-start-4 col-span-2 card bg-accent-focus text-stone-100 my-10 shadow-xl">
             <div className="card-body">
               <h3 className="card-title">
                Add your car
               </h3>
               <p>
-                After creating an account, you'll see this dashboard screen.
-                Here you can click add a car, and that will take you to a form.
-                After adding a car, work needed for the car, and your location
-                you'll be taken to the search screen.
+                After logging in, you can save your cars to you garage where you can manage the work your car needs.
               </p>
             </div>
           </div>
@@ -75,19 +69,7 @@ const Homescreen = () => {
                 Filtering your Searches
               </h3>
               <p>
-                These dropdown menus are how you'll be filtering and sorting the
-                results. <br /> <br />
-                The topmost menu is where you can choose from your saved cars
-                which one you would like to search with. <br />
-                <br />
-                The bottom left menu is for sorting the shops by distance,
-                average ratings, and by how many of the added work items that
-                shops can complete. <br />
-                <br />
-                The bottom right menu is for filtering shops by a specific
-                service, for example, if your car has several work items on it,
-                but you were just looking to have one of them done for now, you
-                could filter the shops by that particular service.
+                By using the filter and sorting menus on the search page, you can get as specific or as broad as you would like.
               </p>
             </div>
           </div>
@@ -103,17 +85,11 @@ const Homescreen = () => {
                 Preview Cards
               </h3>
               <p>
-                After setting your preferred fitlers, you will be presented with
-                this card. It contains the title of the shop, how far away it is
-                from your set location, it's overall average rating, and then a
-                list of the services the shop has to offer. <br /> <br /> Each
-                service that is highlighted is a service that you have added to
-                your selected car. The number beside the service is how many
-                reviews that particular service has.
+              The shop preview card are a quick glance at what the shop had to offer
               </p>
             </div>
           </div>
-          <div className="col-start-3 col-span-2 md:row-start-5 md:w-5/6 mx-auto">
+          <div className="col-start-3 col-span-2 md:row-start-6 md:w-5/6 mx-auto">
             <img src={require("../images/shop_card.png")} alt="shop card" />
           </div>
         </div>
