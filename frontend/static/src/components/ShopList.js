@@ -265,7 +265,7 @@ const ShopList = () => {
             />
             <button
               type="button"
-              className="p-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-r-md shadow-md hover:shadow-lg transition-all"
+              className="p-2 bg-accent-focus hover:bg-accent text-white rounded-r-md shadow-md hover:shadow-lg transition-all"
               onClick={getLocation}
             >
               {location ? (
@@ -314,7 +314,7 @@ const ShopList = () => {
             <button
               type="button"
               className={`px-1 text-xl rounded text-accent border-accent border-2 hover:bg-accent hover:text-accent-content transition-all ${
-                !isAuth && location && !queryCar ? "invisible" : "visible"
+                !isAuth && !location && !queryCar ? "invisible" : "visible"
               }`}
               onClick={getDistanceShops}
             >
