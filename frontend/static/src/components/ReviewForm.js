@@ -48,7 +48,7 @@ const ReviewForm = ({
     setItems([]);
     setBody("");
     setQuery("");
-    setRating(0);
+    setRating(1);
     setDataChanged(!dataChanged);
   };
 
@@ -87,6 +87,7 @@ const ReviewForm = ({
             id="body"
             cols="30"
             rows="5"
+            value={body}
             onChange={(e) => setBody(e.target.value)}
             disabled={items === [] ? true : false}
             autoComplete="off"

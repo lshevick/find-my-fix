@@ -64,9 +64,10 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
     console.log(json);
     setShop('')
     setImage(null);
+    setPreview(null);
     setNote('');
     setService([]);
-    setCost(null);
+    setCost(0);
     setDataChanged(!dataChanged)
   };
 

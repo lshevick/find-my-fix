@@ -8,7 +8,7 @@ urlpatterns = [
     path('', shop_distances),
     path('<int:pk>/', ShopDetailAPIView.as_view()),
     path('<int:shop>/reviews/', ShopReviewListAPIView.as_view()),
-    path('<int:shop>/reviews/<int:pk>', ReviewDetailAPIView.as_view()),
+    path('<int:shop>/reviews/<int:pk>/', ReviewDetailAPIView.as_view()),
     path('services/', shop_by_services),
     path('location/', get_location),
 ]

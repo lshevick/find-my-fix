@@ -111,7 +111,7 @@ const ShopDetail = () => {
             ))}
         </ul>
       </div>
-      <div className="md:col-start-1 md:col-span-2 md:row-start-4 self-start m-2 p-2">
+      <div className="md:col-start-2 md:col-span-2 md:row-start-4 self-start m-2 p-2">
         {isAuth && (
           <ReviewForm
             detail={detail}
@@ -122,7 +122,7 @@ const ShopDetail = () => {
           />
         )}
       </div>
-      <div className="flex flex-col md:col-start-3 md:col-span-2 md:row-start-4 rounded self-start m-2 p-2">
+      <div className="flex flex-col md:col-start-2 md:col-span-2 md:row-start-5 rounded self-start m-2 p-2">
         <p className="font-medium text-2xl">Reviews</p>
         <ul className="flex flex-col items-center">{reviewList}</ul>
       </div>

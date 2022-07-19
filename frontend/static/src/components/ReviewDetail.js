@@ -2,7 +2,7 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 import { AiFillEdit, AiOutlineClose } from "react-icons/ai";
 import { Rating } from "@mui/material";
-import {BiTrashAlt} from 'react-icons/bi'
+import { BiTrashAlt } from "react-icons/bi";
 
 function handleError(err) {
   console.warn(err);
@@ -48,23 +48,32 @@ const ReviewDetail = ({
     getReviews();
   };
 
-  const deleteReview = async() => {
+  const deleteReview = async (id) => {
     const options = {
-    method: 'DELETE',
-    headers: {
-    'Content-Type': 'application/json',
-    'X-CSRFToken': Cookies.get('csrftoken'),
-    },
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": Cookies.get("csrftoken"),
+      },
+    };
+    const response = await fetch(
+      `/api/v1/shops/${shopId}/reviews/${id}/`,
+      options
+    ).catch(handleError);
+    if (!response.ok) {
+      throw new Error("Network response not ok");
     }
-    const response = await fetch(`/api/v1/shops/${shopId}/reviews/${id}/`, options).catch(handleError);
-    if(!response.ok) {
-    throw new Error('Network response not ok');
-    }
-    const json = await response.json(); 
-    console.log(json)
-    getReviews();
+    const json = await response.json();
+    console.log(json);
+  };
+
+  const handleDelete = () => {
+    deleteReview(id);
     setIsEditing(false);
-  }
+    setTimeout(() => {
+      getReviews();
+    }, 300);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -110,7 +119,12 @@ const ReviewDetail = ({
       <form id="newReviewForm" onSubmit={handleSubmit}>
         <div>
           <span className="mr-2 font-bold">{username}</span>
-          <Rating name="rating" value={newRating} precision={1} onChange={(e, r) => setNewRating(r) } />
+          <Rating
+            name="rating"
+            value={newRating}
+            precision={1}
+            onChange={(e, r) => setNewRating(r)}
+          />
         </div>
         <div>
           <ul className="flex">
@@ -134,14 +148,24 @@ const ReviewDetail = ({
         />
         {Cookies.get("username") === username && (
           <div className="absolute top-2 right-3">
-            <button type="button" onClick={() => deleteReview()} className='px-2 mx-3 hover:text-error'><BiTrashAlt/></button>
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="px-2 mx-3 hover:text-error"
+            >
+              <BiTrashAlt />
+            </button>
             <button type="button" onClick={() => setIsEditing(!isEditing)}>
-              <AiOutlineClose/>
+              <AiOutlineClose />
             </button>
           </div>
         )}
         <div className="absolute bottom-2 right-2">
-          <button type="submit" form="newReviewForm" className="text-success hover:text-accent-focus">
+          <button
+            type="submit"
+            form="newReviewForm"
+            className="text-success hover:text-accent-focus"
+          >
             Save Changes
           </button>
         </div>

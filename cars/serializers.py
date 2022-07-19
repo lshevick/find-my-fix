@@ -5,8 +5,8 @@ from records.serializers import RecordSerializer
 
 class CarSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField(source='user.username')
-    records = RecordSerializer('records', many=True)
+    records = RecordSerializer('records', many=True, read_only=True)
 
     class Meta:
-        model = Car
+        model = Car 
         fields = '__all__'
