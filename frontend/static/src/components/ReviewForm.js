@@ -15,7 +15,7 @@ const ReviewForm = ({
   setItems,
 }) => {
   const [body, setBody] = useState("");
-  const [rating, setRating] = useState(1);
+  const [rating, setRating] = useState(0);
   const [query, setQuery] = useState("");
 
   const serviceList = detail.services && detail.services;
@@ -48,7 +48,7 @@ const ReviewForm = ({
     setItems([]);
     setBody("");
     setQuery("");
-    setRating(1);
+    setRating(0);
     setDataChanged(!dataChanged);
   };
 
@@ -58,8 +58,8 @@ const ReviewForm = ({
         onSubmit={handleReviewSubmit}
         className="bg-base-300 rounded flex flex-col items-center"
       >
-        <label htmlFor="body" className="text-3xl">
-          Review a Service
+        <label htmlFor="body" className="text-2xl py-4">
+          Write a Review
         </label>
         <div className="w-1/2">
           <ServicePicker
@@ -77,6 +77,7 @@ const ReviewForm = ({
             onChange={(e, newRating) => {
               setRating(newRating);
             }}
+            className='bg-base-100 p-1 rounded'
           />
         </div>
 
@@ -86,7 +87,7 @@ const ReviewForm = ({
             name="body"
             id="body"
             cols="30"
-            rows="5"
+            rows="2"
             value={body}
             onChange={(e) => setBody(e.target.value)}
             disabled={items === [] ? true : false}
@@ -95,7 +96,7 @@ const ReviewForm = ({
           ></textarea>
           <button
             type="submit"
-            className="p-1 my-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
+            className="p-1 my-2 btn btn-accent btn-sm capitalize rounded"
           >
             Send
           </button>

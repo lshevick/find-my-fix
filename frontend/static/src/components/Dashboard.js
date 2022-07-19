@@ -280,7 +280,7 @@ const Dashboard = () => {
             >
               Delete Car
             </button>
-          <div className="my-3 w-full flex flex-col items-start">
+          <div className="my-3 w-full flex flex-col items-center">
             <div className="services">
               <h2 className="font-semibold underline mb-2 text-md md:text-2xl">
                 Work Needed
@@ -300,7 +300,7 @@ const Dashboard = () => {
                   </div>
             </div>
               </div>
-            <div className="relative flex flex-col items-end mt-3 sm:mt-1">
+            <div className="relative flex items-end mt-3 sm:mt-1">
               <ServicePicker
                 items={items}
                 setItems={setItems}
@@ -309,7 +309,7 @@ const Dashboard = () => {
                 setQuery={setQuery}
               />
               <button
-                className="bg-accent hover:bg-accent-focus px-2 m-1 mt-2 rounded text-white transition-all duration-300"
+                className="bg-accent hover:bg-accent-focus px-2 m-1 mt-2 rounded text-accent-content transition-all duration-300"
                 onClick={() => {
                   addService(car.id);
                 }}
@@ -408,7 +408,7 @@ const Dashboard = () => {
               Change Image
             </button>
           )}
-          <div className="flex border-b-2 border-stone-600 text-3xl flex-wrap justify-center">
+          <div className="flex border-b-2 border-stone-600 text-xl sm:text-3xl flex-wrap justify-center">
             <h2 className="mx-1">{car.year}</h2>
             <h2 className="mx-1">{car.make}</h2>
             <h2 className="mx-1">{car.model}</h2>
@@ -455,7 +455,7 @@ const Dashboard = () => {
               </div>
             </Dialog>
           </div>
-          <div className="m-3 w-full flex flex-col items-start">
+          <div className="m-3 w-full flex flex-col items-center">
             <h2 className="font-semibold underline text-2xl">Work needed</h2>
             <div className="overflow-y-scroll max-h-[180px] md:w-1/2 w-full">
             <ul className="overflow-y-hidden w-full">
@@ -480,7 +480,7 @@ const Dashboard = () => {
             </ul>
             </div>
               </div>
-            <div className="relative flex flex-col items-end mt-3 sm:mt-1">
+            <div className="relative flex items-end mt-3 sm:mt-1">
               <ServicePicker
                 items={items}
                 setItems={setItems}
@@ -489,7 +489,7 @@ const Dashboard = () => {
                 setQuery={setQuery}
               />
               <button
-                className="bg-accent hover:bg-accent-focus px-2 m-1 mt-2 rounded text-white transition-all duration-300"
+                className="bg-accent hover:bg-accent-focus px-2 m-1 mt-2 rounded text-accent-content transition-all duration-300"
                 onClick={() => {
                   addService(car.id);
                 }}
