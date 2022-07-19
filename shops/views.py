@@ -10,6 +10,7 @@ import urllib.parse
 import os
 import json
 
+from .permissions import IsUserOrReadOnly
 from .models import Shop
 from .serializers import ShopSerializer, NoDistanceSerializer
 from reviews.models import Review
@@ -49,8 +50,6 @@ def sort_shops_by_distance(shops, origin):
     return sorted(new_list, key=lambda i: i.distance)
 
 
-
-
 # Create your views here.
 
 
@@ -74,6 +73,13 @@ class ShopReviewListAPIView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class ReviewDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = (IsUserOrReadOnly,)
+
+
 
 @api_view(['GET'])
 def get_location(request):
