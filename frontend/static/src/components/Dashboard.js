@@ -228,7 +228,7 @@ const Dashboard = () => {
       >
         <div className="fixed inset-0 bg-black/50" aria-hidden="true">
           <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
-            <Dialog.Panel className="max-w-52 z-50 absolute max-w-lg rounded bg-base-100 p-4 md:p-10 flex flex-col items-center justify-center w-5/6">
+            <Dialog.Panel className="max-w-52 z-50 absolute max-w-lg rounded bg-base-200 p-4 md:p-10 flex flex-col items-center justify-center w-5/6">
               <div className="w-full relative">
                 <RecordForm
                   currentCar={car}
@@ -254,7 +254,7 @@ const Dashboard = () => {
     >
       <div className="fixed inset-0" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
-        <Dialog.Panel className="mx-5 max-w-lg rounded bg-base-100 p-10 flex flex-col items-center justify-center w-5/6">
+        <Dialog.Panel className="mx-5 max-w-lg rounded bg-base-200 p-10 flex flex-col items-center justify-center w-5/6">
           <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
             <img
               src={
@@ -269,22 +269,29 @@ const Dashboard = () => {
             />
           </div>
           <div className="flex border-b-2 border-stone-600 text-xl sm:text-3xl flex-wrap justify-center">
-            <h2 className="mx-0.5">{car.year}</h2>
-            <h2 className="mx-0.5">{car.make}</h2>
-            <h2 className="mx-0.5">{car.model}</h2>
+            <h2 className="mx-1">{car.year}</h2>
+            <h2 className="mx-1">{car.make}</h2>
+            <h2 className="mx-1">{car.model}</h2>
           </div>
-          <div className="my-3 w-full flex flex-col items-center">
+          <button
+              type="button"
+              className="font-bold invisible text-red-700 hover:text-red-600"
+              onClick={() => setDeleteIsOpen(true)}
+            >
+              Delete Car
+            </button>
+          <div className="my-3 w-full flex flex-col items-start">
             <div className="services">
               <h2 className="font-semibold underline mb-2 text-md md:text-2xl">
                 Work Needed
               </h2>
               <div className="overflow-y-scroll max-h-[180px]">
-              <ul className="overflow-y-hidden">
+              <ul className="overflow-y-hidden w-full">
                 {car.service_list &&
                   car.service_list.flat().map((i) => (
                     <li
                     key={i}
-                    className="capitalize font-light text-xl list-disc py-0"
+                    className="capitalize font-light text-xl list-disc py-1"
                     >
                       {i}
                     </li>
@@ -292,7 +299,8 @@ const Dashboard = () => {
               </ul>
                   </div>
             </div>
-            <div className="relative mt-3 sm:mt-1">
+              </div>
+            <div className="relative flex flex-col items-end mt-3 sm:mt-1">
               <ServicePicker
                 items={items}
                 setItems={setItems}
@@ -301,7 +309,7 @@ const Dashboard = () => {
                 setQuery={setQuery}
               />
               <button
-                className="bg-emerald-700 px-2 m-1 mt-2 rounded text-white hover:bg-emerald-600"
+                className="bg-accent hover:bg-accent-focus px-2 m-1 mt-2 rounded text-white transition-all duration-300"
                 onClick={() => {
                   addService(car.id);
                 }}
@@ -312,13 +320,12 @@ const Dashboard = () => {
             <div className="records border-t-2 mt-2 py-2 border-base-300 w-full sm:w-1/2 flex justify-center">
               <button
                 type="button"
-                className="flex items-center bg-accent text-accent-content p-1 rounded"
+                className="flex items-center transition-all bg-transparent border-2 border-accent hover:bg-accent text-accent hover:text-accent-content p-1 rounded"
                 onClick={() => setFormIsOpen(true)}
               >
                 Create New Record <BiEdit className="ml-2" />
               </button>
             </div>
-          </div>
           <div className="w-full flex justify-between mt-3">
             <button type="button" onClick={() => setIsOpen(false)}>
               Close
@@ -326,7 +333,7 @@ const Dashboard = () => {
             <div className="tooltip" data-tip="Requires Location">
               <button
                 type="button"
-                className="btn btn-sm btn-accent capitalize w-[130px]"
+                className="btn btn-sm btn-accent rounded text-md font-medium capitalize w-[120px]"
                 onClick={searchNav}
               >
                 {loading ? (
@@ -360,7 +367,7 @@ const Dashboard = () => {
     >
       <div className="fixed inset-0" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-5 max-w-lg rounded bg-base-100 p-10 flex flex-col items-center jsutify-center w-5/6">
+        <Dialog.Panel className="mx-5 max-w-lg rounded bg-base-200 p-10 flex flex-col items-center jsutify-center w-5/6">
           <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
             {preview ? (
               <img src={preview} alt="preview" />
@@ -402,9 +409,9 @@ const Dashboard = () => {
             </button>
           )}
           <div className="flex border-b-2 border-stone-600 text-3xl flex-wrap justify-center">
-            <h2 className="mx-0.5">{car.year}</h2>
-            <h2 className="mx-0.5">{car.make}</h2>
-            <h2 className="mx-0.5">{car.model}</h2>
+            <h2 className="mx-1">{car.year}</h2>
+            <h2 className="mx-1">{car.make}</h2>
+            <h2 className="mx-1">{car.model}</h2>
           </div>
           <div>
             <button
@@ -448,14 +455,15 @@ const Dashboard = () => {
               </div>
             </Dialog>
           </div>
-          <div className="m-3">
+          <div className="m-3 w-full flex flex-col items-start">
             <h2 className="font-semibold underline text-2xl">Work needed</h2>
-            <ul>
+            <div className="overflow-y-scroll max-h-[180px] md:w-1/2 w-full">
+            <ul className="overflow-y-hidden w-full">
               {car.service_list &&
                 car.service_list.flat().map((i) => (
                   <li
                     key={i}
-                    className="capitalize font-light text-xl list-disc"
+                    className="capitalize font-light text-xl list-disc py-1"
                   >
                     <div className="w-full flex justify-between">
                       {i}
@@ -470,8 +478,9 @@ const Dashboard = () => {
                   </li>
                 ))}
             </ul>
-            <div className="relative mt-3">
-              <p>Add work to be done</p>
+            </div>
+              </div>
+            <div className="relative flex flex-col items-end mt-3 sm:mt-1">
               <ServicePicker
                 items={items}
                 setItems={setItems}
@@ -480,7 +489,7 @@ const Dashboard = () => {
                 setQuery={setQuery}
               />
               <button
-                className="bg-emerald-700 px-2 m-1 rounded text-white hover:bg-emerald-600"
+                className="bg-accent hover:bg-accent-focus px-2 m-1 mt-2 rounded text-white transition-all duration-300"
                 onClick={() => {
                   addService(car.id);
                 }}
@@ -488,11 +497,33 @@ const Dashboard = () => {
                 Add
               </button>
             </div>
-          </div>
+            <div className="records invisible border-t-2 mt-2 py-2 border-base-300 w-full sm:w-1/2 flex justify-center">
+              <button
+                type="button"
+                className="flex items-center transition-all bg-transparent border-2 border-accent hover:bg-accent text-accent hover:text-accent-content p-1 rounded"
+                onClick={() => setFormIsOpen(true)}
+              >
+                Create New Record <BiEdit className="ml-2" />
+              </button>
+            </div>
           <div className="w-full flex justify-between">
             <button type="button" onClick={() => setIsOpen(false)}>
               Close
             </button>
+            <div className="tooltip" data-tip="Requires Location">
+              <button
+                type="button"
+                className="btn btn-sm btn-accent rounded invisible text-md font-medium capitalize w-[120px]"
+                onClick={searchNav}
+              >
+                {loading ? (
+                  <ImSpinner8 className="animate-spin" />
+                ) : (
+                  "Find My Fix!"
+                )}
+              </button>
+              <p className="text-2xs invisible">Requires location</p>
+            </div>
             <button type="button" onClick={() => setIsEditing(!isEditing)}>
               Done
             </button>
@@ -514,7 +545,7 @@ const Dashboard = () => {
       >
         <div className="fixed inset-0 bg-black/50" aria-hidden="true">
           <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
-            <Dialog.Panel className="z-50 absolute rounded-2xl max-w-lg bg-base-100 flex flex-col items-center justify-center w-5/6">
+            <Dialog.Panel className="z-50 absolute rounded-2xl max-w-lg bg-base-200 flex flex-col items-center justify-center w-5/6">
               <div className="w-full">
                 <RecordDetail
                   key={record.id}
@@ -594,7 +625,7 @@ const Dashboard = () => {
                   }}
                 >
                   <div className="flex justify-between w-full">
-                    <p>{format(new Date(record.date), 'MM-dd-yyyy')}</p>
+                    <p>{record.date && format(new Date(record.date), 'MM-dd-yyyy')}</p>
                     <p className="capitalize">{record.service}</p>
                   </div>
                 </button>

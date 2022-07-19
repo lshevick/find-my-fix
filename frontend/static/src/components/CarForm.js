@@ -59,6 +59,8 @@ const CarForm = () => {
     queryCar,
     setQueryCar,
   ] = useOutletContext();
+  const [exactLocation, setExactLocation] = useState("");
+
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -219,7 +221,7 @@ const CarForm = () => {
         <div className="flex flex-col">
           <label htmlFor="year">Year</label>
           <select
-            className="m-1 p-1 bg-neutral-content text-neutral border-2 border-neutral-focus rounded"
+            className="m-1 p-1 bg-neutral-content text-neutral border-2 border-stone-500 rounded"
             name="year"
             id="year"
             value={state.year}
@@ -233,7 +235,7 @@ const CarForm = () => {
         <div className="flex flex-col">
           <label htmlFor="make">Make</label>
           <select
-            className="m-2 p-1 bg-neutral-content text-neutral border-2 border-neutral-focus rounded"
+            className="m-2 p-1 bg-neutral-content text-neutral border-2 border-stone-500 rounded"
             name="make"
             id="make"
             value={state.make}
@@ -247,7 +249,7 @@ const CarForm = () => {
         <div className="flex flex-col">
           <label htmlFor="model">Model</label>
           <select
-            className="m-2 p-1 bg-neutral-content text-neutral border-2 border-neutral-focus rounded"
+            className="m-2 p-1 bg-neutral-content text-neutral border-2 border-stone-500 rounded"
             name="model"
             id="model"
             value={state.model}
@@ -266,13 +268,13 @@ const CarForm = () => {
             name="image"
             id="image"
             onChange={handleImage}
-            className="w-full file:bg-emerald-600 file:border-2 file:rounded file:text-white file:font-medium hover:file:bg-emerald-700 file:cursor-pointer"
+            className="w-full file:btn file:btn-accent file:hover:bg-accent-focus file:btn-sm file:capitalize file:rounded"
           />
         </div>
         <div className="flex justify-end">
           <button
             type="button"
-            className="m-2 p-1 sm:absolute right-2 bottom-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
+            className="m-2 p-1 sm:absolute right-2 bottom-2 btn btn-sm btn-accent capitalize rounded"
             onClick={() => setForm("service")}
           >
             Next
@@ -300,7 +302,7 @@ const CarForm = () => {
             type="submit"
             form="car-form"
             onClick={handleService}
-            className="p-1 m-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
+            className="p-1 m-1 ml-3 btn btn-sm btn-accent capitalize rounded"
           >
             Add services
           </button>
@@ -326,7 +328,7 @@ const CarForm = () => {
         <button
           type="button"
           onClick={() => setForm("location")}
-          className="p-1 m-2 sm:absolute right-2 bottom-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-md shadow-md hover:shadow-lg transition-all"
+          className="p-1 m-2 sm:absolute right-2 bottom-2 btn btn-sm btn-accent capitalize rounded"
         >
           Next
         </button>
@@ -343,6 +345,22 @@ const CarForm = () => {
     });
   };
 
+  const getFormattedAddress = async () => {
+    const response = await fetch(
+      `/api/v1/shops/location/?location_string=${location}`
+    ).catch(handleError);
+    if (!response.ok) {
+      throw new Error("Network response not ok");
+    }
+    const json = await response.json();
+    console.log(json);
+    setExactLocation(json);
+  };
+
+  useEffect(() => {
+    Array.isArray(location) && getFormattedAddress();
+  }, [location]);
+
   const locator = (
     <>
       <div className="flex flex-col">
@@ -350,7 +368,7 @@ const CarForm = () => {
           <input
             className={`mt-3 p-1 shadow-sm rounded-l-md`}
             type="text"
-            value={Array.isArray(location) ? "Successful" : location}
+            value={Array.isArray(location) ? exactLocation : location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Enter ZIP or City, State..."
           />
@@ -371,7 +389,7 @@ const CarForm = () => {
         <div className="mt-3">
           <Link
             to="/shops"
-            className="p-1 bg-[#3c6e71] text-white rounded hover:shadow-md transition-all"
+            className="p-1 btn btn-sm btn-accent capitalize rounded"
           >
             Search for shops
           </Link>

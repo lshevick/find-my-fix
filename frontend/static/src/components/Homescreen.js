@@ -51,7 +51,7 @@ const Homescreen = () => {
                Add your car
               </h3>
               <p>
-                After logging in, you can save your cars to you garage where you can manage the work your car needs.
+                After logging in, you can save cars to your garage. From here you can manage the work your car needs.
               </p>
             </div>
           </div>
@@ -85,7 +85,7 @@ const Homescreen = () => {
                 Preview Cards
               </h3>
               <p>
-              The shop preview card are a quick glance at what the shop had to offer
+              The shop preview cards give a quick glance at what the shop has to offer. Highlighted services are ones that correspond to your car's work needed.
               </p>
             </div>
           </div>

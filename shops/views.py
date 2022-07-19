@@ -99,7 +99,7 @@ def shop_distances(request):
     shops = Shop.objects.all()
 
     if hasattr(request.user, 'cars'):
-        query = Q(makes__icontains='any')
+        query = Q(makes__icontains='all makes')
         cars = request.user.cars.all()
         makes = []
         for car in cars:
@@ -142,7 +142,7 @@ def shop_by_services(request):
         s = ''.join(service)
         service_query |= Q(services__icontains=s)
 
-    shops = Shop.objects.filter(service_query & (Q(makes__icontains=specific_make) | Q(makes__icontains='any')))
+    shops = Shop.objects.filter(service_query & (Q(makes__icontains=specific_make) | Q(makes__icontains='all makes')))
     origin = request.query_params.get('location_string')
 
     if origin is not None:

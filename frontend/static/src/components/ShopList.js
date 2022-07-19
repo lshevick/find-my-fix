@@ -68,16 +68,19 @@ const ShopList = () => {
               ` mile${Math.floor(shop.distance) === 1 ? "" : "s"}`}
         </p>
       </div>
-      <div className="flex items-start">
+      <div className="flex items-center">
         {shop.average === 0 ? (
           <p className="italic text-sm">No reviews</p>
         ) : (
+          <>
           <Rating
             name="read-only"
             value={shop.average}
             precision={1}
             readOnly
-          />
+            />
+          <p className="text-sm px-2 italic">{shop.reviews.length} Reviews</p>
+            </>
         )}
       </div>
       <ul className="text-sm font-light flex flex-wrap">
@@ -310,7 +313,7 @@ const ShopList = () => {
           {!isAuth && (
             <button
               type="button"
-              className={`px-1 text-xl rounded text-emerald-700 border-emerald-700 border-2 hover:bg-emerald-700 hover:text-white transition-all ${
+              className={`px-1 text-xl rounded text-accent border-accent border-2 hover:bg-accent hover:text-accent-content transition-all ${
                 !isAuth && location && !queryCar ? "visible" : "invisible"
               }`}
               onClick={getDistanceShops}

@@ -119,7 +119,7 @@ const handleSubmit = (e) => {
       </div>
       <div className="card-body">
         <h3 className="card-title">{shop}</h3>
-        <p>{format(new Date(date), 'MM-dd-yyyy')}</p>
+        <p>{date && format(new Date(date), 'MM-dd-yyyy')}</p>
         <div>
           <ul className="capitalize">
             {service &&
@@ -182,7 +182,7 @@ const handleSubmit = (e) => {
           ></textarea>
         </div>
         <figure className="relative flex justify-center max-h-[180px] overflow-hidden">
-            <p className="absolute z-30 text-xl text-neutral font-bold">Change Image</p>
+            <p className="absolute z-30 text-xl text-neutral font-bold">{image ? 'Change Image' : ''}</p>
           <input
             type="file"
             name="newRecordImage"
@@ -197,7 +197,7 @@ const handleSubmit = (e) => {
               className="object-cover blur-sm"
             />
           ) : (
-            <div className="bg-stone-300 p-4 px-2 font-meduim text-lg rounded">
+            <div className="bg-stone-300 p-4 px-2 font-meduim text-lg text-black rounded">
               Add an Image +
             </div>
           )}

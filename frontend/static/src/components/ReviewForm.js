@@ -82,7 +82,7 @@ const ReviewForm = ({
 
         <div className="flex flex-col sm:flex-row items-end justify-center">
           <textarea
-            className="m-3 p-1 rounded-md"
+            className="m-3 p-1 rounded-md text-stone-900"
             name="body"
             id="body"
             cols="30"
