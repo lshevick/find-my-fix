@@ -16,7 +16,7 @@ function App() {
       <Nav isAuth={isAuth} setIsAuth={setIsAuth} theme={theme} setTheme={setTheme} />
       <div className="flex justify-center min-h-screen pt-28">
         <Outlet
-          context={[isAuth, setIsAuth, navigate, location, setLocation, queryCar, setQueryCar, theme]}
+          context={{isAuth, setIsAuth, navigate, location, setLocation, queryCar, setQueryCar, theme}}
         />
       </div>
     </div>

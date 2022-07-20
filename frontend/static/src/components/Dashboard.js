@@ -44,16 +44,11 @@ const Dashboard = () => {
   const [dataChanged, setDataChanged] = useState(false);
   const editButton = useRef();
   const [loading, setLoading] = useState(false);
-  const [
-    isAuth,
-    setIsAuth,
+  const {
     navigate,
-    location,
     setLocation,
-    queryCar,
     setQueryCar,
-    theme,
-  ] = useOutletContext();
+  } = useOutletContext();
 
   const handleImage = (e) => {
     const file = e.target.files[0];

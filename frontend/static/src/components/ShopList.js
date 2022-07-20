@@ -19,15 +19,13 @@ function handleError(err) {
 
 const ShopList = () => {
   const [shops, setShops] = useState(undefined);
-  const [
+  const {
     isAuth,
-    setIsAuth,
-    navigate,
     location,
     setLocation,
     queryCar,
     setQueryCar,
-  ] = useOutletContext();
+   } = useOutletContext();
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState("distance");
   const [garage, setGarage] = useState([]);

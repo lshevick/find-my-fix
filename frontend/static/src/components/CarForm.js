@@ -49,15 +49,11 @@ const CarForm = () => {
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
   const [car, setCar] = useState([]);
-  const [
-    isAuth,
-    setIsAuth,
-    navigate,
+  const {
     location,
     setLocation,
-    queryCar,
     setQueryCar,
-  ] = useOutletContext();
+   } = useOutletContext();
   const [exactLocation, setExactLocation] = useState("");
 
 

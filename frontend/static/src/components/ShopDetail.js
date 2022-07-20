@@ -1,10 +1,7 @@
-import { Rating } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useParams, useOutletContext } from "react-router-dom";
-import Cookies from "js-cookie";
 import ReviewForm from "./ReviewForm";
-import {AiFillEdit} from 'react-icons/ai';
 import ReviewDetail from "./ReviewDetail";
 
 function handleError(err) {
@@ -19,8 +16,7 @@ const ShopDetail = () => {
   const [reviews, setReviews] = useState([]);
   const params = useParams();
   const [dataChanged, setDataChanged] = useState(false);
-  const [isAuth, setIsAuth, navigate, location, setLocation] =
-    useOutletContext();
+  const { isAuth } = useOutletContext();
 
   const getShopDetail = async () => {
     const response = await fetch(`/api/v1/shops/${params.shopId}/`).catch(
@@ -47,10 +43,12 @@ const ShopDetail = () => {
   useEffect(() => {
     getShopDetail();
     getReviews();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     getReviews();
+    // eslint-disable-next-line
   }, [dataChanged]);
 
   const shopServiceList =
@@ -64,9 +62,15 @@ const ShopDetail = () => {
       </li>
     ));
 
-  const reviewList = reviews.map((r) =>
-    <ReviewDetail key={r.id} {...r} reviews={reviews} getReviews={getReviews} shopId={params.shopId} />
-  );
+  const reviewList = reviews.map((r) => (
+    <ReviewDetail
+      key={r.id}
+      {...r}
+      reviews={reviews}
+      getReviews={getReviews}
+      shopId={params.shopId}
+    />
+  ));
 
   const shopInfo = (
     <div
@@ -111,10 +115,7 @@ const ShopDetail = () => {
             ))}
         </ul>
       </div>
-      {/* <div className="md:col-start-1 md:col-span-2 md:row-start-4 self-start my-2">
-      </div> */}
       <div className="flex flex-col md:col-start-1 md:col-span-2 md:row-start-3 rounded self-start my-2 py-2">
-        {/* <p className="font-medium text-3xl mb-10">Reviews</p> */}
         {isAuth && (
           <ReviewForm
             detail={detail}

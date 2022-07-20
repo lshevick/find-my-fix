@@ -15,7 +15,7 @@ const defaultState = {
 
 const LoginForm = () => {
   const [state, setState] = useState(defaultState);
-  const [isAuth, setIsAuth, navigate] = useOutletContext();
+  const {isAuth, setIsAuth, navigate} = useOutletContext();
   const [visible, setVisible] = useState(false);
 
   const handleInput = (e) => {
