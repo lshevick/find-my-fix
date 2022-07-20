@@ -8,6 +8,7 @@ import { BiEdit } from "react-icons/bi";
 import RecordForm from "./RecordForm";
 import RecordDetail from "./RecordDetail";
 import format from "date-fns/format";
+import { BsChevronExpand } from "react-icons/bs";
 
 function handleError(err) {
   console.warn(err);
@@ -44,11 +45,8 @@ const Dashboard = () => {
   const [dataChanged, setDataChanged] = useState(false);
   const editButton = useRef();
   const [loading, setLoading] = useState(false);
-  const {
-    navigate,
-    setLocation,
-    setQueryCar,
-  } = useOutletContext();
+  const [expand, setExpand] = useState(false);
+  const { navigate, setLocation, setQueryCar } = useOutletContext();
 
   const handleImage = (e) => {
     const file = e.target.files[0];
@@ -103,7 +101,7 @@ const Dashboard = () => {
 
   const deleteService = async (item, id) => {
     const newList = car.service_list.slice();
-    const filteredList = newList.filter(i => !item.includes(i));
+    const filteredList = newList.filter((i) => !item.includes(i));
     const data = {
       service_list: filteredList,
     };
@@ -271,58 +269,58 @@ const Dashboard = () => {
             <h2 className="mx-1">{car.model}</h2>
           </div>
           <button
-              type="button"
-              className="font-bold invisible text-red-700 hover:text-red-600"
-              onClick={() => setDeleteIsOpen(true)}
-            >
-              Delete Car
-            </button>
-          <div className="my-3 w-full flex flex-col items-center">
+            type="button"
+            className="font-bold invisible text-red-700 hover:text-red-600"
+            onClick={() => setDeleteIsOpen(true)}
+          >
+            Delete Car
+          </button>
+          <div className="mb-1 w-full flex flex-col items-center">
             <div className="services">
-              <h2 className="font-semibold underline mb-2 text-md md:text-2xl">
+              <h2 className="font-semibold underline text-md md:text-2xl">
                 Work Needed
               </h2>
-              <div className="overflow-y-scroll max-h-[180px]">
-              <ul className="overflow-y-hidden w-full">
-                {car.service_list &&
-                  car.service_list.flat().map((i) => (
-                    <li
-                    key={i}
-                    className="capitalize font-light text-xl list-disc py-1"
-                    >
-                      {i}
-                    </li>
-                  ))}
-              </ul>
-                  </div>
-            </div>
+              <div className="overflow-y-scroll max-h-[180px]w-full">
+                <ul className="overflow-y-hidden w-full">
+                  {car.service_list &&
+                    car.service_list.flat().map((i) => (
+                      <li
+                        key={i}
+                        className="capitalize font-light text-lg sm:text-xl list-disc py-1"
+                      >
+                        {i}
+                      </li>
+                    ))}
+                </ul>
               </div>
-            <div className="relative flex items-end mt-3 sm:mt-1">
-              <ServicePicker
-                items={items}
-                setItems={setItems}
-                serviceList={serviceList}
-                query={query}
-                setQuery={setQuery}
-              />
-              <button
-                className="bg-accent hover:bg-accent-focus px-2 m-1 mt-2 rounded text-accent-content transition-all duration-300"
-                onClick={() => {
-                  addService(car.id);
-                }}
-              >
-                Add
-              </button>
             </div>
-            <div className="records border-t-2 mt-2 py-2 border-base-300 w-full sm:w-1/2 flex justify-center">
-              <button
-                type="button"
-                className="flex items-center transition-all bg-transparent border-2 border-accent hover:bg-accent text-accent hover:text-accent-content p-1 rounded"
-                onClick={() => setFormIsOpen(true)}
-              >
-                Create New Record <BiEdit className="ml-2" />
-              </button>
-            </div>
+          </div>
+          <div className="relative flex items-end sm:mt-1">
+            <ServicePicker
+              items={items}
+              setItems={setItems}
+              serviceList={serviceList}
+              query={query}
+              setQuery={setQuery}
+            />
+            <button
+              className="bg-accent hover:bg-accent-focus px-2 m-1 mt-2 rounded text-accent-content transition-all duration-300"
+              onClick={() => {
+                addService(car.id);
+              }}
+            >
+              Add
+            </button>
+          </div>
+          <div className="records border-t-2 mt-2 py-2 border-base-300 w-full sm:w-1/2 flex justify-center">
+            <button
+              type="button"
+              className="flex items-center transition-all bg-transparent border-2 border-accent hover:bg-accent text-accent hover:text-accent-content p-1 rounded"
+              onClick={() => setFormIsOpen(true)}
+            >
+              Create New Record <BiEdit className="ml-2" />
+            </button>
+          </div>
           <div className="w-full flex justify-between mt-3">
             <button type="button" onClick={() => setIsOpen(false)}>
               Close
@@ -405,7 +403,7 @@ const Dashboard = () => {
               Change Image
             </button>
           )}
-          <div className="flex border-b-2 border-stone-600 text-xl sm:text-3xl flex-wrap justify-center">
+          <div className="flex border-b-1 border-stone-600 text-xl sm:text-3xl flex-wrap justify-center">
             <h2 className="mx-1">{car.year}</h2>
             <h2 className="mx-1">{car.make}</h2>
             <h2 className="mx-1">{car.model}</h2>
@@ -452,57 +450,61 @@ const Dashboard = () => {
               </div>
             </Dialog>
           </div>
-          <div className="m-3 w-full flex flex-col items-center">
-            <h2 className="font-semibold underline text-2xl">Work needed</h2>
-            <div className="overflow-y-scroll max-h-[180px] md:w-1/2 w-full">
-            <ul className="overflow-y-hidden w-full">
-              {car.service_list &&
-                car.service_list.flat().map((i) => (
-                  <li
-                    key={i}
-                    className="capitalize font-light text-xl list-disc py-1"
-                  >
-                    <div className="w-full flex justify-between">
-                      {i}
-                      <button
-                        type="button"
-                        className="flex items-center px-2 text-white bg-red-700 h-4 rounded hover:bg-red-600"
-                        onClick={() => deleteService(i, car.id)}
+          <div className="mb-1 w-full flex flex-col items-center">
+            <div>
+              <h2 className="font-semibold underline text-md md:text-2xl">
+                Work needed
+              </h2>
+              <div className="overflow-y-scroll max-h-[180px] w-full">
+                <ul className="overflow-y-hidden w-full">
+                  {car.service_list &&
+                    car.service_list.flat().map((i) => (
+                      <li
+                        key={i}
+                        className="capitalize font-light text-lg sm:text-xl list-disc py-1"
                       >
-                        -
-                      </button>
-                    </div>
-                  </li>
-                ))}
-            </ul>
-            </div>
+                        <div className="w-full flex justify-between">
+                          {i}
+                          <button
+                            type="button"
+                            className="flex items-center px-2 text-white bg-red-700 h-4 rounded hover:bg-red-600"
+                            onClick={() => deleteService(i, car.id)}
+                          >
+                            -
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                </ul>
               </div>
-            <div className="relative flex items-end mt-3 sm:mt-1">
-              <ServicePicker
-                items={items}
-                setItems={setItems}
-                serviceList={serviceList}
-                query={query}
-                setQuery={setQuery}
-              />
-              <button
-                className="bg-accent hover:bg-accent-focus px-2 m-1 mt-2 rounded text-accent-content transition-all duration-300"
-                onClick={() => {
-                  addService(car.id);
-                }}
-              >
-                Add
-              </button>
             </div>
-            <div className="records invisible border-t-2 mt-2 py-2 border-base-300 w-full sm:w-1/2 flex justify-center">
-              <button
-                type="button"
-                className="flex items-center transition-all bg-transparent border-2 border-accent hover:bg-accent text-accent hover:text-accent-content p-1 rounded"
-                onClick={() => setFormIsOpen(true)}
-              >
-                Create New Record <BiEdit className="ml-2" />
-              </button>
-            </div>
+          </div>
+          <div className="relative flex items-end sm:mt-1">
+            <ServicePicker
+              items={items}
+              setItems={setItems}
+              serviceList={serviceList}
+              query={query}
+              setQuery={setQuery}
+            />
+            <button
+              className="bg-accent hover:bg-accent-focus px-2 m-1 mt-2 rounded text-accent-content transition-all duration-300"
+              onClick={() => {
+                addService(car.id);
+              }}
+            >
+              Add
+            </button>
+          </div>
+          <div className="records invisible border-t-2 mt-2 py-2 border-base-300 w-full sm:w-1/2 flex justify-center">
+            <button
+              type="button"
+              className="flex items-center transition-all bg-transparent border-2 border-accent hover:bg-accent text-accent hover:text-accent-content p-1 rounded"
+              onClick={() => setFormIsOpen(true)}
+            >
+              Create New Record <BiEdit className="ml-2" />
+            </button>
+          </div>
           <div className="w-full flex justify-between">
             <button type="button" onClick={() => setIsOpen(false)}>
               Close
@@ -537,13 +539,18 @@ const Dashboard = () => {
         onClose={() => {
           setRecordIsOpen(false);
           setIsEditing(false);
+          setExpand(false);
         }}
         className="relative"
       >
         <div className="fixed inset-0 bg-black/50" aria-hidden="true">
           <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
             <Dialog.Panel className="z-50 absolute rounded-2xl max-w-lg bg-base-200 flex flex-col items-center justify-center w-5/6">
-              <div className="w-full">
+              <div
+                className={`w-full ${
+                  expand ? "h-[calc(100vh-90px)]" : "h-96 sm:h-[50vh]"
+                } transition-all overflow-hidden`}
+              >
                 <RecordDetail
                   key={record.id}
                   {...record}
@@ -554,13 +561,22 @@ const Dashboard = () => {
                   setDataChanged={setDataChanged}
                 />
               </div>
-              <button
-                type="button"
-                className="font-medium text-lg"
-                onClick={() => setRecordIsOpen(false)}
-              >
-                Close
-              </button>
+              <div className="flex justify-between w-5/6">
+                <button
+                  type="button"
+                  onClick={() => setExpand(!expand)}
+                  className="p-1"
+                >
+                  <BsChevronExpand className="text-xl" />
+                </button>
+                <button
+                  type="button"
+                  className="font-medium text-lg"
+                  onClick={() => setRecordIsOpen(false)}
+                >
+                  Close
+                </button>
+              </div>
             </Dialog.Panel>
           </div>
         </div>
@@ -622,8 +638,14 @@ const Dashboard = () => {
                   }}
                 >
                   <div className="flex justify-between w-full">
-                    <p>{record.date && format(new Date(record.date), 'MM-dd-yyyy')}</p>
-                    <p className="capitalize">{record.service[0]}{record.service.length > 1 ? '...' : ''}</p>
+                    <p>
+                      {record.date &&
+                        format(new Date(record.date), "MM-dd-yyyy")}
+                    </p>
+                    <p className="capitalize">
+                      {record.service[0]}
+                      {record.service.length > 1 ? "..." : ""}
+                    </p>
                   </div>
                 </button>
               </li>

@@ -106,6 +106,7 @@ const handleSubmit = (e) => {
   };
 
   const recordDetail = (
+    <>
     <div className="card w-full relative shadow-md">
       <div className="absolute top-2 right-2">
         <label
@@ -132,14 +133,15 @@ const handleSubmit = (e) => {
         </div>
         {note}
       </div>
-      {image && (
-        <img src={image} alt="record" className="sm:w-1/2 self-center" />
-      )}
     </div>
+      {image && (
+        <img src={image} alt="record" className="self-center" />
+      )}
+      </>
   );
 
   const editRecordDetail = (
-    <div className="card relative">
+    <div className="card relative overflow-scroll h-96 sm:h-full">
       <form onSubmit={handleSubmit}>
         <div className="absolute top-2 right-2">
           <label
