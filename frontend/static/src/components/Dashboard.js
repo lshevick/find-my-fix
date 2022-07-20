@@ -598,7 +598,7 @@ const Dashboard = () => {
           />
         </div>
         <div className="w-1/2">
-          <h2 className="w-full font-semibold">
+          <h2 className="w-full text-2xl font-semibold">
             {car.year} {car.make} {car.model}
           </h2>
         </div>
