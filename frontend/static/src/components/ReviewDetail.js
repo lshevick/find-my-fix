@@ -37,7 +37,7 @@ const ReviewDetail = ({
       body: JSON.stringify(data),
     };
     const response = await fetch(
-      `/api/v1/shops/${shopId}/reviews/${id}`,
+      `/api/v1/shops/${shopId}/reviews/${id}/`,
       options
     ).catch(handleError);
     if (!response.ok) {
@@ -117,7 +117,7 @@ const ReviewDetail = ({
   const editReviewDetail = (
     <li className="rounded relative shadow-md bg-base-300 p-2 my-1 flex flex-col items-start w-full">
       <form id="newReviewForm" onSubmit={handleSubmit}>
-        <div>
+        <div className="flex items-start">
           <span className="mr-2 font-bold">{username}</span>
           <Rating
             name="rating"
@@ -139,13 +139,14 @@ const ReviewDetail = ({
               ))}
           </ul>
         </div>
-        <input
-          type="text"
+        <textarea
           name="newBody"
           id="newBody"
+          cols="40"
+          rows="3"
           value={newBody}
           onChange={(e) => setNewBody(e.target.value)}
-        />
+        ></textarea>
         {Cookies.get("username") === username && (
           <div className="absolute top-2 right-3">
             <button

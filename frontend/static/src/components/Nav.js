@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { themeChange } from "theme-change";
@@ -9,7 +8,6 @@ function handleError(err) {
 }
 
 const Nav = ({ isAuth, setIsAuth, theme, setTheme }) => {
-  // const [theme, setTheme] = useState('light');
 
   const logout = async () => {
     const options = {
@@ -35,7 +33,6 @@ const Nav = ({ isAuth, setIsAuth, theme, setTheme }) => {
   }, [])
 
   const authView = (
-    // find a way to use a 50/50 logo / sliding pill menu for this? maybe hamburger menu with slide out list on mobile?
     <div className="w-[150px] sm:w-full overflow-x-hidden sm:overflow-visible">
     <ul className="flex text-xl overflow-x-scroll sm:overflow-visible">
       <li className="mx-2 p-1 text-accent-focus hover:text-accent">

@@ -13,6 +13,6 @@ describe("<LoginForm/>", () => {
         <LoginForm />
       </BrowserRouter>
     );
-    expect(screen.getByText(/login/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Login/i)[0]).toBeInTheDocument();
   });
 });
