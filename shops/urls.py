@@ -5,7 +5,7 @@ from .views import ShopDetailAPIView, ShopReviewListAPIView, shop_by_services, s
 app_name='shops'
 
 urlpatterns = [
-    path('', shop_distances),
+    path('', shop_distances, name='all_shops'),
     path('<int:pk>/', ShopDetailAPIView.as_view()),
     path('<int:shop>/reviews/', ShopReviewListAPIView.as_view()),
     path('<int:shop>/reviews/<int:pk>/', ReviewDetailAPIView.as_view()),
