@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
-import Cookies from "js-cookie";
 import { FaLocationArrow } from "react-icons/fa";
 import { ImSpinner8 } from "react-icons/im";
 import { GoCheck } from "react-icons/go";
@@ -167,6 +166,7 @@ const ShopList = () => {
 
   useEffect(() => {
     getServiceShops();
+    // eslint-disable-next-line
   }, [queryCar]);
 
   const getDistanceShops = async () => {
@@ -184,6 +184,7 @@ const ShopList = () => {
 
   useEffect(() => {
     location && getServiceShops();
+    // eslint-disable-next-line
   }, []);
 
   const reviewFilteredShops =
@@ -246,6 +247,7 @@ const ShopList = () => {
 
   useEffect(() => {
     Array.isArray(location) && getFormattedAddress();
+    // eslint-disable-next-line
   }, [location]);
 
   return (
@@ -323,7 +325,7 @@ const ShopList = () => {
           )}
           <div className="flex">
             <Popover className="relative">
-              <Popover.Panel className="absolute z-30 top-10 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
+              <Popover.Panel className="absolute z-30 sm:top-20 top-20 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
                 <ul>
                   <li>
                     <button
@@ -335,7 +337,7 @@ const ShopList = () => {
                       }`}
                       onClick={() => setFilter("distance")}
                     >
-                      by Distance
+                      by distance
                     </button>
                   </li>
                   <li>
@@ -348,7 +350,7 @@ const ShopList = () => {
                       }`}
                       onClick={() => setFilter("reviews")}
                     >
-                      by Reviews
+                      by reviews
                     </button>
                   </li>
                   {isAuth && (
@@ -361,27 +363,32 @@ const ShopList = () => {
                             : ``
                         }`}
                         onClick={() => {
-                          setFilter("services");
+                          setFilter("service");
                         }}
                       >
-                        by Service
+                        by service
                       </button>
                     </li>
                   )}
                 </ul>
               </Popover.Panel>
+              <div>
+                <p className="font-medium text-lg sm:invisible">Filters</p>
+              </div>
+              <div className="tooltip" data-tip='Filters'>
               <Popover.Button
                 className={` ${
                   location ? "visible" : "invisible"
                 } px-2 text-xl m-2 border-2 border-stone-500 rounded min-w-[180px]`}
-              >
+                >
                 {({open}) => (<>By {filter === 'specificService' ? ' specific service' : filter} <BsCaretDownFill className={`inline-block transition-all ${open ? 'rotate-180' : ''}`} /></>)}
 
               </Popover.Button>
+                </div>
             </Popover>
 
             <Popover className="relative">
-              <Popover.Panel className="absolute z-30 top-10 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
+              <Popover.Panel className="absolute z-30 sm:top-20 top-28 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
                 <ul>
                   {queryCar &&
                     queryCar.service_list.flat().map((s) => (
@@ -403,10 +410,15 @@ const ShopList = () => {
                     ))}
                 </ul>
               </Popover.Panel>
+              <div>
+                <p className="font-medium text-lg sm:invisible">Sort by reviews</p>
+              </div>
               {isAuth && location && (
+                <div className="tooltip" data-tip='Sorts by service reviews'>
                 <Popover.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
                  {({open}) => (<>Specify a service<BsCaretDownFill className={`inline-block transition-all ${open ? 'rotate-180' : ''}`} /></>)}
                 </Popover.Button>
+                </div>
               )}
             </Popover>
           </div>
@@ -420,7 +432,7 @@ const ShopList = () => {
         <ul className="mt-10 md:grid md:grid-cols-2 lg:grid-cols-3">
           {filter === "distance" && shopList}
           {filter === "reviews" && reviewFilteredShops}
-          {filter === "services" && serviceFilteredShops}
+          {filter === "service" && serviceFilteredShops}
           {filter === "specificService" && specificServiceFilter}
         </ul>
       </div>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Combobox } from "@headlessui/react";
 import Cookies from "js-cookie";
 import { useOutletContext, Link } from "react-router-dom";
 import ServicePicker from "./ServicePicker";
@@ -261,8 +260,9 @@ const CarForm = () => {
             {modelsList}
           </select>
         </div>
-        <div className="flex flex-col items-center w-5/6 inset-0">
+        <div className="flex flex-col items-center w-5/6 inset-0 relative">
           {image && <img className="md:w-48" src={preview} alt="car" width="100%" />}
+          <label htmlFor="image" className="font-medium text-lg py-1">Upload an Image</label>
           <input
             type="file"
             name="image"
@@ -304,7 +304,7 @@ const CarForm = () => {
             onClick={handleService}
             className="p-1 m-1 ml-3 btn btn-sm btn-accent capitalize rounded"
           >
-            Add services
+            Add Car
           </button>
         </div>
         <ul className="divide-y mt-4">
@@ -359,6 +359,7 @@ const CarForm = () => {
 
   useEffect(() => {
     Array.isArray(location) && getFormattedAddress();
+    // eslint-disable-next-line
   }, [location]);
 
   const locator = (

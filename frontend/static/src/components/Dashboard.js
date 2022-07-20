@@ -83,6 +83,7 @@ const Dashboard = () => {
   useEffect(() => {
     getCars();
     getCarDetail(car.id);
+    // eslint-disable-next-line
   }, [dataChanged]);
 
   const getCarDetail = async (id) => {
@@ -107,10 +108,9 @@ const Dashboard = () => {
 
   const deleteService = async (item, id) => {
     const newList = car.service_list.slice();
-    const i = newList.indexOf(item);
-    newList.splice(i, 1);
+    const filteredList = newList.filter(i => !item.includes(i));
     const data = {
-      service_list: newList,
+      service_list: filteredList,
     };
     const options = {
       method: "PATCH",
@@ -234,6 +234,8 @@ const Dashboard = () => {
                   currentCar={car}
                   dataChanged={dataChanged}
                   setDataChanged={setDataChanged}
+                  setFormIsOpen={setFormIsOpen}
+                  deleteService={deleteService}
                 />
               </div>
               <button type="button" onClick={() => setFormIsOpen(false)}>
@@ -626,7 +628,7 @@ const Dashboard = () => {
                 >
                   <div className="flex justify-between w-full">
                     <p>{record.date && format(new Date(record.date), 'MM-dd-yyyy')}</p>
-                    <p className="capitalize">{record.service}</p>
+                    <p className="capitalize">{record.service[0]}{record.service.length > 1 ? '...' : ''}</p>
                   </div>
                 </button>
               </li>

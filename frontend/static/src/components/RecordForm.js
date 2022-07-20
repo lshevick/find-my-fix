@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import ServicePicker from "./ServicePicker";
-import { setDate } from "date-fns";
 
 function handleError(err) {
   console.warn(err);
 }
 
-const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
+const RecordForm = ({ currentCar, dataChanged, setDataChanged, setFormIsOpen, deleteService }) => {
   const [shop, setShop] = useState("");
   const [shops, setShops] = useState([]);
   const [image, setImage] = useState(null);
@@ -68,6 +67,7 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
     }
     const json = await response.json();
     console.log(json);
+    deleteService(json.service, currentCar.id)
     setShop("");
     setImage(null);
     setPreview(null);
@@ -81,6 +81,9 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     submitRecord();
+    setTimeout(() => {
+        setFormIsOpen(false)
+    }, 300);
   };
 
   return (
