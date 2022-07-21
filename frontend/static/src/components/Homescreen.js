@@ -35,7 +35,7 @@ const Homescreen = () => {
                 About
               </h3>
               <p>
-              This app was created to help people find local automotive shops that can cater to their needs. 
+              This app is here to help people find local automotive shops that cater to their needs. 
               </p>
             </div>
           </div>
@@ -43,6 +43,7 @@ const Homescreen = () => {
             <img
               src={require("../images/search_screen.png")}
               alt="search screen"
+              className="rounded-lg"
             />
           </div>
           <div className="col-start-1 row-start-4 col-span-2 card bg-accent-focus text-accent-content my-10 shadow-xl">
@@ -51,7 +52,7 @@ const Homescreen = () => {
                Add your car
               </h3>
               <p>
-                After logging in, you can save cars to your garage. From here you can manage the work your car needs.
+                Save cars to the garage and keep track of the work they need.
               </p>
             </div>
           </div>
@@ -60,7 +61,7 @@ const Homescreen = () => {
               src={require("../images/garage_img.png")}
               alt="garage"
               width="100%"
-              className="my-10"
+              className="my-10 rounded-lg"
             />
           </div>
           <div className="card bg-teal-700 text-accent-content shadow-xl my-10 col-start-1 col-span-2 row-start-6">
@@ -69,7 +70,7 @@ const Homescreen = () => {
                 Filtering your Searches
               </h3>
               <p>
-                By using the filter and sorting menus on the search page, you can make your searches as specific or as broad as you would like.
+                Use the cars you have saved to refine your searches.
               </p>
             </div>
           </div>
@@ -77,6 +78,7 @@ const Homescreen = () => {
             <img
               src={require("../images/filter_section.png")}
               alt="filter section"
+              className="rounded-lg"
             />
           </div>
           <div className="card shadow-xl bg-emerald-800 text-stone-100 my-10 col-start-1 col-span-2 row-start-[8]">
@@ -85,12 +87,12 @@ const Homescreen = () => {
                 Preview Cards
               </h3>
               <p>
-              The shop preview cards give a quick glance at what the shop has to offer. Highlighted services are ones that correspond to your car's work needed.
+                Search result cards have at-a-glance info to quickly determine if it's an option for you.
               </p>
             </div>
           </div>
           <div className="col-start-2 col-span-3 md:row-start-[10] md:w-5/6 mx-auto">
-            <img src={require("../images/shop_card.png")} alt="shop card" />
+            <img src={require("../images/shop_card.png")} alt="shop card" className="rounded-lg" />
           </div>
         </div>
       </div>

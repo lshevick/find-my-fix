@@ -318,7 +318,7 @@ const Dashboard = () => {
               className="flex items-center transition-all bg-transparent border-2 border-accent hover:bg-accent text-accent hover:text-accent-content p-1 rounded"
               onClick={() => setFormIsOpen(true)}
             >
-              Create New Record <BiEdit className="ml-2" />
+              Add Service Record <BiEdit className="ml-2" />
             </button>
           </div>
           <div className="w-full flex justify-between mt-3">
@@ -374,7 +374,7 @@ const Dashboard = () => {
                     : "https://kaleidousercontent.com/removebg/designs/b6f1aec1-de72-4e0e-9921-6ab407475be2/thumbnail_image/car-photo-optimizer-thumbnail.png"
                 }
                 alt="car"
-                className="object-cover z-10 blur-sm"
+                className="object-cover z-10 blur-sm contrast-50"
                 width="100%"
                 height="auto"
               />
@@ -624,14 +624,14 @@ const Dashboard = () => {
       <h2 className="w-full font-semibold">
         {car.year} {car.make} {car.model}
       </h2>
-      <div>
-        <ul className="">
+      <div className="">
+        <ul className="divide-y mx-auto w-3/4">
           {car.records &&
             car.records.map((record) => (
               <li key={record.id}>
                 <button
                   type="button"
-                  className="w-5/6 md:w-2/3 hover:bg-accent-focus rounded"
+                  className="w-5/6 py-2 hover:bg-accent-focus rounded"
                   onClick={() => {
                     getRecordDetail(car.id, record.id);
                     setRecordIsOpen(true);

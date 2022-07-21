@@ -22,10 +22,10 @@ const ShopList = () => {
   const { isAuth, location, setLocation, queryCar, setQueryCar } =
     useOutletContext();
   const [loading, setLoading] = useState(false);
+  const [contentLoading, setContentLoading] = useState(false);
   const [filter, setFilter] = useState("distance");
   const [garage, setGarage] = useState([]);
-  // const [queryCar, setQueryCar] = useState(undefined);
-  const [specificService, setSpecificService] = useState("");
+  // const [specificService, setSpecificService] = useState("");
   const [exactLocation, setExactLocation] = useState("");
   const [error, setError] = useState("");
 
@@ -164,6 +164,7 @@ const ShopList = () => {
   // }, [queryCar]);
 
   const getDistanceShops = async () => {
+    setContentLoading(true);
     const response = await fetch(
       `/api/v1/shops/?location_string=${
         Array.isArray(location) ? location.join(",") : location
@@ -173,6 +174,7 @@ const ShopList = () => {
       throw new Error("Network response not ok");
     }
     const json = await response.json();
+    setContentLoading(false);
     setShops(json);
   };
 
@@ -207,22 +209,22 @@ const ShopList = () => {
       )
       .map((i) => shopListTemplate(i));
 
-  const specificServiceListFunc = (service) => {
-    const filteredShops =
-      shops &&
-      [...shops].sort(
-        (a, b) =>
-          b.reviews.filter((r) => r.service.join("") === service).length -
-          a.reviews.filter((r) => r.service.join("") === service).length
-      );
+  // const specificServiceListFunc = (service) => {
+  //   const filteredShops =
+  //     shops &&
+  //     [...shops].sort(
+  //       (a, b) =>
+  //         b.reviews.filter((r) => r.service.join("") === service).length -
+  //         a.reviews.filter((r) => r.service.join("") === service).length
+  //     );
 
-    setSpecificService(filteredShops);
-    console.log(filteredShops);
-    setFilter("specificService");
-  };
+  //   setSpecificService(filteredShops);
+  //   console.log(filteredShops);
+  //   setFilter("specificService");
+  // };
 
-  const specificServiceFilter =
-    specificService && specificService.map((i) => shopListTemplate(i));
+  // const specificServiceFilter =
+  //   specificService && specificService.map((i) => shopListTemplate(i));
 
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -277,7 +279,7 @@ const ShopList = () => {
                 placeholder="Enter ZIP or City..."
               />
               <div
-                className="tooltip tooltip-right"
+                className="tooltip tooltip-bottom"
                 data-tip="gets precise location"
               >
                 <button
@@ -399,7 +401,7 @@ const ShopList = () => {
                       by reviews
                     </button>
                   </li>
-                  {isAuth && (
+                  {isAuth && queryCar && (
                     <li>
                       <button
                         type="button"
@@ -441,7 +443,7 @@ const ShopList = () => {
                 </Popover.Button>
               </div>
             </Popover>
-            {isAuth && (
+            {/* {isAuth && (
               <Popover className="relative">
                 <Popover.Panel className="absolute z-30 sm:top-20 top-28 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
                   <ul>
@@ -483,7 +485,7 @@ const ShopList = () => {
                   </div>
                 )}
               </Popover>
-            )}
+            )} */}
           </div>
         </div>
         <p className={`${!isAuth && location ? "visible" : "invisible"}`}>
@@ -492,11 +494,12 @@ const ShopList = () => {
           </Link>{" "}
           to access more features
         </p>
+          <div className={`text-5xl mt-10 animate-spin ${contentLoading ? '' : 'hidden'}`}><ImSpinner8/></div>
         <ul className="mt-10 md:grid md:grid-cols-2 lg:grid-cols-3">
           {filter === "distance" && shopList}
           {filter === "reviews" && reviewFilteredShops}
           {filter === "service" && serviceFilteredShops}
-          {filter === "specificService" && specificServiceFilter}
+          {/* {filter === "specificService" && specificServiceFilter} */}
         </ul>
       </div>
     </>

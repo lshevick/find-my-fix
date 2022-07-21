@@ -20,7 +20,7 @@ return (
           >
             <div className="relative">
               <Combobox.Input
-                displayValue={(items) => items}
+                displayValue={(items) => [...items]}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search for a service..."
                 className="p-1 pr-10 rounded-md shadow-md text-base-content bg-base-100"

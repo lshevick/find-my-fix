@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { themeChange } from "theme-change";
 import { useEffect } from "react";
@@ -36,14 +36,14 @@ const Nav = ({ isAuth, setIsAuth, theme, setTheme }) => {
     <div className="w-[150px] sm:w-full overflow-x-hidden sm:overflow-visible">
     <ul className="flex text-xl overflow-x-scroll sm:overflow-visible">
       <li className="mx-2 p-1 text-accent-focus hover:text-accent">
-        <Link to="/dashboard" className="active:bg-accent">Dashboard</Link>
+        <NavLink className={({isActive}) => isActive ? 'text-accent underline underline-offset-2' : ''} to="/dashboard">Dashboard</NavLink>
       </li>
       <li className="mx-2 p-1 text-accent-focus hover:text-accent">
-        <Link to="/shops">Search</Link>
+        <NavLink className={({isActive}) => isActive ? 'text-accent underline underline-offset-2' : ''} to="/shops">Search</NavLink>
       </li>
       <li className="mx-2 p-1 text-accent-focus hover:text-accent">
         <button type="button" onClick={logout}>
-          <Link to="/">Logout</Link>
+          <NavLink to="/">Logout</NavLink>
         </button>
       </li>
     </ul>
@@ -53,16 +53,15 @@ const Nav = ({ isAuth, setIsAuth, theme, setTheme }) => {
   const guestView = (
     <ul className="flex items-center text-xl">
       <li className="mx-2 p-1 text-accent hover:text-accent-focus">
-        <Link to="/shops">Search</Link>
+        <NavLink className={({isActive}) => isActive ? 'text-accent underline underline-offset-2' : ''} to="/shops">Search</NavLink>
       </li>
 
       <li>
-        <Link
+        <NavLink className={({isActive}) => (`hover:underline text-accent mr-2 hover:text-accent-focus`)}
           to="/login"
-          className="hover:underline text-accent hover:text-accent-focus"
         >
           Login
-        </Link>
+        </NavLink>
       </li>
     </ul>
   );
@@ -72,7 +71,7 @@ const Nav = ({ isAuth, setIsAuth, theme, setTheme }) => {
       <div className="flex fixed w-screen z-50 p-2 py-6 sm:py-2 justify-between items-center bg-slate-800 border-b-4 border-accent-focus shadow-md">
         <div className="flex items-center">
           <Link to="/">
-            <div className="font-bold text-3xl text-success mr-5">
+            <div className="font-bold text-3xl text-success mr-5 ml-2">
               Find <span className="text-accent-focus">My</span> Fix
             </div>
           </Link>

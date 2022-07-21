@@ -48,14 +48,9 @@ const CarForm = () => {
   const [items, setItems] = useState([]);
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
-  const [car, setCar] = useState([]);
-  const {
-    location,
-    setLocation,
-    setQueryCar,
-   } = useOutletContext();
+  // const [car, setCar] = useState([]);
+  const { location, setLocation, setQueryCar } = useOutletContext();
   const [exactLocation, setExactLocation] = useState("");
-
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -69,39 +64,20 @@ const CarForm = () => {
     setItems([]);
   };
 
-  const getCarDetail = async (id) => {
-    const response = await fetch(`/api/v1/cars/${id}/`).catch(handleError);
-    if (!response.ok) {
-      throw new Error("Network response not ok");
-    }
-    const json = await response.json();
-    setCar(json);
-  };
+  // const getCarDetail = async (id) => {
+  //   const response = await fetch(`/api/v1/cars/${id}/`).catch(handleError);
+  //   if (!response.ok) {
+  //     throw new Error("Network response not ok");
+  //   }
+  //   const json = await response.json();
+  //   setCar(json);
+  // };
 
-  const deleteService = async (item, id) => {
-    const newList = car.service_list.slice();
+  const deleteService = (item) => {
+    const newList = items.slice();
     const i = newList.indexOf(item);
     newList.splice(i, 1);
-    const data = {
-      service_list: newList,
-    };
-    const options = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": Cookies.get("csrftoken"),
-      },
-      body: JSON.stringify(data),
-    };
-    const response = await fetch(`/api/v1/cars/${id}/`, options).catch(
-      handleError
-    );
-    if (!response.ok) {
-      throw new Error("Network response not ok");
-    }
-    const json = await response.json();
-    console.log(json);
-    getCarDetail(id);
+    setItems(newList)
   };
 
   const handleImage = (e) => {
@@ -203,7 +179,7 @@ const CarForm = () => {
     const json = await response.json();
     console.log(json, "submitted car!");
     setQueryCar(json);
-    setCar(json);
+    // setCar(json);
     setState(defaultState);
     // setServices(defaultServices);
     setImage(null);
@@ -257,8 +233,12 @@ const CarForm = () => {
           </select>
         </div>
         <div className="flex flex-col items-center w-5/6 inset-0 relative">
-          {image && <img className="md:w-48" src={preview} alt="car" width="100%" />}
-          <label htmlFor="image" className="font-medium text-lg py-1">Upload an Image</label>
+          {image && (
+            <img className="md:w-48" src={preview} alt="car" width="100%" />
+          )}
+          <label htmlFor="image" className="font-medium text-lg py-1">
+            Upload an Image <span className="text-sm">(optional)</span>
+          </label>
           <input
             type="file"
             name="image"
@@ -272,6 +252,7 @@ const CarForm = () => {
             type="button"
             className="m-2 p-1 sm:absolute right-2 bottom-2 btn btn-sm btn-accent capitalize rounded"
             onClick={() => setForm("service")}
+            disabled={!state.model}
           >
             Next
           </button>
@@ -295,24 +276,23 @@ const CarForm = () => {
             />
           </div>
           <button
-            type="submit"
-            form="car-form"
+            type="button"
             onClick={handleService}
             className="p-1 m-1 ml-3 btn btn-sm btn-accent capitalize rounded"
           >
-            Add Car
+            Add Services
           </button>
         </div>
-        <ul className="divide-y mt-4">
-          {car.service_list &&
-            car.service_list.flat().map((i) => (
+        <ul className="divide-y mt-4 max-h-36 overflow-y-scroll">
+          {items &&
+            items.flat().map((i) => (
               <li key={i} className="capitalize text-xl font-light py-3">
                 <div className="w-full flex justify-between">
                   <p className="truncate pr-4">{i}</p>
                   <button
                     type="button"
                     className="flex items-center px-2 text-white bg-red-700 h-4 rounded hover:bg-red-600"
-                    onClick={() => deleteService(i, car.id)}
+                    onClick={() => deleteService(i)}
                   >
                     -
                   </button>
@@ -320,9 +300,19 @@ const CarForm = () => {
               </li>
             ))}
         </ul>
+        <div className="absolute bottom-2">
+          <button
+            type="submit"
+            form="car-form"
+            className="btn btn-accent btn-md text-lg capitalize rounded"
+          >
+            + Add Car
+          </button>
+        </div>
 
         <button
           type="button"
+          disabled={state.model}
           onClick={() => setForm("location")}
           className="p-1 m-2 sm:absolute right-2 bottom-2 btn btn-sm btn-accent capitalize rounded"
         >
@@ -420,6 +410,7 @@ const CarForm = () => {
               <li className="bg-stone-100 w-full">
                 <button
                   type="button"
+                  disabled={!state.model}
                   className={
                     form === "service"
                       ? `bg-base-100 p-2 transition-all w-full overflow-x-hidden`
