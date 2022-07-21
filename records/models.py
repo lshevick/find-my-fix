@@ -10,7 +10,7 @@ class Record(models.Model):
     image = models.ImageField(null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
     date = models.DateField()
-    note = models.TextField(max_length=300)
+    note = models.TextField(max_length=300, blank=True)
     service = models.JSONField()
     cost = models.FloatField()
 

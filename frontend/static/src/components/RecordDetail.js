@@ -177,7 +177,7 @@ const handleSubmit = (e) => {
             name="newNote"
             id="newNote"
             cols="20"
-            rows="5"
+            rows="2"
             className="p-1 rounded bg-stone-100 text-black"
             value={newNote}
             onChange={(e) => setNewNote(e.target.value)}

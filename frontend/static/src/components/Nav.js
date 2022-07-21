@@ -36,7 +36,7 @@ const Nav = ({ isAuth, setIsAuth, theme, setTheme }) => {
     <div className="w-[150px] sm:w-full overflow-x-hidden sm:overflow-visible">
     <ul className="flex text-xl overflow-x-scroll sm:overflow-visible">
       <li className="mx-2 p-1 text-accent-focus hover:text-accent">
-        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/dashboard" className="active:bg-accent">Dashboard</Link>
       </li>
       <li className="mx-2 p-1 text-accent-focus hover:text-accent">
         <Link to="/shops">Search</Link>

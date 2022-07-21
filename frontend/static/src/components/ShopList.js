@@ -19,19 +19,15 @@ function handleError(err) {
 
 const ShopList = () => {
   const [shops, setShops] = useState(undefined);
-  const {
-    isAuth,
-    location,
-    setLocation,
-    queryCar,
-    setQueryCar,
-   } = useOutletContext();
+  const { isAuth, location, setLocation, queryCar, setQueryCar } =
+    useOutletContext();
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState("distance");
   const [garage, setGarage] = useState([]);
   // const [queryCar, setQueryCar] = useState(undefined);
   const [specificService, setSpecificService] = useState("");
   const [exactLocation, setExactLocation] = useState("");
+  const [error, setError] = useState("");
 
   const getCars = async () => {
     const response = await fetch(`/api/v1/cars/`).catch(handleError);
@@ -70,14 +66,14 @@ const ShopList = () => {
           <p className="italic text-sm">No reviews</p>
         ) : (
           <>
-          <Rating
-            name="read-only"
-            value={shop.average}
-            precision={1}
-            readOnly
+            <Rating
+              name="read-only"
+              value={shop.average}
+              precision={1}
+              readOnly
             />
-          <p className="text-sm px-2 italic">{shop.reviews.length} Reviews</p>
-            </>
+            <p className="text-sm px-2 italic">{shop.reviews.length} Reviews</p>
+          </>
         )}
       </div>
       <ul className="text-sm font-light flex flex-wrap">
@@ -162,10 +158,10 @@ const ShopList = () => {
     setShops(json);
   };
 
-  useEffect(() => {
-    getServiceShops();
-    // eslint-disable-next-line
-  }, [queryCar]);
+  // useEffect(() => {
+  //   getServiceShops();
+  //   // eslint-disable-next-line
+  // }, [queryCar]);
 
   const getDistanceShops = async () => {
     const response = await fetch(
@@ -178,6 +174,11 @@ const ShopList = () => {
     }
     const json = await response.json();
     setShops(json);
+  };
+
+  const handleShopSubmit = (e) => {
+    e.preventDefault();
+    queryCar ? getServiceShops() : getDistanceShops();
   };
 
   useEffect(() => {
@@ -224,11 +225,21 @@ const ShopList = () => {
     specificService && specificService.map((i) => shopListTemplate(i));
 
   const getLocation = () => {
-    setLoading(true);
-    navigator.geolocation.getCurrentPosition((p) => {
-      setLocation([p.coords.latitude, p.coords.longitude]);
-      setLoading(false);
-    });
+    if (!navigator.geolocation) {
+      setError("This browser doesn't support this feature :(");
+    } else {
+      setLoading(true);
+      navigator.geolocation.getCurrentPosition(
+        (p) => {
+          setLocation([p.coords.latitude, p.coords.longitude]);
+          setLoading(false);
+        },
+        () => {
+          setError("Can't get location :(");
+          setLoading(false);
+        }
+      );
+    }
   };
 
   const getFormattedAddress = async () => {
@@ -252,29 +263,68 @@ const ShopList = () => {
     <>
       <div className="flex flex-col w-full items-center bg-base-100 relative">
         <h1 className="font-bold text-lg mt-5 text-base-content">
-          Enter Zip code or City, or get current location
+          In order to find shops near you, <br />
+          enter your Zip code or City, or get current location.
         </h1>
         <div className="flex flex-col items-center">
-          <div className="flex items-end">
-            <input
-              className={`mt-3 p-1 shadow-sm rounded-l-md`}
-              type="text"
-              value={Array.isArray(location) ? exactLocation : location}
-              onChange={(e) => setLocation(e.target.value)}
-              placeholder="Enter ZIP or City, State..."
-            />
+          <form onSubmit={handleShopSubmit}>
+            <div className="flex items-end">
+              <input
+                className={`mt-3 p-1 shadow-sm rounded-l-md`}
+                type="text"
+                value={Array.isArray(location) ? exactLocation : location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Enter ZIP or City..."
+              />
+              <div
+                className="tooltip tooltip-right"
+                data-tip="gets precise location"
+              >
+                <button
+                  type="button"
+                  className="p-2 bg-accent-focus hover:bg-accent text-white rounded-r-md shadow-md hover:shadow-lg transition-all"
+                  onClick={getLocation}
+                >
+                  {location ? (
+                    <GoCheck />
+                  ) : loading ? (
+                    <ImSpinner8 className="animate-spin" />
+                  ) : (
+                    <FaLocationArrow />
+                  )}
+                </button>
+              </div>
+            </div>
+            <div className="mt-3">
+              <button
+                type="submit"
+                className={`px-1 text-xl rounded text-accent border-accent border-2 ${
+                  location && "hover:bg-accent hover:text-accent-content"
+                } transition-all disabled:border-stone-600 disabled:text-stone-600 
+                `}
+                disabled={!location}
+              >
+                Find My Fix!
+              </button>
+            </div>
+          </form>
+          <div
+            className={error ? "fixed inset-0 bg-black/20 backdrop-blur" : ""}
+          ></div>
+          <div
+            className={
+              error
+                ? "bg-base-300 absolute rounded-lg shadow-2xl p-4 z-50"
+                : "hidden"
+            }
+          >
+            <p className="text-2xl text-base-content p-3">{error}</p>
             <button
               type="button"
-              className="p-2 bg-accent-focus hover:bg-accent text-white rounded-r-md shadow-md hover:shadow-lg transition-all"
-              onClick={getLocation}
+              onClick={() => setError("")}
+              className=" m-3 p-2 border-2 border-base-content rounded-md hover:bg-base-content hover:text-base-300 transition-all text-base-content"
             >
-              {location ? (
-                <GoCheck />
-              ) : loading ? (
-                <ImSpinner8 className="animate-spin" />
-              ) : (
-                <FaLocationArrow />
-              )}
+              Close
             </button>
           </div>
           {isAuth && (
@@ -289,7 +339,16 @@ const ShopList = () => {
                   <Listbox value={queryCar} onChange={setQueryCar}>
                     {location && (
                       <Listbox.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
-                        {({open}) => (<>{queryCar ? queryCar.model : "Car"} <BsCaretDownFill className={`transition-all inline-block ${open ? 'rotate-180' : ``}`}/></>)}
+                        {({ open }) => (
+                          <>
+                            {queryCar ? queryCar.model : "Car"}{" "}
+                            <BsCaretDownFill
+                              className={`transition-all inline-block ${
+                                open ? "rotate-180" : ``
+                              }`}
+                            />
+                          </>
+                        )}
                       </Listbox.Button>
                     )}
                     <Listbox.Options className="absolute top-20 sm:top-20 z-10 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm w-fit p-1">
@@ -297,7 +356,7 @@ const ShopList = () => {
                         <Listbox.Option
                           key={car.id}
                           value={car}
-                          className="p-1 cursor-pointer"
+                          className={`p-1 cursor-pointer ${queryCar && queryCar.model === car.model ? 'bg-accent' : ''}`}
                         >
                           {car.make} {car.model}
                         </Listbox.Option>
@@ -309,18 +368,7 @@ const ShopList = () => {
             </div>
           )}
         </div>
-        <div className="flex items-center mt-3">
-          {!isAuth && (
-            <button
-              type="button"
-              className={`px-1 text-xl rounded text-accent border-accent border-2 hover:bg-accent hover:text-accent-content transition-all ${
-                !isAuth && !location && !queryCar ? "invisible" : "visible"
-              }`}
-              onClick={getDistanceShops}
-            >
-              Find My Fix!
-            </button>
-          )}
+        <div className="flex items-center justify-center mt-3">
           <div className="flex">
             <Popover className="relative">
               <Popover.Panel className="absolute z-30 sm:top-20 top-20 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
@@ -370,55 +418,72 @@ const ShopList = () => {
                   )}
                 </ul>
               </Popover.Panel>
-              <div>
-                <p className="font-medium text-lg sm:invisible">Filters</p>
-              </div>
-              <div className="tooltip" data-tip='Filters'>
-              <Popover.Button
-                className={` ${
-                  location ? "visible" : "invisible"
-                } px-2 text-xl m-2 border-2 border-stone-500 rounded min-w-[180px]`}
+              <div></div>
+              <div className={location && "tooltip"} data-tip="Filters">
+                <Popover.Button
+                  className={` ${
+                    location ? "visible" : "invisible"
+                  } px-2 text-xl m-2 border-2 border-stone-500 rounded min-w-[180px]`}
                 >
-                {({open}) => (<>By {filter === 'specificService' ? ' specific service' : filter} <BsCaretDownFill className={`inline-block transition-all ${open ? 'rotate-180' : ''}`} /></>)}
-
-              </Popover.Button>
-                </div>
-            </Popover>
-
-            <Popover className="relative">
-              <Popover.Panel className="absolute z-30 sm:top-20 top-28 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
-                <ul>
-                  {queryCar &&
-                    queryCar.service_list.flat().map((s) => (
-                      <li key={s}>
-                        <button
-                          type="button"
-                          className={`hover:underline mt-2 p-1 rounded ${
-                            specificService === { s }
-                              ? `font-medium bg-accent text-accent-content`
-                              : ``
-                          }`}
-                          onClick={() => {
-                            specificServiceListFunc(s);
-                          }}
-                        >
-                          {s}
-                        </button>
-                      </li>
-                    ))}
-                </ul>
-              </Popover.Panel>
-              <div>
-                <p className="font-medium text-lg sm:invisible">Sort by reviews</p>
-              </div>
-              {isAuth && location && (
-                <div className="tooltip" data-tip='Sorts by service reviews'>
-                <Popover.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
-                 {({open}) => (<>Specify a service<BsCaretDownFill className={`inline-block transition-all ${open ? 'rotate-180' : ''}`} /></>)}
+                  {({ open }) => (
+                    <>
+                      By{" "}
+                      {filter === "specificService"
+                        ? " specific service"
+                        : filter}{" "}
+                      <BsCaretDownFill
+                        className={`inline-block transition-all ${
+                          open ? "rotate-180" : ""
+                        }`}
+                      />
+                    </>
+                  )}
                 </Popover.Button>
-                </div>
-              )}
+              </div>
             </Popover>
+            {isAuth && (
+              <Popover className="relative">
+                <Popover.Panel className="absolute z-30 sm:top-20 top-28 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
+                  <ul>
+                    {queryCar &&
+                      queryCar.service_list.flat().map((s) => (
+                        <li key={s}>
+                          <button
+                            type="button"
+                            className={`hover:underline mt-2 p-1 rounded ${
+                              specificService === { s }
+                                ? `font-medium bg-accent text-accent-content`
+                                : ``
+                            }`}
+                            onClick={() => {
+                              specificServiceListFunc(s);
+                            }}
+                          >
+                            {s}
+                          </button>
+                        </li>
+                      ))}
+                  </ul>
+                </Popover.Panel>
+                <div></div>
+                {isAuth && location && (
+                  <div className="tooltip" data-tip="Sorts by service reviews">
+                    <Popover.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
+                      {({ open }) => (
+                        <>
+                          Specify a service
+                          <BsCaretDownFill
+                            className={`inline-block transition-all ${
+                              open ? "rotate-180" : ""
+                            }`}
+                          />
+                        </>
+                      )}
+                    </Popover.Button>
+                  </div>
+                )}
+              </Popover>
+            )}
           </div>
         </div>
         <p className={`${!isAuth && location ? "visible" : "invisible"}`}>
