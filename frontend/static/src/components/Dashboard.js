@@ -47,6 +47,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [expand, setExpand] = useState(false);
   const { navigate, setLocation, setQueryCar } = useOutletContext();
+  const [page, setPage] = useState(false);
 
   const handleImage = (e) => {
     const file = e.target.files[0];
@@ -214,35 +215,32 @@ const Dashboard = () => {
 
   const formModal = (
     <>
-      <Dialog
-        onClose={() => setFormIsOpen(false)}
-        className="relative"
-      >
+      <Dialog onClose={() => setFormIsOpen(false)} className="relative">
         <div className="fixed inset-0 bg-black/50" aria-hidden="true">
           <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
-          <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0 scale-95"
-          enterTo="opacity-100 scale-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100 scale-100"
-          leaveTo="opacity-0 scale-95"
-        >
-            <Dialog.Panel className="max-w-52 z-50 absolute max-w-lg rounded bg-base-200 p-4 md:p-10 flex flex-col items-center justify-center w-5/6">
-              <div className="w-full relative">
-                <RecordForm
-                  currentCar={car}
-                  dataChanged={dataChanged}
-                  setDataChanged={setDataChanged}
-                  setFormIsOpen={setFormIsOpen}
-                  deleteService={deleteService}
-                />
-              </div>
-              <button type="button" onClick={() => setFormIsOpen(false)}>
-                Close
-              </button>
-            </Dialog.Panel>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="max-w-52 z-50 absolute max-w-lg rounded bg-base-200 p-4 md:p-10 flex flex-col items-center justify-center w-5/6">
+                <div className="w-full relative">
+                  <RecordForm
+                    currentCar={car}
+                    dataChanged={dataChanged}
+                    setDataChanged={setDataChanged}
+                    setFormIsOpen={setFormIsOpen}
+                    deleteService={deleteService}
+                  />
+                </div>
+                <button type="button" onClick={() => setFormIsOpen(false)}>
+                  Close
+                </button>
+              </Dialog.Panel>
             </Transition.Child>
           </div>
         </div>
@@ -578,18 +576,18 @@ const Dashboard = () => {
         setExpand(false);
       }}
     >
-              <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0 scale-100"
-          enterTo="opacity-100 scale-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100 scale-100"
-          leaveTo="opacity-0 scale-100"
-        >
-      <div className="fixed inset-0 bg-black/50" aria-hidden="true">
-        <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
-          {/* <Transition.Child
+      <Transition.Child
+        as={Fragment}
+        enter="ease-out duration-300"
+        enterFrom="opacity-0 scale-100"
+        enterTo="opacity-100 scale-100"
+        leave="ease-in duration-200"
+        leaveFrom="opacity-100 scale-100"
+        leaveTo="opacity-0 scale-100"
+      >
+        <div className="fixed inset-0 bg-black/50" aria-hidden="true">
+          <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
+            {/* <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0 scale-95"
@@ -631,9 +629,9 @@ const Dashboard = () => {
                 </button>
               </div>
             </Dialog.Panel>
-          {/* </Transition.Child> */}
+            {/* </Transition.Child> */}
+          </div>
         </div>
-      </div>
       </Transition.Child>
     </Dialog>
   );
@@ -749,36 +747,54 @@ const Dashboard = () => {
         {formModal}
       </Transition>
       <div
-        className={`flex flex-col bg-base-100 items-center shadows justify-center w-full min-h-screen ${
+        className={`flex flex-col bg-base-100 items-centerr shadows justify-start w-full min-h-screen ${
           isOpen && `blur`
         }`}
       >
         <div className="bg-base-100 border-2 border-base-200 shadow-xl rounded flex flex-col pb-3 mx-auto my-5 sm:w-5/6 md:w-2/3 lg:w-1/2">
-          <div className="w-full bg-neutral rounded-t py-2">
-            <h2 className="text-3xl font-medium text-neutral-content">
-              My Garage
-            </h2>
+          <div className="w-full flex bg-neutral rounded-t ">
+            <button
+              type="button"
+              className={`w-1/2 p-2 ${page ? "bg-base-100" : "bg-base-300"}`}
+              onClick={() => setPage(true)}
+            >
+              <h2 className="text-3xl font-medium text-base-content">
+                My Garage
+              </h2>
+            </button>
+            <button
+              type="button"
+              className={`w-1/2 p-2 ${page ? "bg-base-300" : "bg-base-100"}`}
+              onClick={() => setPage(false)}
+            >
+              <h2 className="text-3xl font-medium text-base-content">
+                My Records
+              </h2>
+            </button>
           </div>
-          <ul className="px-3 pt-1 ">
-            {garageDisplay}
-          </ul>
-          <Link
-            to="/add-car"
-            className="text-accent font-medium text-xl hover:underline hover:text-accent-focus"
-          >
-            Add a Car
-          </Link>
+          {page ? (
+            <Link
+              to="/add-car"
+              className="font-medium text-xl btn btn-accent capitalize mx-auto btn-sm w-1/4 mt-3"
+            >
+              Add a Car
+            </Link>
+          ) : (
+            <button
+              type="button"
+              className="font-medium text-xl btn btn-accent capitalize mx-auto btn-sm w-1/4 mt-3"
+            >
+              Add a record
+            </button>
+          )}
+          <ul className="px-3 pt-1 ">{page ? garageDisplay : recordDisplay}</ul>
         </div>
-        <div className="bg-base-100 border-2 border-base-200 shadow-xl rounded flex flex-col pb-3 mx-auto my-5 w-full sm:w-5/6 md:w-2/3 lg:w-1/2">
-          <div className="w-full bg-neutral rounded-t py-2">
-            <h2 className="text-3xl font-medium text-neutral-content">
-              My Records
-            </h2>
-          </div>
+        {/* <div className="bg-base-100 border-2 border-base-200 shadow-xl rounded flex flex-col pb-3 mx-auto my-5 w-full sm:w-5/6 md:w-2/3 lg:w-1/2">
+          <div className="w-full bg-neutral rounded-t py-2"></div>
           <ul className="px-3 pt-1 lg:grid lg:grid-flow-col lg:grid-rows-2 lg:divide-y-0">
             {recordDisplay}
           </ul>
-        </div>
+        </div> */}
       </div>
     </>
   );
