@@ -70,7 +70,7 @@ const Homescreen = () => {
                 Filtering your Searches
               </h3>
               <p>
-                Use the cars you have saved to refine your searches.
+                Use the cars you've saved to refine your searches.
               </p>
             </div>
           </div>
@@ -87,7 +87,7 @@ const Homescreen = () => {
                 Preview Cards
               </h3>
               <p>
-                Search result cards have at-a-glance info to quickly determine if it's an option for you.
+                Search result cards have at-a-glance info to quickly determine if it's a good option for you.
               </p>
             </div>
           </div>

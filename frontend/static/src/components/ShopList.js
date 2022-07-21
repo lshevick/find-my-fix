@@ -358,9 +358,9 @@ const ShopList = () => {
                         <Listbox.Option
                           key={car.id}
                           value={car}
-                          className={`p-1 cursor-pointer ${queryCar && queryCar.model === car.model ? 'bg-accent' : ''}`}
+                          className={`p-1 cursor-pointer ${queryCar && queryCar.id === car.id ? 'bg-accent' : ''}`}
                         >
-                          {car.make} {car.model}
+                         {car.year} {car.make} {car.model}
                         </Listbox.Option>
                       ))}
                     </Listbox.Options>
@@ -373,7 +373,7 @@ const ShopList = () => {
         <div className="flex items-center justify-center mt-3">
           <div className="flex">
             <Popover className="relative">
-              <Popover.Panel className="absolute z-30 sm:top-20 top-20 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
+              <Popover.Panel className="absolute z-30 top-16 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
                 <ul>
                   <li>
                     <button
