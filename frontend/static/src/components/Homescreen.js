@@ -31,7 +31,7 @@ const Homescreen = () => {
           </div>
           <div className="col-start-1 col-span-2 card bg-accent text-accent-content shadow-xl mb-10">
             <div className="card-body">
-              <h3 className="card-title">
+              <h3 className="font-bold text-2xl">
                 About
               </h3>
               <p>
@@ -48,7 +48,7 @@ const Homescreen = () => {
           </div>
           <div className="col-start-1 row-start-4 col-span-2 card bg-accent-focus text-accent-content my-10 shadow-xl">
             <div className="card-body">
-              <h3 className="card-title">
+              <h3 className="font-bold text-2xl">
                Add your car
               </h3>
               <p>
@@ -66,7 +66,7 @@ const Homescreen = () => {
           </div>
           <div className="card bg-teal-700 text-stone-100 shadow-xl my-10 col-start-1 col-span-2 row-start-6">
             <div className="card-body">
-              <h3 className="card-title">
+              <h3 className="font-bold text-2xl">
                 Filtering your Searches
               </h3>
               <p>
@@ -83,7 +83,7 @@ const Homescreen = () => {
           </div>
           <div className="card shadow-xl bg-emerald-800 text-stone-100 my-10 col-start-1 col-span-2 row-start-[8]">
             <div className="card-body">
-              <h3 className="card-title">
+              <h3 className="font-bold text-2xl">
                 Preview Cards
               </h3>
               <p>

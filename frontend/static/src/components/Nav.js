@@ -7,7 +7,7 @@ function handleError(err) {
   console.warn(err);
 }
 
-const Nav = ({ isAuth, setIsAuth, theme, setTheme }) => {
+const Nav = ({ isAuth, setIsAuth, navigate, theme, setTheme }) => {
 
   const logout = async () => {
     const options = {
@@ -26,6 +26,7 @@ const Nav = ({ isAuth, setIsAuth, theme, setTheme }) => {
     Cookies.remove("Authorization");
     Cookies.remove('username')
     setIsAuth(false);
+    navigate('/')
   };
 
   useEffect(() => {

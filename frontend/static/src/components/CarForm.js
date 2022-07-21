@@ -387,8 +387,8 @@ const CarForm = () => {
 
   return (
     <>
-      <div className="flex items-start justify-center p-3 bg-base-300 w-full min-h-screen">
-        <div className="flex flex-col mt-2 items-center rounded relative bg-base-100 w-full sm:w-1/2 md:min-w-1/3 min-h-[calc(100vh-10rem)] sm:min-h-[350px]">
+      <div className="flex items-start justify-center p-3 bg-base-100 w-full min-h-screen">
+        <div className="flex flex-col mt-2 items-center rounded relative bg-base-300 w-full sm:w-1/2 md:min-w-1/3 min-h-[calc(100vh-10rem)] sm:min-h-[350px]">
           <div className="flex justify-center items-center rounded-t-md w-full">
             <ul className="flex justify-center w-full mb-5">
               <li className="bg-base-100 w-full rounded-t-md">
@@ -396,7 +396,7 @@ const CarForm = () => {
                   type="button"
                   className={
                     form === "car"
-                      ? `bg-base-100 p-2 transition-all w-full rounded-t rounded-r-none`
+                      ? `bg-base-300 p-2 transition-all w-full rounded-t rounded-r-none`
                       : `bg-neutral hover:bg-stone-400 p-2 transition-all w-full grayscale rounded-t rounded-r-none`
                   }
                   onClick={() => setForm("car")}
@@ -407,13 +407,13 @@ const CarForm = () => {
                   Vehicle
                 </button>
               </li>
-              <li className="bg-stone-100 w-full">
+              <li className="bg-stone-300 w-full">
                 <button
                   type="button"
                   disabled={!state.model}
                   className={
                     form === "service"
-                      ? `bg-base-100 p-2 transition-all w-full overflow-x-hidden`
+                      ? `bg-base-300 p-2 transition-all w-full overflow-x-hidden`
                       : `bg-neutral hover:bg-stone-400 p-2 transition-all w-full grayscale`
                   }
                   onClick={() => setForm("service")}
@@ -424,12 +424,12 @@ const CarForm = () => {
                   Services
                 </button>
               </li>
-              <li className="bg-base-100 w-full rounded-t">
+              <li className="bg-base-300 w-full rounded-t">
                 <button
                   type="button"
                   className={
                     form === "location"
-                      ? `bg-base-100 p-2 transition-all w-full rounded-t rounded-l-none`
+                      ? `bg-base-300 p-2 transition-all w-full rounded-t rounded-l-none`
                       : `bg-neutral hover:bg-stone-400 p-2 transition-all w-full grayscale rounded-t rounded-l-none`
                   }
                   onClick={() => setForm("location")}

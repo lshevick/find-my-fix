@@ -59,7 +59,7 @@ const RegisterForm = () => {
             <h1 className="font-bold text-2xl">Register</h1>
           </div>
           <input
-            className=" text-black my-2 p-1 rounded-sm"
+            className=" text-black my-4 p-1 rounded-sm"
             type="text"
             name="username"
             id="username"
@@ -68,7 +68,7 @@ const RegisterForm = () => {
             placeholder="Username"
           />
           <input
-            className=" text-black my-2 p-1 rounded-sm"
+            className=" text-black my-4 p-1 rounded-sm"
             type="email"
             name="email"
             id="email"
@@ -78,7 +78,7 @@ const RegisterForm = () => {
           />
           <div className="relative">
             <input
-              className="text-black my-2 p-1 rounded-sm"
+              className="text-black my-4 p-1 rounded-sm"
               type={visible ? `text` : `password`}
               name="password1"
               id="password1"
@@ -88,7 +88,7 @@ const RegisterForm = () => {
             />
             <button
               type="button"
-              className="absolute right-2 bottom-4"
+              className="absolute right-2 bottom-6"
               onClick={() => setVisible(!visible)}
             >
               {visible ? (
@@ -99,7 +99,7 @@ const RegisterForm = () => {
             </button>
           </div>
           <input
-            className="text-black my-2 p-1 rounded-sm"
+            className="text-black my-4 p-1 rounded-sm"
             type={visible ? `text` : `password`}
             name="password2"
             id="password2"

@@ -14,6 +14,7 @@ const RecordDetail = ({
   note,
   shop,
   service,
+  cost,
   date,
   image,
   car,
@@ -120,12 +121,13 @@ const handleSubmit = (e) => {
       </div>
       <div className="card-body">
         <h3 className="card-title">{shop}</h3>
-        <p>{date && format(new Date(date), 'MM-dd-yyyy')}</p>
+        <p>{date && format(new Date(date), 'LLLL dd, yyyy')}</p>
+        <p>Cost: ${cost}</p>
         <div>
-          <ul className="capitalize">
+          <ul className="capitalize grid grid-flow-cols w-1/2">
             {service &&
               service.map((service) => (
-                <li key={service} className="bg-base-300 w-fit p-1 rounded">
+                <li key={service} className="bg-base-300 w-fit p-1 m-1 rounded">
                   {service}
                 </li>
               ))}
@@ -161,13 +163,14 @@ const handleSubmit = (e) => {
             id="date"
             value={newDate}
             onChange={(e) => handleDate(e)}
-            className="bg-stone-200 p-1 rounded"
+            className="bg-stone-200 p-1 rounded w-1/2"
           />
+        <p>Cost: ${cost}</p>
           <div className="flex flex-col sm:flex-row">
-            <ul className="capitalize">
+            <ul className="capitalize flex">
               {service &&
                 service.map((service) => (
-                  <li key={service} className="bg-base-300 w-fit p-1 rounded">
+                  <li key={service} className="bg-base-300 w-fit p-1 m-1 rounded">
                     {service}
                   </li>
                 ))}
@@ -176,7 +179,7 @@ const handleSubmit = (e) => {
           <textarea
             name="newNote"
             id="newNote"
-            cols="20"
+            cols="10"
             rows="2"
             className="p-1 rounded bg-stone-200 text-black"
             value={newNote}

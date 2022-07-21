@@ -126,7 +126,7 @@ const RecordForm = ({
       <div className="w-full flex flex-col items-center">
         <form
           id="record-form"
-          className="flex flex-col sm:items-start items-center m-3"
+          className="flex flex-col items-start m-3"
           onSubmit={handleSubmit}
         >
           <label htmlFor="services">Service</label>
@@ -134,7 +134,7 @@ const RecordForm = ({
             <ServicePicker
               items={service}
               setItems={setService}
-              serviceList={formCar && garage && garage.find(car => car.id === formCar)?.service_list.flat()}
+              serviceList={formCar && garage && garage.filter(car => car.id === formCar)[0]?.service_list.flat()}
               query={query}
               setQuery={setQuery}
             />
@@ -164,7 +164,7 @@ const RecordForm = ({
           </select>
           <div className="flex flex-col items-start">
             <label htmlFor="cost">Cost of Service</label>
-            <div className="flex items-center justify-start">
+            <div className="flex items-center justify-start relative sm:-left-6">
               <span className="px-2">$</span>
               <input
                 type="number"

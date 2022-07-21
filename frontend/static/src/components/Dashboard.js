@@ -592,7 +592,7 @@ const Dashboard = () => {
             <Dialog.Panel className="z-50 absolute rounded-2xl max-w-lg bg-base-200 flex flex-col items-center justify-center w-5/6">
               <div
                 className={`w-full ${
-                  expand ? "h-[calc(100vh-90px)]" : "h-96 sm:h-[50vh]"
+                  expand ? "h-[calc(100vh-90px)]" : "h-96 sm:max-h-[35vh]"
                 } transition-all ease-out duration-200 overflow-hidden`}
               >
                 <RecordDetail
@@ -675,7 +675,7 @@ const Dashboard = () => {
               <li key={record.id}>
                 <button
                   type="button"
-                  className="w-5/6 py-2 hover:bg-accent-focus rounded"
+                  className="w-5/6 p-2 hover:bg-accent-focus rounded"
                   onClick={() => {
                     getRecordDetail(car.id, record.id);
                     setRecordIsOpen(true);
@@ -684,7 +684,7 @@ const Dashboard = () => {
                   <div className="flex justify-between w-full">
                     <p>
                       {record.date &&
-                        format(new Date(record.date), "M-dd-yyyy")}
+                        format(new Date(record.date), "LLLL dd, yyyy")}
                     </p>
                     <p className="capitalize">
                       {record.service[0]}
@@ -780,7 +780,9 @@ const Dashboard = () => {
               Add a record
             </button>
           )}
-          <ul className="px-3 pt-1 ">{page ? garageDisplay : recordDisplay}</ul>
+          <ul className="px-3 pt-1 ">
+            {garage.length === 0 && <li className="text-3xl font-medium">There's nothing here! Add a car to get started!</li>}
+            {page ? garageDisplay : recordDisplay}</ul>
         </div>
       </div>
     </>
