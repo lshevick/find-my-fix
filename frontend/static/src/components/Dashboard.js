@@ -47,7 +47,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [expand, setExpand] = useState(false);
   const { navigate, setLocation, setQueryCar } = useOutletContext();
-  const [page, setPage] = useState(false);
+  const [page, setPage] = useState(true);
 
   const handleImage = (e) => {
     const file = e.target.files[0];
@@ -231,6 +231,8 @@ const Dashboard = () => {
                 <div className="w-full relative">
                   <RecordForm
                     currentCar={car}
+                    setCurrentCar={setCar}
+                    garage={garage}
                     dataChanged={dataChanged}
                     setDataChanged={setDataChanged}
                     setFormIsOpen={setFormIsOpen}
@@ -251,7 +253,7 @@ const Dashboard = () => {
   const carModal = (
     <Dialog
       initialFocus={editButton}
-      onClose={() => setIsOpen(false)}
+      onClose={() => {setIsOpen(false); setCar([])}}
       className="relative"
     >
       <Transition.Child
@@ -587,15 +589,6 @@ const Dashboard = () => {
       >
         <div className="fixed inset-0 bg-black/50" aria-hidden="true">
           <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
-            {/* <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0 scale-95"
-            enterTo="opacity-100 scale-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100 scale-100"
-            leaveTo="opacity-0 scale-95"
-          > */}
             <Dialog.Panel className="z-50 absolute rounded-2xl max-w-lg bg-base-200 flex flex-col items-center justify-center w-5/6">
               <div
                 className={`w-full ${
@@ -622,14 +615,13 @@ const Dashboard = () => {
                 </button>
                 <button
                   type="button"
-                  className="font-medium text-lg"
+                  className="font-medium text-lg btn btn-sm capitalize m-1"
                   onClick={() => setRecordIsOpen(false)}
                 >
                   Close
                 </button>
               </div>
             </Dialog.Panel>
-            {/* </Transition.Child> */}
           </div>
         </div>
       </Transition.Child>
@@ -647,9 +639,9 @@ const Dashboard = () => {
           getCarDetail(car.id);
           setIsOpen(!isOpen);
         }}
-        className={`flex items-center border-4 border-transparent hover:border-accent-focus rounded py-2`}
+        className={`flex max-h-52 overflow-hidden items-center border-4 border-transparent hover:border-accent-focus rounded py-2`}
       >
-        <div className="overflow-hidden w-1/2 max-h-52 relative flex items-center justify-center">
+        <div className="w-1/2 relative flex items-center justify-center">
           <img
             src={
               car.image
@@ -677,7 +669,7 @@ const Dashboard = () => {
         {car.year} {car.make} {car.model}
       </h2>
       <div className="">
-        <ul className="divide-y mx-auto w-3/4">
+        <ul className="divide-y mx-auto w-full sm:w-3/4 md:w-1/2">
           {car.records &&
             car.records.map((record) => (
               <li key={record.id}>
@@ -692,7 +684,7 @@ const Dashboard = () => {
                   <div className="flex justify-between w-full">
                     <p>
                       {record.date &&
-                        format(new Date(record.date), "MM-dd-yyyy")}
+                        format(new Date(record.date), "M-dd-yyyy")}
                     </p>
                     <p className="capitalize">
                       {record.service[0]}
@@ -747,18 +739,18 @@ const Dashboard = () => {
         {formModal}
       </Transition>
       <div
-        className={`flex flex-col bg-base-100 items-centerr shadows justify-start w-full min-h-screen ${
+        className={`flex flex-col bg-base-100 items-center shadow justify-start w-full min-h-screen ${
           isOpen && `blur`
         }`}
       >
-        <div className="bg-base-100 border-2 border-base-200 shadow-xl rounded flex flex-col pb-3 mx-auto my-5 sm:w-5/6 md:w-2/3 lg:w-1/2">
+        <div className="bg-base-100 border-2 border-base-200 shadow-xl rounded flex flex-col pb-3 mx-auto my-5 w-full sm:w-5/6 md:w-2/3 lg:w-1/2">
           <div className="w-full flex bg-neutral rounded-t ">
             <button
               type="button"
               className={`w-1/2 p-2 ${page ? "bg-base-100" : "bg-base-300"}`}
               onClick={() => setPage(true)}
             >
-              <h2 className="text-3xl font-medium text-base-content">
+              <h2 className="sm:text-3xl text-2xl font-medium text-base-content">
                 My Garage
               </h2>
             </button>
@@ -767,7 +759,7 @@ const Dashboard = () => {
               className={`w-1/2 p-2 ${page ? "bg-base-300" : "bg-base-100"}`}
               onClick={() => setPage(false)}
             >
-              <h2 className="text-3xl font-medium text-base-content">
+              <h2 className="sm:text-3xl text-2xl font-medium text-base-content">
                 My Records
               </h2>
             </button>
@@ -775,26 +767,21 @@ const Dashboard = () => {
           {page ? (
             <Link
               to="/add-car"
-              className="font-medium text-xl btn btn-accent capitalize mx-auto btn-sm w-1/4 mt-3"
+              className="font-normal text-2xl lg:text-3xl btn btn-accent capitalize mx-auto md:min-w-1/4 mt-3"
             >
               Add a Car
             </Link>
           ) : (
             <button
               type="button"
-              className="font-medium text-xl btn btn-accent capitalize mx-auto btn-sm w-1/4 mt-3"
+              className="font-normal text-2xl lg:text-3xl btn btn-accent capitalize mx-auto md:min-w-1/4 mt-3"
+              onClick={() => setFormIsOpen(true)}
             >
               Add a record
             </button>
           )}
           <ul className="px-3 pt-1 ">{page ? garageDisplay : recordDisplay}</ul>
         </div>
-        {/* <div className="bg-base-100 border-2 border-base-200 shadow-xl rounded flex flex-col pb-3 mx-auto my-5 w-full sm:w-5/6 md:w-2/3 lg:w-1/2">
-          <div className="w-full bg-neutral rounded-t py-2"></div>
-          <ul className="px-3 pt-1 lg:grid lg:grid-flow-col lg:grid-rows-2 lg:divide-y-0">
-            {recordDisplay}
-          </ul>
-        </div> */}
       </div>
     </>
   );

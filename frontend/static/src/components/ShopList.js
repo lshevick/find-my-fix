@@ -21,11 +21,9 @@ const ShopList = () => {
   const [shops, setShops] = useState(undefined);
   const { isAuth, location, setLocation, queryCar, setQueryCar } =
     useOutletContext();
-  // const [loading, setLoading] = useState(false);/
   const [contentLoading, setContentLoading] = useState(false);
   const [filter, setFilter] = useState("distance");
   const [garage, setGarage] = useState([]);
-  // const [specificService, setSpecificService] = useState("");
   const [exactLocation, setExactLocation] = useState("");
   const [error, setError] = useState("");
   const [inputLocation, setInputLocation] = useState('');
@@ -161,11 +159,6 @@ const ShopList = () => {
     setShops(json);
   };
 
-  // useEffect(() => {
-  //   getServiceShops();
-  //   // eslint-disable-next-line
-  // }, [queryCar]);
-
   const getDistanceShops = async () => {
     console.log({location})
     if(!location) {
@@ -218,23 +211,6 @@ const ShopList = () => {
       )
       .map((i) => shopListTemplate(i));
 
-  // const specificServiceListFunc = (service) => {
-  //   const filteredShops =
-  //     shops &&
-  //     [...shops].sort(
-  //       (a, b) =>
-  //         b.reviews.filter((r) => r.service.join("") === service).length -
-  //         a.reviews.filter((r) => r.service.join("") === service).length
-  //     );
-
-  //   setSpecificService(filteredShops);
-  //   console.log(filteredShops);
-  //   setFilter("specificService");
-  // };
-
-  // const specificServiceFilter =
-  //   specificService && specificService.map((i) => shopListTemplate(i));
-
   const getLocation = () => {
     if (!navigator.geolocation) {
       setError("This browser doesn't support this feature :(");
@@ -244,9 +220,6 @@ const ShopList = () => {
         (p) => {
 
           setLocation((prevState)=> ([p.coords.latitude, p.coords.longitude]));
-          // getDistanceShops();
-          // setLocation([p.coords.latitude, p.coords.longitude]);
-          // location && getDistanceShops();
         },
         () => {
           setError("Can't get location :(");
@@ -259,6 +232,7 @@ const ShopList = () => {
     if(!!location) {
       getDistanceShops();
     }
+    // eslint-disable-next-line
   }, [location])
 
   const getFormattedAddress = async () => {
@@ -341,11 +315,11 @@ const ShopList = () => {
               Close
             </button>
           </div>
+          </div>
+          <div className='flex flex-col sm:flex-row mt-3 border-t-2 border-stone-500'>
           {isAuth && (
             <div
-              className={`relative flex items-center flex-col mt-3 border-t-2 border-stone-500 ${
-                location ? "px-16" : "px-48"
-              }`}
+              className={`relative flex items-center flex-col mx-2`}
             >
               {location && (
                 <>
@@ -396,8 +370,7 @@ const ShopList = () => {
               )}
             </div>
           )}
-        </div>
-        <div className="flex items-center justify-center mt-3">
+        <div className="mx-2">
           <div className="flex">
             <Popover className="relative">
             <Transition
@@ -478,50 +451,8 @@ const ShopList = () => {
                   )}
                 </Popover.Button>
             </Popover>
-            {/* {isAuth && (
-              <Popover className="relative">
-                <Popover.Panel className="absolute z-30 sm:top-20 top-28 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
-                  <ul>
-                    {queryCar &&
-                      queryCar.service_list.flat().map((s) => (
-                        <li key={s}>
-                          <button
-                            type="button"
-                            className={`hover:underline mt-2 p-1 rounded ${
-                              specificService === { s }
-                                ? `font-medium bg-accent text-accent-content`
-                                : ``
-                            }`}
-                            onClick={() => {
-                              specificServiceListFunc(s);
-                            }}
-                          >
-                            {s}
-                          </button>
-                        </li>
-                      ))}
-                  </ul>
-                </Popover.Panel>
-                <div></div>
-                {isAuth && location && (
-                  <div className="tooltip" data-tip="Sorts by service reviews">
-                    <Popover.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
-                      {({ open }) => (
-                        <>
-                          Specify a service
-                          <BsCaretDownFill
-                            className={`inline-block transition-all ${
-                              open ? "rotate-180" : ""
-                            }`}
-                          />
-                        </>
-                      )}
-                    </Popover.Button>
-                  </div>
-                )}
-              </Popover>
-            )} */}
           </div>
+        </div>
         </div>
         <p className={`${!isAuth && location ? "visible" : "invisible"}`}>
           <Link to="/register" className="underline underline-offset-1 text-accent hover:text-accent-focus">
@@ -540,7 +471,6 @@ const ShopList = () => {
           {filter === "distance" && shopList}
           {filter === "reviews" && reviewFilteredShops}
           {filter === "services" && serviceFilteredShops}
-          {/* {filter === "specificService" && specificServiceFilter} */}
         </ul>
       </div>
     </>

@@ -387,8 +387,8 @@ const CarForm = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center p-3 bg-base-300 w-full min-h-screen">
-        <div className="flex flex-col items-center rounded relative bg-base-100 w-full sm:w-1/2 md:min-w-1/3 min-h-[calc(100vh-10rem)] sm:min-h-[350px]">
+      <div className="flex items-start justify-center p-3 bg-base-300 w-full min-h-screen">
+        <div className="flex flex-col mt-2 items-center rounded relative bg-base-100 w-full sm:w-1/2 md:min-w-1/3 min-h-[calc(100vh-10rem)] sm:min-h-[350px]">
           <div className="flex justify-center items-center rounded-t-md w-full">
             <ul className="flex justify-center w-full mb-5">
               <li className="bg-base-100 w-full rounded-t-md">

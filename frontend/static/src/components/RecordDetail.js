@@ -204,7 +204,7 @@ const handleSubmit = (e) => {
             </div>
           )}
         </figure>
-        <div className="flex items-center justify-between p-3">
+        <div className="flex items-center justify-end p-3">
           <button
             type="button"
             className="mx-1 px-2 font-bold text-lg text-error border-2 rounded border-error hover:bg-error hover:text-error-content"

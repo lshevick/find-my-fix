@@ -6,15 +6,24 @@ function handleError(err) {
   console.warn(err);
 }
 
-const RecordForm = ({ currentCar, dataChanged, setDataChanged, setFormIsOpen, deleteService }) => {
+const RecordForm = ({
+  currentCar,
+  setCurrentCar,
+  garage,
+  dataChanged,
+  setDataChanged,
+  setFormIsOpen,
+  deleteService,
+}) => {
   const [shop, setShop] = useState("");
+  const [formCar, setFormCar] = useState('');
   const [shops, setShops] = useState([]);
-  const [image, setImage] = useState(null);
-  const [date, setDate] = useState(null);
-  const [cost, setCost] = useState(null);
+  const [image, setImage] = useState('');
+  const [date, setDate] = useState('');
+  const [cost, setCost] = useState('');
   const [note, setNote] = useState("");
   const [service, setService] = useState([]);
-  const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState('');
   const [query, setQuery] = useState("");
 
   const handleImage = (e) => {
@@ -48,7 +57,8 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged, setFormIsOpen, de
     formData.append("note", note);
     formData.append("service", JSON.stringify(service));
     formData.append("cost", cost);
-    formData.append("car", currentCar.id);
+    currentCar && formData.append("car", currentCar.id);
+    formCar && formData.append('car', formCar)
     formData.append("date", date);
 
     const options = {
@@ -67,7 +77,7 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged, setFormIsOpen, de
     }
     const json = await response.json();
     console.log(json);
-    deleteService(json.service, currentCar.id)
+    deleteService(json.service, currentCar.id);
     setShop("");
     setImage(null);
     setPreview(null);
@@ -82,22 +92,90 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged, setFormIsOpen, de
     e.preventDefault();
     submitRecord();
     setTimeout(() => {
-        setFormIsOpen(false)
+      setFormIsOpen(false);
     }, 300);
   };
 
   return (
     <>
-      <h2 className="text-3xl font-bold">
-        {currentCar.year} {currentCar.make} {currentCar.model}
-      </h2>
-
+      {currentCar ? (
+        <h2 className={`text-3xl font-bold`}>
+          {currentCar.year} {currentCar.make} {currentCar.model}
+        </h2>
+      ) : (
+        <h2 className={`text-3xl font-bold`}>
+          {formCar.year} {formCar.make} {formCar.model}
+        </h2>
+      )}
+      <div>
+        <select
+          name="currentCar"
+          id="currentCar"
+          className="p-1 rounded bg-white text-black"
+          value={formCar}
+          onChange={(e) => setFormCar(e.target.value)}
+        >
+          <option value="">Choose your Car</option>
+          {garage.map((car) => (
+            <option value={car.id}>
+              {car.year} {car.make} {car.model}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="w-full flex flex-col items-center">
         <form
           id="record-form"
           className="flex flex-col sm:items-start items-center m-3"
           onSubmit={handleSubmit}
         >
+          <label htmlFor="services">Service</label>
+          <div>
+            <ServicePicker
+              items={service}
+              setItems={setService}
+              serviceList={formCar && garage && garage.find(car => car.id === formCar)?.service_list.flat()}
+              query={query}
+              setQuery={setQuery}
+            />
+          </div>
+          <label htmlFor="date">Date of Service</label>
+          <input
+            type="date"
+            name="date"
+            id="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="rounded p-1 bg-white"
+          />
+          <label htmlFor="shop">Shop</label>
+          <select
+            name="shop"
+            className="p-1 rounded bg-white"
+            id="shop"
+            value={shop}
+            onChange={(e) => setShop(e.target.value)}
+          >
+            <option value="">Choose a Shop</option>
+            {shops &&
+              shops.map((shop) => (
+                <option value={shop.name}>{shop.name}</option>
+              ))}
+          </select>
+          <div className="flex flex-col items-start">
+            <label htmlFor="cost">Cost of Service</label>
+            <div className="flex items-center justify-start">
+              <span className="px-2">$</span>
+              <input
+                type="number"
+                name="cost"
+                id="cost"
+                value={cost}
+                onChange={(e) => setCost(e.target.value)}
+                className="p-1 rounded w-1/2 bg-white"
+              />
+            </div>
+          </div>
           <label htmlFor="image" className="mt-3 mb-1">
             Upload a Photo
           </label>
@@ -113,56 +191,9 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged, setFormIsOpen, de
               src={preview}
               alt="preview"
               width="30%"
-              className="sm:absolute right-0"
+              className="sm:absolute right-0 bottom-36"
             />
           )}
-          <label htmlFor="date">Date of Service</label>
-          <input
-            type="date"
-            name="date"
-            id="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="rounded p-1 bg-white"
-          />
-          <label htmlFor="shop">Shop</label>
-          <select
-            className="p-1 rounded bg-white"
-            name="shop"
-            id="shop"
-            value={shop}
-            onChange={(e) => setShop(e.target.value)}
-          >
-            <option value="">Choose a Shop</option>
-            {shops &&
-              shops.map((shop) => (
-                <option value={shop.name}>{shop.name}</option>
-              ))}
-          </select>
-          <label htmlFor="services">Service</label>
-          <div>
-            <ServicePicker
-              items={service}
-              setItems={setService}
-              serviceList={currentCar.service_list.flat()}
-              query={query}
-              setQuery={setQuery}
-            />
-          </div>
-          <div className="flex flex-col items-center">
-            <label htmlFor="cost">Cost of Service</label>
-            <div className="flex items-center justify-center">
-              <span className="px-2">$</span>
-              <input
-                type="number"
-                name="cost"
-                id="cost"
-                value={cost}
-                onChange={(e) => setCost(e.target.value)}
-                className="p-1 rounded w-1/2 bg-white"
-              />
-            </div>
-          </div>
           <label htmlFor="note">Note</label>
           <textarea
             name="note"
@@ -173,9 +204,12 @@ const RecordForm = ({ currentCar, dataChanged, setDataChanged, setFormIsOpen, de
             onChange={(e) => setNote(e.target.value)}
             className="text-neutral p-1 bg-white rounded"
           ></textarea>
-          <button type="submit" className="btn btn-sm btn-accent mt-3">
+          <div className="flex justify-center mt-3">
+          <button type="submit" className="btn btn-sm mt-2 btn-accent rounded">
             Submit
           </button>
+          <p className="italic text-sm p-1 ml-2">Submitting a record will remove the selected services from this car's Work Needed.</p>
+          </div>
         </form>
       </div>
     </>

@@ -12,9 +12,9 @@ function App() {
   const navigate = useNavigate();
 
   return (
-    <div className="App">
+    <div className="App bg-base-300">
       <Nav isAuth={isAuth} setIsAuth={setIsAuth} theme={theme} setTheme={setTheme} />
-      <div className="flex justify-center min-h-screen pt-28">
+      <div className="flex justify-center min-h-screen pt-28 bg-base-100">
         <Outlet
           context={{isAuth, setIsAuth, navigate, location, setLocation, queryCar, setQueryCar, theme}}
         />
