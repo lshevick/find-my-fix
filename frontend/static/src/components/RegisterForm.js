@@ -16,7 +16,7 @@ const defaultState = {
 
 const RegisterForm = () => {
   const [state, setState] = useState(defaultState);
-  const [isAuth, setIsAuth, navigate] = useOutletContext();
+  const {navigate} = useOutletContext();
   const [visible, setVisible] = useState(false);
 
   const handleInput = (e) => {
