@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { FaLocationArrow } from "react-icons/fa";
 import { ImSpinner8 } from "react-icons/im";
-import { GoCheck } from "react-icons/go";
-import { Listbox, Popover } from "@headlessui/react";
+// import { GoCheck } from "react-icons/go";
+import { Listbox, Popover, Transition } from "@headlessui/react";
 import { Rating } from "@mui/material";
 import { BsCaretDownFill } from "react-icons/bs";
 
@@ -21,13 +21,14 @@ const ShopList = () => {
   const [shops, setShops] = useState(undefined);
   const { isAuth, location, setLocation, queryCar, setQueryCar } =
     useOutletContext();
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);/
   const [contentLoading, setContentLoading] = useState(false);
   const [filter, setFilter] = useState("distance");
   const [garage, setGarage] = useState([]);
   // const [specificService, setSpecificService] = useState("");
   const [exactLocation, setExactLocation] = useState("");
   const [error, setError] = useState("");
+  const [inputLocation, setInputLocation] = useState('');
 
   const getCars = async () => {
     const response = await fetch(`/api/v1/cars/`).catch(handleError);
@@ -89,10 +90,10 @@ const ShopList = () => {
             >
               <label
                 htmlFor={`info-modal-${shop.id}-${service}`}
-                className="modal-button cursor-pointer"
+                className="modal-button cursor-pointer capitalize"
               >
                 {service}
-                <span className="pl-1 inline-block font-extrabold">
+                <span className="pl-1 inline-block italic font-extrabold">
                   {shop.reviews &&
                   shop.reviews.filter((r) => r.service.flat().includes(service))
                     .length === 0
@@ -166,6 +167,10 @@ const ShopList = () => {
   // }, [queryCar]);
 
   const getDistanceShops = async () => {
+    console.log({location})
+    if(!location) {
+      return;
+    }
     setContentLoading(true);
     const response = await fetch(
       `/api/v1/shops/?location_string=${
@@ -182,6 +187,7 @@ const ShopList = () => {
 
   const handleShopSubmit = (e) => {
     e.preventDefault();
+    setLocation(inputLocation);
     queryCar ? getServiceShops() : getDistanceShops();
   };
 
@@ -233,19 +239,27 @@ const ShopList = () => {
     if (!navigator.geolocation) {
       setError("This browser doesn't support this feature :(");
     } else {
-      setLoading(true);
+      setContentLoading(true);
       navigator.geolocation.getCurrentPosition(
         (p) => {
-          setLocation([p.coords.latitude, p.coords.longitude]);
-          setLoading(false);
+
+          setLocation((prevState)=> ([p.coords.latitude, p.coords.longitude]));
+          // getDistanceShops();
+          // setLocation([p.coords.latitude, p.coords.longitude]);
+          // location && getDistanceShops();
         },
         () => {
           setError("Can't get location :(");
-          setLoading(false);
         }
       );
     }
   };
+
+  useEffect(() => {    
+    if(!!location) {
+      getDistanceShops();
+    }
+  }, [location])
 
   const getFormattedAddress = async () => {
     const response = await fetch(
@@ -268,50 +282,45 @@ const ShopList = () => {
     <>
       <div className="flex flex-col w-full items-center bg-base-100 relative">
         <h1 className="font-bold text-lg mt-5 text-base-content">
-          In order to find shops near you, <br />
-          enter your Zip code or City, or get current location.
+          Enter your location
+          to find shops near you.
         </h1>
         <div className="flex flex-col items-center">
           <form onSubmit={handleShopSubmit}>
-            <div className="flex items-end">
+            <div className="flex items-center flex-col">
+              <div className="flex flex-col sm:flex-row ">
               <input
-                className={`mt-3 p-1 shadow-sm rounded-l-md`}
+                className={`mt-3 mx-2 p-1 shadow-sm rounded-md`}
                 type="text"
-                value={Array.isArray(location) ? exactLocation : location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Enter ZIP or City..."
-              />
-              <div
-                className="tooltip tooltip-bottom"
-                data-tip="gets precise location"
-              >
-                <button
-                  type="button"
-                  className="p-2 bg-accent-focus hover:bg-accent text-white rounded-r-md shadow-md hover:shadow-lg transition-all"
-                  onClick={getLocation}
-                >
-                  {location ? (
-                    <GoCheck />
-                  ) : loading ? (
-                    <ImSpinner8 className="animate-spin" />
-                  ) : (
-                    <FaLocationArrow />
-                  )}
-                </button>
-              </div>
-            </div>
+                value={Array.isArray(location) ? exactLocation : inputLocation}
+                onChange={(e) => setInputLocation(e.target.value)}
+                placeholder="Enter ZIP or City, State..."
+                />
             <div className="mt-3">
               <button
                 type="submit"
                 className={`px-1 text-xl rounded text-accent border-accent border-2 ${
-                  location && "hover:bg-accent hover:text-accent-content"
+                  inputLocation && "hover:bg-accent hover:text-accent-content"
                 } transition-all disabled:border-stone-600 disabled:text-stone-600 
                 `}
-                disabled={!location}
-              >
+                disabled={!inputLocation}
+                >
                 Find My Fix!
               </button>
+                </div>
             </div>
+              <div className="divider">OR</div>
+                <button
+                  type="button"
+                  className="px-8 py-2 mx-3 flex text-sm items-center bg-accent-focus hover:bg-accent text-white rounded-md shadow-md hover:shadow-lg transition-all"
+                  onClick={getLocation}
+                >
+                   <>
+                   <p className="pr-2">Use Current Location</p>
+                    <FaLocationArrow />
+                   </>
+                </button>
+                </div>
           </form>
           <div
             className={error ? "fixed inset-0 bg-black/20 backdrop-blur" : ""}
@@ -341,9 +350,10 @@ const ShopList = () => {
               {location && (
                 <>
                   <p className="font-bold text-xl mt-3">Choose your car</p>
+
                   <Listbox value={queryCar} onChange={setQueryCar}>
                     {location && (
-                      <Listbox.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded">
+                      <Listbox.Button className="px-2 text-xl m-2 border-2 border-stone-500 rounded min-w-[180px]">
                         {({ open }) => (
                           <>
                             {queryCar ? queryCar.model : "Car"}{" "}
@@ -356,17 +366,31 @@ const ShopList = () => {
                         )}
                       </Listbox.Button>
                     )}
-                    <Listbox.Options className="absolute top-20 sm:top-20 z-10 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm w-fit p-1">
-                      {garage.map((car) => (
-                        <Listbox.Option
-                          key={car.id}
-                          value={car}
-                          className={`p-1 cursor-pointer ${queryCar && queryCar.id === car.id ? 'bg-accent rounded-md' : ''}`}
-                        >
-                         {car.year} {car.make} {car.model}
-                        </Listbox.Option>
-                      ))}
-                    </Listbox.Options>
+                    <Transition
+                      enter="transition-all duration-100 ease-out"
+                      enterFrom="transform scale-95 opacity-0"
+                      enterTo="transform scale-100 opacity-100"
+                      leave="transition duration-75 ease-out"
+                      leaveFrom="transform scale-100 opacity-100"
+                      leaveTo="transform scale-95 opacity-0"
+                      as={Fragment}
+                    >
+                      <Listbox.Options className="absolute top-20 sm:top-20 z-10 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm w-fit p-1">
+                        {garage.map((car) => (
+                          <Listbox.Option
+                            key={car.id}
+                            value={car}
+                            className={`p-1 cursor-pointer ${
+                              queryCar && queryCar.id === car.id
+                                ? "bg-accent rounded-md"
+                                : ""
+                            }`}
+                          >
+                            {car.year} {car.make} {car.model}
+                          </Listbox.Option>
+                        ))}
+                      </Listbox.Options>
+                    </Transition>
                   </Listbox>
                 </>
               )}
@@ -376,7 +400,16 @@ const ShopList = () => {
         <div className="flex items-center justify-center mt-3">
           <div className="flex">
             <Popover className="relative">
-              <Popover.Panel className="absolute z-30 top-16 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
+            <Transition
+                      enter="transition-all duration-100 ease-out"
+                      enterFrom="transform scale-95 opacity-0"
+                      enterTo="transform scale-100 opacity-100"
+                      leave="transition duration-75 ease-out"
+                      leaveFrom="transform scale-100 opacity-100"
+                      leaveTo="transform scale-95 opacity-0"
+                      as={Fragment}
+                    >
+              <Popover.Panel className="absolute z-30 top-20 inset-x-0 bg-gray-600/30 backdrop-blur-sm border-white/30 rounded shadow-sm min-w-max p-1">
                 <ul>
                   <li>
                     <button
@@ -404,7 +437,7 @@ const ShopList = () => {
                       by reviews
                     </button>
                   </li>
-                  {isAuth && queryCar && (
+                  {isAuth && (queryCar && queryCar.service_list.length > 0) && (
                     <li>
                       <button
                         type="button"
@@ -414,17 +447,17 @@ const ShopList = () => {
                             : ``
                         }`}
                         onClick={() => {
-                          setFilter("service");
+                          setFilter("services");
                         }}
                       >
-                        by service
+                        by services needed
                       </button>
                     </li>
                   )}
                 </ul>
               </Popover.Panel>
-              <div></div>
-              <div className={location && "tooltip"} data-tip="Filters">
+              </Transition>
+              {location && <p className="font-bold text-xl mt-3">Choose your filter</p>}
                 <Popover.Button
                   className={` ${
                     location ? "visible" : "invisible"
@@ -444,7 +477,6 @@ const ShopList = () => {
                     </>
                   )}
                 </Popover.Button>
-              </div>
             </Popover>
             {/* {isAuth && (
               <Popover className="relative">
@@ -492,16 +524,22 @@ const ShopList = () => {
           </div>
         </div>
         <p className={`${!isAuth && location ? "visible" : "invisible"}`}>
-          <Link to="/register" className="link">
+          <Link to="/register" className="underline underline-offset-1 text-accent hover:text-accent-focus">
             Sign up
           </Link>{" "}
           to access more features
         </p>
-          <div className={`text-5xl mt-10 animate-spin ${contentLoading ? '' : 'hidden'}`}><ImSpinner8/></div>
+        <div
+          className={`text-5xl mt-10 animate-spin ${
+            contentLoading ? "" : "hidden"
+          }`}
+        >
+          <ImSpinner8 />
+        </div>
         <ul className="mt-10 md:grid md:grid-cols-2 lg:grid-cols-3">
           {filter === "distance" && shopList}
           {filter === "reviews" && reviewFilteredShops}
-          {filter === "service" && serviceFilteredShops}
+          {filter === "services" && serviceFilteredShops}
           {/* {filter === "specificService" && specificServiceFilter} */}
         </ul>
       </div>

@@ -258,7 +258,7 @@ const Dashboard = () => {
     >
       <Transition.Child
         as={Fragment}
-        enter="ease-out duration-300"
+        enter="ease-out duration-100"
         enterFrom="opacity-0"
         enterTo="opacity-100"
         leave="ease-in duration-200"
@@ -270,7 +270,7 @@ const Dashboard = () => {
       <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
+          enter="ease-out duration-200"
           enterFrom="opacity-0 scale-95"
           enterTo="opacity-100 scale-100"
           leave="ease-in duration-200"
@@ -392,7 +392,7 @@ const Dashboard = () => {
       <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
+          enter="ease-out duration-200"
           enterFrom="opacity-0 scale-95"
           enterTo="opacity-100 scale-100"
           leave="ease-in duration-200"
@@ -675,7 +675,7 @@ const Dashboard = () => {
 
   const recordDisplay = garage.map((car) => (
     <li key={car.id} className="my-10">
-      <h2 className="w-full font-semibold">
+      <h2 className="w-full font-bold text-2xl text-accent">
         {car.year} {car.make} {car.model}
       </h2>
       <div className="">
@@ -759,7 +759,7 @@ const Dashboard = () => {
               My Garage
             </h2>
           </div>
-          <ul className="px-3 pt-1 lg:grid lg:grid-flow-col lg:grid-rows-2 lg:divide-y-0">
+          <ul className="px-3 pt-1 ">
             {garageDisplay}
           </ul>
           <Link

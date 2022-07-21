@@ -40,7 +40,7 @@ return (
                     key={s}
                     value={s}
                     className={({ active }) =>
-                      `relative capitalize rounded cursor-default select-none py-2 pr-4 pl-2 ${
+                      `relative capitalize rounded transition-all cursor-default select-none py-2 pl-10 pr-2 ${
                         active ? "bg-accent-focus text-white" : "text-gray-900"
                       }`
                     }
@@ -51,7 +51,7 @@ return (
                                 {s}
                             </span>
                             {selected ? (
-                                <span className={`absolute text-2xl inset-y-0 right-2 flex items-center pl-3 ${active ? 'text-white' : 'text-accent-focus'}`}>
+                                <span className={`absolute text-2xl inset-y-0 left-0 flex items-center pl-3 ${active ? 'text-white' : 'text-accent-focus'}`}>
                                     <FiCheck/>
                                 </span>
                             ) : null}
