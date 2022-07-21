@@ -578,9 +578,18 @@ const Dashboard = () => {
         setExpand(false);
       }}
     >
+              <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0 scale-100"
+          enterTo="opacity-100 scale-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-100"
+        >
       <div className="fixed inset-0 bg-black/50" aria-hidden="true">
         <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
-          <Transition.Child
+          {/* <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0 scale-95"
@@ -588,12 +597,12 @@ const Dashboard = () => {
             leave="ease-in duration-200"
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
-          >
+          > */}
             <Dialog.Panel className="z-50 absolute rounded-2xl max-w-lg bg-base-200 flex flex-col items-center justify-center w-5/6">
               <div
                 className={`w-full ${
                   expand ? "h-[calc(100vh-90px)]" : "h-96 sm:h-[50vh]"
-                } transition-all ease-out overflow-hidden`}
+                } transition-all ease-out duration-200 overflow-hidden`}
               >
                 <RecordDetail
                   key={record.id}
@@ -622,9 +631,10 @@ const Dashboard = () => {
                 </button>
               </div>
             </Dialog.Panel>
-          </Transition.Child>
+          {/* </Transition.Child> */}
         </div>
       </div>
+      </Transition.Child>
     </Dialog>
   );
 
