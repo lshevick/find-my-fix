@@ -142,6 +142,7 @@ const ShopList = () => {
   );
 
   const getServiceShops = async () => {
+    setContentLoading(true);
     const response = await fetch(
       `/api/v1/shops/services/?location_string=${
         Array.isArray(location) ? location.join(",") : location
@@ -155,6 +156,7 @@ const ShopList = () => {
       throw new Error("Network response not ok");
     }
     const json = await response.json();
+    setContentLoading(false);
     setShops(json);
   };
 
@@ -185,6 +187,7 @@ const ShopList = () => {
 
   useEffect(() => {
     location && getServiceShops();
+    location && !queryCar && getDistanceShops();
     // eslint-disable-next-line
   }, []);
 

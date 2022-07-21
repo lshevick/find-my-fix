@@ -161,7 +161,7 @@ const handleSubmit = (e) => {
             id="date"
             value={newDate}
             onChange={(e) => handleDate(e)}
-            className="bg-stone-100"
+            className="bg-stone-200 p-1 rounded"
           />
           <div className="flex flex-col sm:flex-row">
             <ul className="capitalize">
@@ -178,7 +178,7 @@ const handleSubmit = (e) => {
             id="newNote"
             cols="20"
             rows="2"
-            className="p-1 rounded bg-stone-100 text-black"
+            className="p-1 rounded bg-stone-200 text-black"
             value={newNote}
             onChange={(e) => setNewNote(e.target.value)}
           ></textarea>
