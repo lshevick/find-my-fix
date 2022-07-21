@@ -361,7 +361,7 @@ const ShopList = () => {
                         <Listbox.Option
                           key={car.id}
                           value={car}
-                          className={`p-1 cursor-pointer ${queryCar && queryCar.id === car.id ? 'bg-accent' : ''}`}
+                          className={`p-1 cursor-pointer ${queryCar && queryCar.id === car.id ? 'bg-accent rounded-md' : ''}`}
                         >
                          {car.year} {car.make} {car.model}
                         </Listbox.Option>

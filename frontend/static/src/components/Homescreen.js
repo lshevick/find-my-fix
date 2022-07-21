@@ -64,7 +64,7 @@ const Homescreen = () => {
               className="my-10 rounded-lg"
             />
           </div>
-          <div className="card bg-teal-700 text-accent-content shadow-xl my-10 col-start-1 col-span-2 row-start-6">
+          <div className="card bg-teal-700 text-stone-100 shadow-xl my-10 col-start-1 col-span-2 row-start-6">
             <div className="card-body">
               <h3 className="card-title">
                 Filtering your Searches

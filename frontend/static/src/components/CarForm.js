@@ -353,7 +353,7 @@ const CarForm = () => {
       <div className="flex flex-col">
         <div className="flex items-end">
           <input
-            className={`mt-3 p-1 shadow-sm rounded-l-md`}
+            className={`mt-3 p-1 shadow-sm rounded-l-md rounded-r-none`}
             type="text"
             value={Array.isArray(location) ? exactLocation : location}
             onChange={(e) => setLocation(e.target.value)}
@@ -361,7 +361,7 @@ const CarForm = () => {
           />
           <button
             type="button"
-            className="p-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-r-md shadow-md hover:shadow-lg transition-all"
+            className="p-2 bg-accent hover:bg-accent-focus text-white rounded-r-md shadow-md hover:shadow-lg transition-all"
             onClick={getLocation}
           >
             {location ? (
