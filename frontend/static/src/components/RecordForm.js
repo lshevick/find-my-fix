@@ -109,7 +109,7 @@ const RecordForm = ({
         >
           <option value="">Choose your Car</option>
           {garage.map((car) => (
-            <option key={car.id} value={car}>
+            <option key={car.id} value={car.id}>
               {car.year} {car.make} {car.model}
             </option>
           ))}
