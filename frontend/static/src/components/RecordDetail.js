@@ -187,7 +187,7 @@ const handleSubmit = (e) => {
           ></textarea>
         </div>
         <figure className="relative flex justify-center max-h-[180px] overflow-hidden">
-            <p className="absolute z-30 text-xl text-neutral font-bold">{image ? 'Change Image' : ''}</p>
+            <p className="absolute z-30 text-xl text-neutral font-bold">{recordPreview ? 'Change Image' : ''}</p>
           <input
             type="file"
             name="newRecordImage"
@@ -195,7 +195,7 @@ const handleSubmit = (e) => {
             onChange={handleRecordImage}
             className="absolute z-40 opacity-0 file:cursor-pointer w-1/2"
           />
-          {image ? (
+          {recordPreview ? (
             <img
               src={recordPreview}
               alt="record"
