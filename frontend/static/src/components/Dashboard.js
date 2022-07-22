@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, Fragment } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import Cookies from "js-cookie";
@@ -43,7 +43,6 @@ const Dashboard = () => {
   const [newImage, setNewImage] = useState(null);
   const [preview, setPreview] = useState("");
   const [dataChanged, setDataChanged] = useState(false);
-  const editButton = useRef();
   const [loading, setLoading] = useState(false);
   const [expand, setExpand] = useState(false);
   const { navigate, setLocation, setQueryCar } = useOutletContext();
@@ -215,7 +214,7 @@ const Dashboard = () => {
 
   const formModal = (
     <>
-      <Dialog onClose={() => setFormIsOpen(false)} className="relative">
+      <Dialog onClose={() => {setFormIsOpen(false); setIsOpen(false); setCar([])}} className="relative">
         <div className="fixed inset-0 bg-black/50" aria-hidden="true">
           <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
             <Transition.Child
@@ -227,12 +226,13 @@ const Dashboard = () => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="max-w-52 z-50 absolute max-w-lg rounded bg-base-200 p-4 md:p-10 flex flex-col items-center justify-center w-5/6">
-                <div className="w-full relative">
+              <Dialog.Panel className="max-w-52 z-50 absolute max-w-lg rounded bg-base-300 p-4 md:p-10 flex flex-col items-center justify-center w-5/6">
+                <div className="w-full relative h-[50vh] sm:h-[70vh] overflow-auto">
                   <RecordForm
                     currentCar={car}
                     setCurrentCar={setCar}
                     garage={garage}
+                    getCarDetail={getCarDetail}
                     dataChanged={dataChanged}
                     setDataChanged={setDataChanged}
                     setFormIsOpen={setFormIsOpen}
@@ -252,137 +252,6 @@ const Dashboard = () => {
 
   const carModal = (
     <Dialog
-      initialFocus={editButton}
-      onClose={() => {setIsOpen(false); setCar([])}}
-      className="relative"
-    >
-      <Transition.Child
-        as={Fragment}
-        enter="ease-out duration-100"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="ease-in duration-200"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
-        <div className="fixed inset-0" aria-hidden="true" />
-      </Transition.Child>
-      <div className="fixed inset-0 flex items-center justify-center p-4 w-full">
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-200"
-          enterFrom="opacity-0 scale-95"
-          enterTo="opacity-100 scale-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100 scale-100"
-          leaveTo="opacity-0 scale-95"
-        >
-          <Dialog.Panel className="mx-5 max-w-lg rounded bg-base-200 p-10 flex flex-col items-center justify-center w-5/6">
-            <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
-              <img
-                src={
-                  car.image
-                    ? car.image
-                    : "https://kaleidousercontent.com/removebg/designs/b6f1aec1-de72-4e0e-9921-6ab407475be2/thumbnail_image/car-photo-optimizer-thumbnail.png"
-                }
-                alt="car"
-                className="object-cover object-center"
-                width="100%"
-                height="100%"
-              />
-            </div>
-            <div className="flex border-b-2 border-stone-600 text-xl sm:text-3xl flex-wrap justify-center">
-              <h2 className="mx-1">{car.year}</h2>
-              <h2 className="mx-1">{car.make}</h2>
-              <h2 className="mx-1">{car.model}</h2>
-            </div>
-            <button
-              type="button"
-              className="font-bold invisible text-red-700 hover:text-red-600"
-              onClick={() => setDeleteIsOpen(true)}
-            >
-              Delete Car
-            </button>
-            <div className="mb-1 w-full flex flex-col items-center">
-              <div className="services">
-                <h2 className="font-semibold underline text-md md:text-2xl">
-                  Work Needed
-                </h2>
-                <div className="overflow-y-scroll max-h-[180px]w-full">
-                  <ul className="overflow-y-hidden w-full">
-                    {car.service_list &&
-                      car.service_list.flat().map((i) => (
-                        <li
-                          key={i}
-                          className="capitalize font-light text-lg sm:text-xl list-disc py-1"
-                        >
-                          {i}
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div className="relative flex items-end sm:mt-1">
-              <ServicePicker
-                items={items}
-                setItems={setItems}
-                serviceList={serviceList}
-                query={query}
-                setQuery={setQuery}
-              />
-              <button
-                className="bg-accent hover:bg-accent-focus px-2 m-1 mt-2 rounded text-accent-content transition-all duration-300"
-                onClick={() => {
-                  addService(car.id);
-                }}
-              >
-                Add
-              </button>
-            </div>
-            <div className="records border-t-2 mt-2 py-2 border-base-300 w-full sm:w-1/2 flex justify-center">
-              <button
-                type="button"
-                className="flex items-center transition-all bg-transparent border-2 border-accent hover:bg-accent text-accent hover:text-accent-content p-1 rounded"
-                onClick={() => setFormIsOpen(true)}
-              >
-                Add Service Record <BiEdit className="ml-2" />
-              </button>
-            </div>
-            <div className="w-full flex justify-between mt-3">
-              <button type="button" onClick={() => setIsOpen(false)}>
-                Close
-              </button>
-              <div className="tooltip" data-tip="Requires Location">
-                <button
-                  type="button"
-                  className="btn btn-sm btn-accent rounded text-md font-medium capitalize w-[120px]"
-                  onClick={searchNav}
-                >
-                  {loading ? (
-                    <ImSpinner8 className="animate-spin" />
-                  ) : (
-                    "Find My Fix!"
-                  )}
-                </button>
-                <p className="text-2xs sm:hidden">Requires location</p>
-              </div>
-              <button
-                type="button"
-                ref={editButton}
-                onClick={() => setIsEditing(!isEditing)}
-              >
-                Edit
-              </button>
-            </div>
-          </Dialog.Panel>
-        </Transition.Child>
-      </div>
-    </Dialog>
-  );
-
-  const editCarModal = (
-    <Dialog
       onClose={() => {
         setIsEditing(false);
         setIsOpen(false);
@@ -401,7 +270,7 @@ const Dashboard = () => {
         >
           <Dialog.Panel className="mx-5 max-w-lg rounded bg-base-200 p-10 flex flex-col items-center jsutify-center w-5/6">
             <div className="max-w-60 max-h-72 overflow-hidden relative flex items-center justify-center">
-              {preview ? (
+              ({preview ? (
                 <img src={preview} alt="preview" />
               ) : (
                 <img
@@ -411,16 +280,16 @@ const Dashboard = () => {
                       : "https://kaleidousercontent.com/removebg/designs/b6f1aec1-de72-4e0e-9921-6ab407475be2/thumbnail_image/car-photo-optimizer-thumbnail.png"
                   }
                   alt="car"
-                  className="object-cover z-10 blur-sm contrast-50"
+                  className={`object-cover z-10 transition-all ${isEditing && 'blur-sm contrast-50'}`}
                   width="100%"
                   height="auto"
                 />
               )}
               {!preview && (
-                <p className="absolute text-white font-bold text-lg left-[100vw-50%] z-50 hover:text-accent hover:cursor-pointer">
+                <p className={`absolute transition-all ${!isEditing && 'invisible'} text-white font-bold text-lg left-[100vw-50%] z-50 hover:text-accent hover:cursor-pointer`}>
                   Edit Photo
                 </p>
-              )}
+              )})
               <form id="change-image" onSubmit={uploadImage}>
                 <input
                   type="file"
@@ -448,7 +317,7 @@ const Dashboard = () => {
             <div>
               <button
                 type="button"
-                className="font-bold text-red-700 hover:text-red-600 transition-all"
+                className={`font-bold text-red-700 hover:text-red-600 transition-all ${isEditing ? 'opacity-1' : 'opacity-0'}`}
                 onClick={() => setDeleteIsOpen(true)}
               >
                 Delete Car
@@ -503,7 +372,7 @@ const Dashboard = () => {
                           <div className="w-full flex justify-start items-center">
                             <button
                               type="button"
-                              className="flex items-center px-2 mx-2 text-white bg-red-700 h-4 rounded hover:bg-red-600"
+                              className={`flex items-center px-2 mx-2 text-white bg-red-700 h-4 transition-all ${isEditing ? 'opacity-1 transform translate-x-0' : 'opacity-0 transform translate-x-1/2'} rounded hover:bg-red-600`}
                               onClick={() => deleteService(i, car.id)}
                             >
                               -
@@ -533,23 +402,24 @@ const Dashboard = () => {
                 Add
               </button>
             </div>
-            <div className="records invisible border-t-2 mt-2 py-2 border-base-300 w-full sm:w-1/2 flex justify-center">
+            <div className={`records border-t-2 mt-2 py-2 border-base-300 w-full sm:w-1/2 flex justify-center`}>
               <button
                 type="button"
-                className="flex items-center transition-all bg-transparent border-2 border-accent hover:bg-accent text-accent hover:text-accent-content p-1 rounded"
+                disabled={isEditing}
+                className={`flex ${isEditing ? 'opacity-0 transform scale-75' : 'opacity-1 transform scale-100'} items-center transition-all bg-transparent border-2 border-accent hover:bg-accent text-accent hover:text-accent-content p-1 rounded`}
                 onClick={() => setFormIsOpen(true)}
               >
                 Create New Record <BiEdit className="ml-2" />
               </button>
             </div>
             <div className="w-full flex justify-between">
-              <button type="button" onClick={() => setIsOpen(false)}>
+              <button type="button" onClick={() => setIsOpen(false)} className={`font-medium`}>
                 Close
               </button>
-              <div className="tooltip" data-tip="Requires Location">
+              <div className={`tooltip ${isEditing && 'hover:pointer-events-none'}`} data-tip="Requires Location">
                 <button
                   type="button"
-                  className="btn btn-sm btn-accent rounded invisible text-md font-medium capitalize w-[120px]"
+                  className={`btn btn-sm btn-accent rounded ${isEditing ? 'opacity-0 transform scale-75' : 'opacity-1 transform scale-100'} text-md font-medium capitalize w-[120px]`}
                   onClick={searchNav}
                 >
                   {loading ? (
@@ -560,8 +430,8 @@ const Dashboard = () => {
                 </button>
                 <p className="text-2xs invisible">Requires location</p>
               </div>
-              <button type="button" onClick={() => setIsEditing(!isEditing)}>
-                Done
+              <button type="button" onClick={() => setIsEditing(!isEditing)} className={`font-medium`}>
+                {isEditing ? 'Done' : 'Edit'}
               </button>
             </div>
           </Dialog.Panel>
@@ -694,6 +564,7 @@ const Dashboard = () => {
                 </button>
               </li>
             ))}
+
         </ul>
       </div>
     </li>
@@ -724,7 +595,7 @@ const Dashboard = () => {
         // as={Fragment}
         appear={true}
       >
-        {isEditing ? editCarModal : carModal}
+        {carModal}
       </Transition>
       <Transition
         enter="transition duration-100 ease-out"
@@ -781,7 +652,7 @@ const Dashboard = () => {
             </button>
           )}
           <ul className="px-3 pt-1 ">
-            {garage.length === 0 && <li className="text-3xl font-medium">There's nothing here! Add a car to get started!</li>}
+            {garage.length === 0 && <li className="text-xl font-medium p-4">There's nothing here, <Link to='/add-car' className='text-accent'>Add a car</Link > to get started!</li>}
             {page ? garageDisplay : recordDisplay}</ul>
         </div>
       </div>

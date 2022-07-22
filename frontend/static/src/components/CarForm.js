@@ -48,8 +48,7 @@ const CarForm = () => {
   const [items, setItems] = useState([]);
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
-  // const [car, setCar] = useState([]);
-  const { location, setLocation, setQueryCar } = useOutletContext();
+  const { location, navigate, setLocation, setQueryCar } = useOutletContext();
   const [exactLocation, setExactLocation] = useState("");
 
   const handleInput = (e) => {
@@ -77,7 +76,7 @@ const CarForm = () => {
     const newList = items.slice();
     const i = newList.indexOf(item);
     newList.splice(i, 1);
-    setItems(newList)
+    setItems(newList);
   };
 
   const handleImage = (e) => {
@@ -179,9 +178,7 @@ const CarForm = () => {
     const json = await response.json();
     console.log(json, "submitted car!");
     setQueryCar(json);
-    // setCar(json);
     setState(defaultState);
-    // setServices(defaultServices);
     setImage(null);
     setItems([]);
   };
@@ -247,14 +244,26 @@ const CarForm = () => {
             className="w-full file:btn file:btn-accent file:hover:bg-accent-focus file:btn-sm file:capitalize file:rounded"
           />
         </div>
-        <div className="flex justify-end">
+        <div className="flex mt-3 justify-end items-center lg:absolute right-2 bottom-2">
+          <button
+            type="submit"
+            form="car-form"
+            onClick={() => {
+              setTimeout(() => {
+                navigate("/dashboard");
+              }, 300);
+            }}
+            className="btn btn-accent btn-sm text-lg capitalize rounded"
+          >
+            + Add Car
+          </button>
           <button
             type="button"
-            className="m-2 p-1 sm:absolute right-2 bottom-2 btn btn-sm btn-accent capitalize rounded"
+            className="m-2 p-1 btn btn-sm btn-accent capitalize rounded"
             onClick={() => setForm("service")}
             disabled={!state.model}
           >
-            Next
+            Add services
           </button>
         </div>
       </div>
@@ -300,24 +309,20 @@ const CarForm = () => {
               </li>
             ))}
         </ul>
-        <div className="absolute bottom-2">
+        <div className="flex mt-3 justify-end items-center lg:absolute right-2 bottom-2">
           <button
             type="submit"
             form="car-form"
-            className="btn btn-accent btn-md text-lg capitalize rounded"
+            onClick={() => 
+              setTimeout(() => {
+                setForm("location")
+              }, 300)
+          }
+            className="btn btn-accent btn-sm text-lg capitalize rounded"
           >
             + Add Car
           </button>
         </div>
-
-        <button
-          type="button"
-          disabled={state.model}
-          onClick={() => setForm("location")}
-          className="p-1 m-2 sm:absolute right-2 bottom-2 btn btn-sm btn-accent capitalize rounded"
-        >
-          Next
-        </button>
       </div>
     </>
   );

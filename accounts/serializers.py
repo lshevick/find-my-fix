@@ -6,7 +6,7 @@ from .models import User
 from cars.serializers import CarSerializer
 
 class UserSerializer(serializers.ModelSerializer):
-    username = serializers.ReadOnlyField (source='user.username')
+    username = serializers.ReadOnlyField(source='user.username')
     cars = CarSerializer('cars', many=True)
     class Meta:
         model = User

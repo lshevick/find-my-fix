@@ -8,15 +8,14 @@ function handleError(err) {
 
 const RecordForm = ({
   currentCar,
-  setCurrentCar,
   garage,
+  getCarDetail,
   dataChanged,
   setDataChanged,
   setFormIsOpen,
   deleteService,
 }) => {
   const [shop, setShop] = useState("");
-  const [formCar, setFormCar] = useState('');
   const [shops, setShops] = useState([]);
   const [image, setImage] = useState('');
   const [date, setDate] = useState('');
@@ -57,8 +56,7 @@ const RecordForm = ({
     formData.append("note", note);
     formData.append("service", JSON.stringify(service));
     formData.append("cost", cost);
-    currentCar && formData.append("car", currentCar.id);
-    formCar && formData.append('car', formCar)
+    formData.append("car", currentCar.id);
     formData.append("date", date);
 
     const options = {
@@ -98,26 +96,20 @@ const RecordForm = ({
 
   return (
     <>
-      {currentCar ? (
-        <h2 className={`text-3xl font-bold`}>
+        <h2 className={`text-3xl font-bold h-10 transition-all flex-wrap ${currentCar ? 'opacity-1' : 'opacity-0'}`}>
           {currentCar.year} {currentCar.make} {currentCar.model}
         </h2>
-      ) : (
-        <h2 className={`text-3xl font-bold`}>
-          {formCar.year} {formCar.make} {formCar.model}
-        </h2>
-      )}
       <div>
         <select
           name="currentCar"
           id="currentCar"
-          className="p-1 rounded bg-white text-black"
-          value={formCar}
-          onChange={(e) => setFormCar(e.target.value)}
+          className="p-1 rounded bg-base-100 text-base-content shadow-md"
+          value={currentCar}
+          onChange={(e) => getCarDetail(e.target.value)}
         >
           <option value="">Choose your Car</option>
           {garage.map((car) => (
-            <option value={car.id}>
+            <option key={car.id} value={car}>
               {car.year} {car.make} {car.model}
             </option>
           ))}
@@ -129,29 +121,29 @@ const RecordForm = ({
           className="flex flex-col items-start m-3"
           onSubmit={handleSubmit}
         >
-          <label htmlFor="services">Service</label>
+          <label htmlFor="services" className="mt-3">Service</label>
           <div>
             <ServicePicker
               items={service}
               setItems={setService}
-              serviceList={formCar && garage && garage.filter(car => car.id === formCar)[0]?.service_list.flat()}
+              serviceList={currentCar.service_list && currentCar?.service_list.flat()}
               query={query}
               setQuery={setQuery}
             />
           </div>
-          <label htmlFor="date">Date of Service</label>
+          <label htmlFor="date" className="mt-3">Date of Service</label>
           <input
             type="date"
             name="date"
             id="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="rounded p-1 bg-white"
+            className="rounded p-1 bg-base-100 shadow-md"
           />
-          <label htmlFor="shop">Shop</label>
+          <label htmlFor="shop" className="mt-3">Shop</label>
           <select
             name="shop"
-            className="p-1 rounded bg-white"
+            className="p-1 rounded bg-base-100 shadow-md"
             id="shop"
             value={shop}
             onChange={(e) => setShop(e.target.value)}
@@ -159,20 +151,20 @@ const RecordForm = ({
             <option value="">Choose a Shop</option>
             {shops &&
               shops.map((shop) => (
-                <option value={shop.name}>{shop.name}</option>
+                <option key={shop.id} value={shop.name}>{shop.name}</option>
               ))}
           </select>
           <div className="flex flex-col items-start">
-            <label htmlFor="cost">Cost of Service</label>
-            <div className="flex items-center justify-start relative sm:-left-6">
-              <span className="px-2">$</span>
+            <label htmlFor="cost" className="mt-3">Cost of Service</label>
+            <div className="flex items-center justify-start">
+              <span className="pr-1">$</span>
               <input
                 type="number"
                 name="cost"
                 id="cost"
                 value={cost}
                 onChange={(e) => setCost(e.target.value)}
-                className="p-1 rounded w-1/2 bg-white"
+                className="p-1 rounded w-1/2 bg-base-100 shadow-md"
               />
             </div>
           </div>
@@ -202,7 +194,7 @@ const RecordForm = ({
             rows="5"
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            className="text-neutral p-1 bg-white rounded"
+            className="text-neutral p-1 bg-base-100 rounded shadow-md"
           ></textarea>
           <div className="flex justify-center mt-3">
           <button type="submit" className="btn btn-sm mt-2 btn-accent rounded">

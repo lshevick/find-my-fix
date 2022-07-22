@@ -16,7 +16,7 @@ const defaultState = {
 
 const RegisterForm = () => {
   const [state, setState] = useState(defaultState);
-  const {navigate} = useOutletContext();
+  const { navigate } = useOutletContext();
   const [visible, setVisible] = useState(false);
 
   const handleInput = (e) => {
@@ -27,25 +27,29 @@ const RegisterForm = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const registerUser = async () => {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": Cookies.get("csrftoken"),
+        },
+        body: JSON.stringify(state),
+      };
+      const response = await fetch(
+        `/dj-rest-auth/registration/`,
+        options
+      ).catch(handleError);
+      if (!response.ok) {
+        alert("Something doesn't add up here...");
+        throw new Error("Network response not ok");
+      }
+      navigate("/login");
+  };
 
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": Cookies.get("csrftoken"),
-      },
-      body: JSON.stringify(state),
-    };
-    const response = await fetch(`/dj-rest-auth/registration/`, options).catch(
-      handleError
-    );
-    if (!response.ok) {
-      alert("Something doesn't add up here...");
-      throw new Error("Network response not ok");
-    }
-    navigate("/login");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+      registerUser();
   };
 
   return (
@@ -59,7 +63,7 @@ const RegisterForm = () => {
             <h1 className="font-bold text-2xl">Register</h1>
           </div>
           <input
-            className=" text-black my-4 p-1 rounded-sm"
+            className={`text-black my-4 p-1 rounded-sm`}
             type="text"
             name="username"
             id="username"
@@ -68,7 +72,7 @@ const RegisterForm = () => {
             placeholder="Username"
           />
           <input
-            className=" text-black my-4 p-1 rounded-sm"
+            className={`text-black my-4 p-1 rounded-sm`}
             type="email"
             name="email"
             id="email"
@@ -78,7 +82,7 @@ const RegisterForm = () => {
           />
           <div className="relative">
             <input
-              className="text-black my-4 p-1 rounded-sm"
+              className={`text-black my-4 p-1 rounded-sm`}
               type={visible ? `text` : `password`}
               name="password1"
               id="password1"
@@ -99,7 +103,7 @@ const RegisterForm = () => {
             </button>
           </div>
           <input
-            className="text-black my-4 p-1 rounded-sm"
+            className={`text-black my-4 p-1 rounded-sm`}
             type={visible ? `text` : `password`}
             name="password2"
             id="password2"
@@ -109,7 +113,7 @@ const RegisterForm = () => {
           />
           <button
             type="submit"
-            className="py-1 px-2 text-accent-content bg-accent hover:bg-accent-focus hover:rounded-md rounded-sm transition-all font-semibold w-1/2"
+            className="py-1 px-2 mt-3 text-accent-content bg-accent hover:bg-accent-focus hover:rounded-md rounded-sm transition-all font-semibold w-1/2"
           >
             Register
           </button>

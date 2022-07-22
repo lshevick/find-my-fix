@@ -267,7 +267,7 @@ const ShopList = () => {
                 className={`mt-3 mx-2 p-1 shadow-sm rounded-md`}
                 type="text"
                 value={Array.isArray(location) ? exactLocation : inputLocation}
-                onChange={(e) => setInputLocation(e.target.value)}
+                onChange={(e) => {setExactLocation(''); setInputLocation(e.target.value)}}
                 placeholder="Enter ZIP or City, State..."
                 />
             <div className="mt-3">
@@ -332,7 +332,7 @@ const ShopList = () => {
                           <>
                             {queryCar ? queryCar.model : "Car"}{" "}
                             <BsCaretDownFill
-                              className={`transition-all inline-block ${
+                              className={`transition-all duration-300 inline-block ${
                                 open ? "rotate-180" : ``
                               }`}
                             />
@@ -443,7 +443,7 @@ const ShopList = () => {
                         ? " specific service"
                         : filter}{" "}
                       <BsCaretDownFill
-                        className={`inline-block transition-all ${
+                        className={`inline-block duration-300 transition-all ${
                           open ? "rotate-180" : ""
                         }`}
                       />
