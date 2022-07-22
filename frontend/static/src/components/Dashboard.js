@@ -239,7 +239,7 @@ const Dashboard = () => {
                     deleteService={deleteService}
                   />
                 </div>
-                <button type="button" onClick={() => setFormIsOpen(false)}>
+                <button type="button" onClick={() => setFormIsOpen(false)} className='font-medium mt-3 text-xl'>
                   Close
                 </button>
               </Dialog.Panel>

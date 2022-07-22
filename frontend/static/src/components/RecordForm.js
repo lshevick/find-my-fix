@@ -194,7 +194,7 @@ const RecordForm = ({
             rows="5"
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            className="text-neutral p-1 bg-base-100 rounded shadow-md"
+            className="text-base-content p-1 bg-base-100 rounded shadow-md"
           ></textarea>
           <div className="flex justify-center mt-3">
           <button type="submit" className="btn btn-sm mt-2 btn-accent rounded">

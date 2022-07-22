@@ -267,7 +267,8 @@ const ShopList = () => {
                 className={`mt-3 mx-2 p-1 shadow-sm rounded-md`}
                 type="text"
                 value={Array.isArray(location) ? exactLocation : inputLocation}
-                onChange={(e) => {setExactLocation(''); setInputLocation(e.target.value)}}
+                onChange={(e) =>  setInputLocation(e.target.value)}
+                onClick={() => {setExactLocation(''); setLocation('')}}
                 placeholder="Enter ZIP or City, State..."
                 />
             <div className="mt-3">
