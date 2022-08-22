@@ -235,13 +235,6 @@ const ShopList = () => {
     // eslint-disable-next-line
   }, [location])
 
-  useEffect(() => {
-    if (!!location) {
-      getServiceShops();
-    }
-    // eslint-disable-next-line
-  }, [queryCar])
-
   const getFormattedAddress = async () => {
     const response = await fetch(
       `/api/v1/shops/location/?location_string=${location}`
@@ -364,7 +357,7 @@ const ShopList = () => {
                             value={car}
                             className={`p-1 cursor-pointer ${
                               queryCar && queryCar.id === car.id
-                                ? "bg-accent rounded-md text-accent-content"
+                                ? "bg-accent rounded-md"
                                 : ""
                             }`}
                           >
